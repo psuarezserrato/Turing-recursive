@@ -47,7 +47,8 @@ Extract constants referenced in the proof/value body of `ci` after stripping dec
 type) so that merely mentioning a constant in the type signature or a decorative `have` cannot
 masquerade as genuine proof wiring.
 -/
-def getPrunedValueConstants (ci : ConstantInfo) (includeType : Bool := false) : Array Name := Id.run do
+def getPrunedValueConstants (ci : ConstantInfo) (includeType : Bool := false) :
+    Array Name := Id.run do
   let mut consts : Lean.NameSet := {}
   let addExpr (e : Expr) (s : Lean.NameSet) : Lean.NameSet :=
     let pruned := pruneDecorativeBindings e
@@ -87,7 +88,7 @@ def getProofTransitiveClosure (root : Name) (env : Environment) : Lean.NameSet :
         queue := queue.push d
   return visited
 
-/-- Resolve a candidate name in the current environment (trying exact, `TuringRecursive.*`, `Turing.*`). -/
+/-- Resolve a candidate name in the environment (exact, `TuringRecursive.*`, or `Turing.*`). -/
 def resolveDeclName (env : Environment) (raw : Name) : Option Name :=
   if env.contains raw then
     some raw
@@ -98,8 +99,9 @@ def resolveDeclName (env : Environment) (raw : Name) : Option Name :=
   else
     none
 
-/-- Run a wiring check verifying that every name in `required` is in the pruned proof closure of `root`. -/
-def verifyWiring (env : Environment) (rootRaw : Name) (requiredRaw : List Name) : CommandElabM Unit := do
+/-- Verify that every name in `required` is in the pruned proof closure of `root`. -/
+def verifyWiring (env : Environment) (rootRaw : Name) (requiredRaw : List Name) :
+    CommandElabM Unit := do
   let some root := resolveDeclName env rootRaw |
     throwError m!"[FAIL] #audit_wiring: root declaration '{rootRaw}' not found in environment"
   let some rootCi := env.find? root |
@@ -123,17 +125,20 @@ def verifyWiring (env : Environment) (rootRaw : Name) (requiredRaw : List Name) 
     if closure.contains req then
       logInfo m!"[PASS] #audit_wiring: '{root}' transitively uses '{req}'"
     else
-      logError m!"[FAIL] #audit_wiring: '{root}' does NOT genuinely use '{req}' in its proof term (missing or decorative)"
+      logError
+        m!"[FAIL] #audit_wiring: '{root}' does NOT genuinely use '{req}' (missing or decorative)"
       missing := req :: missing
 
   if !missing.isEmpty then
-    throwError m!"#audit_wiring FAILED for '{root}': missing {missing.length} required dependency/dependencies: {missing.reverse}"
+    throwError
+      m!"#audit_wiring FAILED for '{root}': missing {missing.length} required: {missing.reverse}"
   else
-    logInfo m!"[OK] #audit_wiring PASSED for '{root}' ({requiredRaw.length} required dependencies verified)"
+    logInfo
+      m!"[OK] #audit_wiring PASSED for '{root}' ({requiredRaw.length} dependencies verified)"
 
 /--
 Syntax: `#audit_wiring root_theorem [req_lemma_1, req_lemma_2, ...]`
-Verifies that all required lemmas occur in the pruned transitive closure of `root_theorem`'s proof term.
+Verifies that all required lemmas occur in the pruned transitive closure of `root_theorem`.
 Decorative `have` / `let` bindings are stripped before traversal and therefore fail the audit.
 -/
 syntax (name := auditWiringCmd) "#audit_wiring " ident " [" ident,* "]" : command
@@ -152,7 +157,7 @@ def elabAuditWiring : CommandElab := fun stx => do
 def isAllowedAxiom (a : Name) : Bool :=
   a == ``propext || a == ``Classical.choice || a == ``Quot.sound
 
-/-- Check whether declaration `n` belongs to `TuringRecursive` (by namespace or by defining module) or root. -/
+/-- Check whether declaration `n` belongs to `TuringRecursive` (namespace or module) or root. -/
 def shouldAuditDecl (env : Environment) (n : Name) : Bool :=
   if n.isInternal then
     false
@@ -171,7 +176,7 @@ def shouldAuditDecl (env : Environment) (n : Name) : Bool :=
 /--
 Audit all declarations in namespace `TuringRecursive` (and the root / `TuringRecursive.*` modules)
 using `Lean.collectAxioms`, reporting any axiom outside `{propext, Classical.choice, Quot.sound}`.
-Also runs environment-driven `#audit_wiring` if `AUDIT_WIRING_ROOT` and `AUDIT_WIRING_REQUIRED` are set.
+Also runs environment-driven `#audit_wiring` if `AUDIT_WIRING_ROOT` is set.
 -/
 elab "#audit_turing_recursive_axioms" : command => do
   let env ← getEnv
@@ -189,9 +194,11 @@ elab "#audit_turing_recursive_axioms" : command => do
 
   logInfo m!"[Axiom Audit] Audited {auditedCount} declaration(s) in TuringRecursive / root."
   if !violations.isEmpty then
-    throwError m!"Axiom audit FAILED: {violations.size} declaration(s) use axioms outside \{propext, Classical.choice, Quot.sound}"
+    throwError
+      m!"Axiom audit FAILED: {violations.size} declaration(s) use non-standard axioms"
   else
-    logInfo m!"[OK] All audited declarations depend strictly on a subset of \{propext, Classical.choice, Quot.sound}."
+    logInfo
+      m!"[OK] All audited declarations use only \{propext, Classical.choice, Quot.sound}."
 
   -- Optional environment-driven wiring check (used by tools/collect_axioms.sh --wiring)
   let wiringRootOpt ← IO.getEnv "AUDIT_WIRING_ROOT"

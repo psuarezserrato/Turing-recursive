@@ -37,10 +37,9 @@ import Mathlib.Computability.PartrecCode
 import Mathlib.Computability.StateTransition
 import Mathlib.Computability.TuringMachine.Tape
 import Mathlib.Computability.TuringMachine.PostTuringMachine
-import TuringRecursive.Tactic.PrimrecTac
 
 open Denumerable Encodable Function Relation
-open Turing TM0 StateTransition Primrec TuringRecursive.Tactic
+open Turing TM0 StateTransition Primrec
 """
 
 CALIBRATION_BENCHMARK: List[Dict[str, Any]] = [

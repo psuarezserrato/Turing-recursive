@@ -245,6 +245,7 @@ def check_git_diff_provenance(
     escalations_dir: Optional[Path] = None,
     required_attempts: int = 5,
     explicit_files: Optional[Sequence[str]] = None,
+    enforced_tiers: Sequence[str] = ("T0", "T1"),
 ) -> Dict[str, Any]:
     """
     Audit all new T0/T1 declarations introduced across `diff_range` (or `explicit_files`).
@@ -294,8 +295,9 @@ def check_git_diff_provenance(
             continue
 
         added_decls = find_new_declarations_between_texts(old_text, new_text, file_path=rel_path)
+        enforced_set = {t.strip().upper() for t in enforced_tiers if t.strip()}
         for decl, tier in added_decls:
-            if tier in ("T0", "T1"):
+            if tier in enforced_set:
                 res = check_declaration_provenance(
                     decl=decl,
                     tier=tier,
@@ -348,6 +350,7 @@ def main() -> int:
     parser.add_argument("--accepted-dir", default=None, help="Override .agents/gemma_accepted directory")
     parser.add_argument("--escalations-dir", default=None, help="Override .agents/gemma_escalations directory")
     parser.add_argument("--required-attempts", type=int, default=5, help="Required failed attempts for escalation (default 5)")
+    parser.add_argument("--tiers", default="T0,T1", help="Comma-separated tiers requiring Gemma provenance (default: T0,T1)")
     parser.add_argument("--files", nargs="*", default=None, help="Explicit .lean files to check instead of git diff --name-only")
     parser.add_argument("--json", action="store_true", help="Emit JSON output")
 
@@ -357,6 +360,7 @@ def main() -> int:
     acc_dir = Path(args.accepted_dir) if args.accepted_dir else None
     esc_dir = Path(args.escalations_dir) if args.escalations_dir else None
 
+    enforced_tiers = [t.strip().upper() for t in args.tiers.split(",") if t.strip()]
     report = check_git_diff_provenance(
         repo_root=root,
         diff_range=diff_range,
@@ -364,6 +368,7 @@ def main() -> int:
         escalations_dir=esc_dir,
         required_attempts=args.required_attempts,
         explicit_files=args.files,
+        enforced_tiers=enforced_tiers,
     )
 
     if args.json:

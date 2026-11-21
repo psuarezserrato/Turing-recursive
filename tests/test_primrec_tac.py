@@ -14,10 +14,18 @@ class TestPrimrecTac(unittest.TestCase):
         env["PATH"] = f"{elan_bin}:{env.get('PATH', '')}"
         env["LEAN_NUM_THREADS"] = "2"
 
+        raw_macro = (REPO_ROOT / "tools" / "primrec_tac.lean").read_text(encoding="utf-8")
+        standalone_macro = (
+            raw_macro.replace("module\n", "")
+            .replace("public import ", "import ")
+            .replace("@[expose] public section", "section")
+        )
+
         with tempfile.TemporaryDirectory() as td:
             test_lean = Path(td) / "PrimrecTacCheck.lean"
             test_lean.write_text(
-                "import TuringRecursive.Tactic.PrimrecTac\n\n"
+                standalone_macro
+                + "\nend\n\n"
                 "open TuringRecursive.Tactic\n\n"
                 "variable {α β σ : Type} [Primcodable α] [Primcodable β] [Primcodable σ]\n\n"
                 "theorem test_pair_swap : Primrec (fun p : α × β => (p.2, p.1)) := by\n"

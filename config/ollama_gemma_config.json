@@ -25,7 +25,7 @@
     },
     "connect_timeout_seconds": 3.0,
     "request_timeout_seconds": 120.0,
-    "keep_alive": "30m"
+    "keep_alive": 0
   },
   "primary_model": "gemma4:12B",
   "model_fallback_cascade": [

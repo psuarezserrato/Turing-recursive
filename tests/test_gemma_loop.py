@@ -10,6 +10,7 @@ if str(TOOLS_DIR) not in sys.path:
 
 import gemma_loop
 import index as bm25_index
+import ollama_lean4_client
 
 
 class TestGemmaLoop(unittest.TestCase):
@@ -67,6 +68,11 @@ class TestGemmaLoop(unittest.TestCase):
         )
         self.assertTrue(ok_indent)
         self.assertTrue(spliced_indent.startswith("theorem multi_thm (n : Nat) :\n    n + 0 = n :="))
+
+        # 6. Verify Option 2 Case 1 config locks keep_alive = 0 and num_ctx = 4096
+        cfg = ollama_lean4_client.load_config()
+        self.assertEqual(cfg.get("service", {}).get("keep_alive"), 0)
+        self.assertEqual(cfg.get("hardware_guardrails", {}).get("locked_num_ctx"), 4096)
 
     def test_prove_spec_file_accept_and_escalate(self):
         with tempfile.TemporaryDirectory() as td:

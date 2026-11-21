@@ -99,7 +99,7 @@ def load_config(config_path: Optional[str] = None) -> Dict[str, Any]:
             "default_host": DEFAULT_OLLAMA_HOST,
             "connect_timeout_seconds": 3.0,
             "request_timeout_seconds": 120.0,
-            "keep_alive": "30m",
+            "keep_alive": 0,
         },
         "primary_model": PRIMARY_MODEL,
         "model_fallback_cascade": DEFAULT_CASCADE,
@@ -200,6 +200,18 @@ def ensure_ollama_daemon(
         if is_ollama_running(base_url, timeout=1.5):
             return True, f"Started headless ollama serve (PID {proc.pid}) at {base_url}", proc.pid
     return False, f"Spawned ollama serve (PID {proc.pid}) but timed out after {timeout}s", proc.pid
+
+
+def unload_model(model: str = PRIMARY_MODEL, timeout: float = 5.0) -> bool:
+    """Explicitly stop/unload an Ollama model from unified RAM via `ollama stop <model>`."""
+    ollama_bin = find_ollama_binary()
+    if not ollama_bin:
+        return False
+    try:
+        proc = subprocess.run([ollama_bin, "stop", model], capture_output=True, timeout=timeout)
+        return proc.returncode == 0
+    except Exception:
+        return False
 
 
 def list_installed_models(base_url: str = DEFAULT_OLLAMA_HOST, timeout: float = 3.0) -> Tuple[bool, List[Dict[str, Any]], str]:
@@ -394,7 +406,8 @@ def query_ollama_chat(
     if not chosen:
         return {"status": "error", "error": reason}
 
-    keep_alive = ACTIVE_CONFIG.get("service", {}).get("keep_alive", "30m")
+    svc_cfg = ACTIVE_CONFIG.get("service", {})
+    keep_alive = svc_cfg["keep_alive"] if "keep_alive" in svc_cfg else 0
     payload = {
         "model": chosen,
         "think": bool(think),
