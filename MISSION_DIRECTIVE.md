@@ -60,7 +60,7 @@ Additional required results are anti-vacuity witnesses (§6 G5).
 
 ## 3. Project setup
 
-- New independent Lake project (decision Q1, default): `/Users/pablosuarez/Desktop/TuringPartrec`, library `TuringPartrec`, depends only on Mathlib at the pinned commit, toolchain `leanprover/lean4:v4.36.0`; `lake exe cache get` reuses the Mathlib cache already on disk. Own git repo, `main` + `.worktrees/<worker>`.
+- New independent Lake project (decision Q1): `/Users/pablosuarez/Desktop/Turing-recursive`, library `TuringRecursive`, depends only on Mathlib at the pinned commit, toolchain `leanprover/lean4:v4.36.0`; `lake exe cache get` reuses the Mathlib cache already on disk. Own git repo, `main` + `.worktrees/<worker>`.
 - Copy and adapt from S4TP: `tools/workflow_control.py`, `tools/bootstrap_worktree.sh`, `tools/ollama_lean4_client.py`, `config/ollama_gemma_config.json`, `.agents/rules/lean-integrity.md`, `.mcp.json`.
 - Later (not in this mission's scope): S4TP adds `[[require]] name = "TuringPartrec", path = "../TuringPartrec"` and proves the `FinTM0`/`HaltsWithWindow` corollaries there.
 
@@ -142,16 +142,14 @@ Kill criterion: a milestone exceeding 3× its estimate with no green gate pauses
 
 ---
 
-## 8. Decisions for the user (before launch)
+## 8. Decisions (RESOLVED by the user, 21 Nov 2026)
 
-| ID | Question | Default |
-|---|---|---|
-| **Q1** | Location: independent repo `/Users/pablosuarez/Desktop/TuringPartrec` (recommended: foundational, upstreamable, small builds) or a sub-library inside S4TP | independent repo |
-| **Q2** | Aim for Mathlib-PR quality (style, `#lint`, generality) or project-internal quality | Mathlib-PR quality |
-| **Q3** | Fixed number encoding in T-D: (a) the encoding induced by Mathlib's `PartrecToTM2` through `TM2to1`/`TM1to0` (cheapest), or (b) a textbook unary/binary encoding over a small alphabet (cleaner statement, needs extra converter machines) | (a), with (b) as M7-level stretch |
-| **Q4** | Include T-F (TM1/TM2) now or defer | defer (stretch) |
-
----
+| ID | Decision |
+|---|---|
+| **Q1** | Independent repo at `/Users/pablosuarez/Desktop/Turing-recursive` (Lake package `TuringRecursive`, Mathlib pinned to `fc4f59e5...`). Created and building (baseline commit `34c61b6`) |
+| **Q2** | **Mathlib-PR quality**: Mathlib naming/style, docstrings, `#lint`, <=100 columns, generality, no project-specific dependencies |
+| **Q3** | **(a)**: the encoding induced by Mathlib's `PartrecToTM2` through `TM2to1`/`TM1to0` (named, fixed, never existential) |
+| **Q4** | **Defer** T-F (TM1/TM2) |
 
 ## 9. Interface delivered to `MISSION_DIRECTIVE_CMPP.md`
 
