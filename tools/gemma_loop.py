@@ -38,7 +38,7 @@ FORBIDDEN_TOKENS_RE = re.compile(
 
 TIER_COMMENT_RE = re.compile(r"--\s*tier\s*:\s*(T[012])\b", re.IGNORECASE)
 
-MAX_PROMPT_CHARS = 8000
+MAX_PROMPT_CHARS = 4000
 
 TACTIC_STARTERS = {
     "intro", "intros", "rintro", "exact", "refine", "apply", "rw", "rwa",
@@ -241,15 +241,15 @@ def build_prover_messages(
 
     if premises:
         p_lines = []
-        for i, p in enumerate(premises[:5], 1):
-            doc_str = f" -- {p['doc']}" if p.get("doc") else ""
+        for i, p in enumerate(premises[:4], 1):
+            doc_str = f" -- {p['doc'][:120]}" if p.get("doc") else ""
             p_lines.append(f"-- [{i}] {p['name']} ({p.get('file', '')}){doc_str}\n{p['signature']}")
         parts.append("Top retrieved premises:\n```lean4\n" + "\n".join(p_lines) + "\n```")
 
     if accepted_proofs:
         a_lines = []
-        for i, a in enumerate(accepted_proofs[:2], 1):
-            a_lines.append(f"-- Example {i}: {a['name']} ({a.get('file', '')})\n{a['signature']} :=\n  {a['proof']}")
+        for i, a in enumerate(accepted_proofs[:1], 1):
+            a_lines.append(f"-- Example {i}: {a['name']} ({a.get('file', '')})\n{a['signature']} :=\n  {a['proof'][:600]}")
         parts.append("Top retrieved verified proofs:\n```lean4\n" + "\n\n".join(a_lines) + "\n```")
 
     target_preview = f"{decl.statement} := by\n  sorry" if decl.had_by_before_sorry else f"{decl.statement} :=\n  sorry"
@@ -261,14 +261,14 @@ def build_prover_messages(
     if attempt >= 2 and prev_error_lines.strip():
         if prior_attempts and len(prior_attempts) > 1:
             failed_bodies = [
-                f"-- Failed attempt {a['attempt']}: {a.get('proof_body') or a.get('candidate_code', '')}"
+                f"-- Failed attempt {a['attempt']}: {(a.get('proof_body') or a.get('candidate_code', ''))[:300]}"
                 for a in prior_attempts
             ]
             parts.append("All previous failed attempts (DO NOT repeat any of these):\n```lean4\n" + "\n".join(failed_bodies) + "\n```")
         elif prev_candidate.strip():
-            parts.append(f"Previous attempt ({attempt - 1}) code (DO NOT repeat this):\n```lean4\n{prev_candidate.strip()}\n```")
+            parts.append(f"Previous attempt ({attempt - 1}) code (DO NOT repeat this):\n```lean4\n{prev_candidate.strip()[:400]}\n```")
         parts.append(
-            f"Compiler errors from attempt {attempt - 1} (first <= 15 lines):\n```\n{prev_error_lines.strip()}\n```\n"
+            f"Compiler errors from attempt {attempt - 1} (first <= 12 lines):\n```\n{prev_error_lines.strip()}\n```\n"
             "Write a DIFFERENT proof that fixes the compiler error while keeping the declaration "
             "statement before `:=` byte-for-byte identical."
         )
@@ -459,7 +459,7 @@ def run_lean_check(
     return accepted, proc.returncode, combined, lean_ms, False
 
 
-def first_n_error_lines(diagnostics: str, max_lines: int = 15) -> str:
+def first_n_error_lines(diagnostics: str, max_lines: int = 12) -> str:
     """Return the first `<= max_lines` non-empty diagnostic lines."""
     lines = [ln for ln in (diagnostics or "").splitlines() if ln.strip()]
     return "\n".join(lines[:max_lines])
@@ -503,8 +503,8 @@ def prove_declaration(
     ex_list = list(exclude or []) + [decl.name, decl.raw_name, decl.short_name]
     clean_q_name = re.sub(r"^cal_", "", decl.name)
     query_str = f"{clean_q_name} {decl.statement}"
-    premises = idx.retrieve_premises(query_str, top_k=5, exclude=ex_list)
-    accepted_proofs = idx.retrieve_accepted_proofs(query_str, top_k=2, exclude=ex_list)
+    premises = idx.retrieve_premises(query_str, top_k=4, exclude=ex_list)
+    accepted_proofs = idx.retrieve_accepted_proofs(query_str, top_k=1, exclude=ex_list)
 
     caller = model_caller or ollama_lean4_client.query_ollama_chat
     checker = lean_checker or run_lean_check
@@ -537,12 +537,12 @@ def prove_declaration(
         )
         prompt_text = "\n".join(m["content"] for m in msgs)
 
-        # Locked sampling parameters per Option 1b specification
+        # Locked sampling parameters per Option A specification (num_ctx=4096, MAX_PROMPT_CHARS=4000)
         opts = {
             "temperature": 1.0,
             "top_p": 0.95,
             "top_k": 64,
-            "num_ctx": 8192,
+            "num_ctx": 4096,
             "num_predict": 512 if attempt >= 4 else 384,
         }
 
@@ -599,7 +599,7 @@ def prove_declaration(
                 "accepted": False,
             })
             prev_candidate = raw_lean
-            prev_errors = first_n_error_lines(err_msg, 15)
+            prev_errors = first_n_error_lines(err_msg, 12)
             continue
 
         valid_splice, spliced_or_err, cand_proof = validate_and_splice_candidate(decl, raw_lean)
@@ -640,7 +640,7 @@ def prove_declaration(
                 "accepted": False,
             })
             prev_candidate = raw_lean
-            prev_errors = first_n_error_lines(err_msg, 15)
+            prev_errors = first_n_error_lines(err_msg, 12)
             continue
 
         # Check for forbidden tokens in the spliced declaration before running Lean
@@ -729,7 +729,7 @@ def prove_declaration(
             "think": think,
             "candidate_code": spliced_or_err.strip(),
             "proof_body": cand_proof.strip(),
-            "compiler_error": "" if accepted else first_n_error_lines(diagnostics, 15),
+            "compiler_error": "" if accepted else first_n_error_lines(diagnostics, 12),
             "error_class": err_class,
             "latency_ms": round(latency_ms, 2),
             "lean_ms": round(lean_ms, 2),
@@ -757,7 +757,7 @@ def prove_declaration(
             }
 
         prev_candidate = spliced_or_err.strip()
-        prev_errors = first_n_error_lines(diagnostics, 15)
+        prev_errors = first_n_error_lines(diagnostics, 12)
 
     # All attempts exhausted -> write escalation JSON for frontier model
     escalation_file = escalations_dir / f"{safe_name}.json"
