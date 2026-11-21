@@ -17,7 +17,7 @@ Standing rules from `.agents/rules/lean-integrity.md` apply (zero `sorry`/`axiom
 | `Computability/TuringMachine/ToPartrec.lean`, `Config.lean` | **Partrec ⇒ TM**: a `TM2` machine evaluating `ToPartrec.Code` (`PartrecToTM2.tr_eval`) | the converse |
 | `Computability/TuringMachine/Computable.lean` | `TM2Computable`, `TM2ComputableInPolyTime` (complexity-oriented definitions) | any link to `Partrec` |
 | `PostTuringMachine.lean`, `StackTuringMachine.lean`, `Tape.lean` | TM0/TM1/TM2 semantics, translations `TM1to0.tr_eval`, `TM2to1.tr_eval`, `TM0.Machine.map`, `Machine.map_step`, `Machine.map_respects` | `Primcodable` instances for `ListBlank`, `Tape`, `Cfg`; any `Primrec`/`Partrec` statement |
-| `StateTransition.lean` | `Turing.eval`, `mem_eval`, `Reaches`, `reaches_eval` | partrec-ness of `Turing.eval` |
+| `StateTransition.lean` (namespace `StateTransition`) | `eval` (a `PFun.fix`), `mem_eval`, `Reaches`, `reaches_eval`, `tr_eval'`, `EvalsTo` | partrec-ness of `StateTransition.eval` (easy, see T-B) |
 | `PartrecCode.lean`, `Halting.lean`, `Partrec.lean`, `Primrec/*` | `Code.eval`, `exists_code`, `curry`/`eval_curry`, `halting_problem`, `Partrec.rfind`, `Primrec.nat_iterate`, `Primrec.dom_finite`, `Primcodable.ofEquiv`, `Primcodable.subtype`, list primrec lemmas | — (these are our tools) |
 | TauCeti `Computability/*` | degrees, priority methods, primrec lists | nothing on Turing machines |
 
@@ -25,36 +25,39 @@ S4TP already has a related but **non-general** result: `universalHaltingTM0` (M3
 
 ---
 
-## 1. Headline results
+## 1. Headline results (CORRECTED after S0; final names/typeclasses frozen at gate S1)
 
-Notation: `Γ Λ : Type` (Mathlib's `Primcodable` lives in `Type`), `[Inhabited Γ]` with `default` = blank.
+All statements are about Mathlib's own `StateTransition.eval`, `Turing.TM0.step`, `Turing.TM0.eval`
+(**`Turing.eval` does not exist**: the generic evaluator lives in namespace `StateTransition`, verified in `StateTransition.lean:28,33`).
+Everything is universe-polymorphic (`Type*`) except where a *fixed* type forces `Type`; `Primcodable`, `Primrec`, `Partrec`, `Computable` all accept `Type*` (verified).
 
-| ID | Statement (sketch; final names fixed at gate S1) | Role |
+| ID | Statement (sketch) | Role / S0 proof plan |
 |---|---|---|
-| **T-B (generic)** | `theorem Turing.eval_partrec [Primcodable σ] {f : σ → Option σ} (hf : Computable f) : Partrec (Turing.eval f)` | The core: any computable step function has partrec evaluation (search for the halting time with `Nat.rfind` over iterates) |
-| **E (encodings)** | `ListBlank.trim : ListBlank Γ → List Γ` (canonical: strip trailing blanks) with `mk_trim`, `trim_mk`, `trim_injective`; `Primcodable` instances on `ListBlank Γ` (via the subtype of trimmed lists), `Tape Γ`, `TM0.Stmt Γ`, `TM0.Cfg Γ Λ`; primrec of `ListBlank.head/tail/cons/nth`, `Tape.move/write/mk₁/mk₂/nth` | Makes Mathlib's own types computable objects |
-| **T-A (fixed machine)** | `TM0.step_primrec (M) : Primrec (TM0.step M)`; **`TM0.eval_partrec (M) : Partrec (TM0.eval M)`**; `TM0.evalCfg_partrec (M) : Partrec (Turing.eval (TM0.step M))` (arbitrary start tapes, needed by `HaltsWithWindow`) under `[Finite Γ] [Finite Λ] [DecidableEq Γ] [DecidableEq Λ] [Primcodable Γ] [Primcodable Λ]` | "every TM0 is computed by a partrec function", stated on **Mathlib's `TM0.eval` itself** |
-| **T-A′ (Nat level)** | `∃ c : Nat.Partrec.Code, ∀ l, c.eval (encode l) = (TM0.eval M l).map encode` | The literal "computed by a recursive function" in Kleene's sense |
-| **T-C (uniform)** | `TM0Code` (primcodable machine descriptions over `ℕ` symbols/states, out-of-range ⇒ halt, blank `0`), `TM0Code.machine : TM0Code → TM0.Machine ℕ ℕ`; `TM0Code.step_primrec : Primrec₂ (fun m c ↦ TM0.step m.machine c)`; **`TM0Code.eval_partrec : Partrec₂ (fun m c ↦ Turing.eval (TM0.step m.machine) c)`**; relabeling theorem: every finite TM0 `M` has a code `m` and injective pointed relabelings `f : PointedMap Γ ℕ`, `g : Λ → ℕ` with `Turing.eval (step m.machine) (c.map f g) = (Turing.eval (step M) c).map (·.map f g)` (via `Machine.map_step`) | The machine is data: one partrec interpreter for all machines |
-| **T-D (equivalence)** | For `f : ℕ →. ℕ`: `Nat.Partrec f ↔ ∃ M : TM0 machine with finite types, ∀ n, TM0.eval M (enc n) = (f n).map (ListBlank.mk ∘ enc)` for a **fixed, named** encoding `enc` (decision Q3). (⇒) via Mathlib's `PartrecToTM2.tr_eval`, `TM2to1.tr_eval`, `TM1to0.tr_eval` + finite supports; (⇐) via T-A | Formal Church–Turing equivalence for TM0 |
-| **T-E (consequences)** | (1) `REPred` and `¬ ComputablePred` for TM0 halting over `TM0Code × List ℕ` (via T-C, T-D, Mathlib `halting_problem`); (2) computable map `TM0Code → Nat.Partrec.Code` (s-m-n via `Code.curry`); (3) **universal TM0**: one finite `U` and primrec `enc`/`dec` with `(TM0.eval U (enc (m, c))).map dec = Turing.eval (TM0.step m.machine) c`, plus a **windowed** variant (halts with the final tape's window `[-k,k]` readable) | (3) is exactly what CMPP B2 consumes |
-| **T-F (stretch)** | `TM1.eval`, `TM2.eval` partrec for machines with finite supports (via the translations; state sets of translated machines are infinite but finitely supported) | Completeness of the picture |
+| **T-B (generic)** | `StateTransition.eval_partrec {σ : Type*} [Primcodable σ] {f : σ → Option σ} (hf : Computable f) : Partrec (StateTransition.eval f)`; parametrized `eval_partrec₂ (hf : Computable₂ f) : Partrec₂ fun a => StateTransition.eval (f a)`; `reaches_iff_exists_iterate : Reaches f a b ↔ ∃ n, (flip Option.bind f)^[n] (some a) = some b` | **Easy**: `StateTransition.eval f` is *definitionally* a `PFun.fix`, so this is `Partrec.fix` (`Partrec.lean:769`) + `Computable.option_casesOn`. About 60-120 lines |
+| **E (encodings)** | `List.rdropWhile` already exists in Mathlib. New generic lemmas `Primrec.list_rdropWhile`, `Primrec.list_dropLast` (1-liners). `ListBlank.trim [Inhabited Γ] [DecidableEq Γ] : ListBlank Γ → List Γ` with `trim_mk`, `mk_trim`, `trim_injective`; **scoped** `Primcodable (ListBlank Γ)` needing only `[Inhabited Γ] [Primcodable Γ]` (via `Encodable.decidableEqOfEncodable`, canonical subtype `{l // l.rdropWhile (· == default) = l}`, `Primcodable.ofEquiv`); `Primcodable Dir`, `TM0.Stmt Γ`, `Tape Γ`, `TM0.Cfg Γ Λ`; `Primrec` of `ListBlank.mk/trim/head/tail/cons/nth`, `Tape.move/write/mk₁/mk₂/nth/right₀`; round trip `decode (encode x) = some x` | Largest milestone: about 500-800 lines (S0). First targets are T0/T1 (gemma-first) |
+| **T-A (fixed machine)** | General: `TM0.step_primrec_of_primrec (hM : Primrec₂ M) : Primrec (TM0.step M)` (any machine, no finiteness). Finite corollary under `[Inhabited Γ] [Inhabited Λ] [Primcodable Γ] [Primcodable Λ] [Finite Γ] [Finite Λ]` (**no `DecidableEq`**, via `Primrec.dom_finite`): `TM0.step_primrec`, `TM0.evalCfg_partrec : Partrec (StateTransition.eval (TM0.step M))`, **`TM0.eval_partrec : Partrec (TM0.eval M)`** | About 150-250 lines after E |
+| **T-A′ (Nat level)** | `∃ c : Nat.Partrec.Code, ∀ l, c.eval (encode l) = (TM0.eval M l).map encode` (the literal Kleene form; uses `Primcodable (ListBlank Γ)` from E) | `exists_code` + `encodek` |
+| **T-C (uniform)** | `structure TM0Code` (table `List (List (Option (ℕ × TM0.Stmt ℕ)))`, out-of-range gives halt, blank/start `0`), `Primcodable` via `ofEquiv`, `TM0Code.machine`; `Primrec₂ step`; **`TM0Code.eval_partrec : Partrec₂ fun m c => StateTransition.eval (TM0.step m.machine) c`**. Relabeling: for finite `M` there are `f : PointedMap Γ ℕ`, **`g : PointedMap Λ ℕ`** (pointed, so `TM0.map_init` applies) and a code `m` with `StateTransition.eval (TM0.step m.machine) (c.map f g) = (StateTransition.eval (TM0.step M) c).map (Cfg.map f g)` and `TM0.eval m.machine (l.map f) = (TM0.eval M l).map (ListBlank.map f)` | S0 note: `m.machine ≠ M.map …` globally (out-of-range halts vs wraps) but they agree on every reachable `(g q, f a)`, which is all `map_step` needs. About 250-450 lines |
+| **T-D (equivalence)** | Fix alphabet `Γ₀ := TM2to1.Γ' PartrecToTM2.K' (fun _ => PartrecToTM2.Γ')` (needs a `Fintype K'`; Mathlib has none, so provide it via an `Equiv` with `Fin 4`) and the **named** `encNat n := TM2to1.trInit K'.main (trList [n])`. `Nat.Partrec f ↔ ∃ (Λ : Type) (_ : Fintype Λ) (_ : DecidableEq Λ) (_ : Inhabited Λ) (M : TM0.Machine Γ₀ Λ), ∀ n, TM0.eval M (encNat n) = (f n).map (ListBlank.mk ∘ encNat)` | (⇒) uses `PartrecToTM2.tr_eval`, `tr_respects`, `TM1to0.tr_eval` and the finite-support restriction (S4TP `restrictSupportedTM0`); **do not use `TM2to1.tr_eval`** (it forgets that the other stacks are empty), apply `StateTransition.tr_eval` to `tr_respects`. (⇐) via T-A and an explicit primrec `decNat`. About 350-600 lines |
+| **T-E (consequences)** | (1) TM0 halting is `REPred` and `¬ ComputablePred` over `TM0Code × Cfg ℕ ℕ`; (2) computable compiler `TM0Code → Nat.Partrec.Code` (`Code.curry`, `eval_curry`, `primrec₂_curry`); (3) **universal TM0** `U` over `Γ₀` with the **named** `encUniv (m,c) := encNat (encode (m,c))` and `decUniv`, *not existentially quantified* (an existential `dec` could trivialize the statement by re-running the machine), and the **windowed variant stated as exact output**: the halting tape of `U` is `Tape.mk₁ (encNat (encode c'))` (blank-free), so a cylinder of length `L = |encNat (encode c')|` isolates `c'` | About 300-550 lines. The window statement is what CMPP B2 (with refactor I2) consumes |
+| **T-F (stretch, deferred)** | `TM1.eval`/`TM2.eval` partrec for finite-support machines | Q4: deferred |
 
-Additional required results are anti-vacuity witnesses (§6 G5).
+Anti-vacuity witnesses are required for every item (§6 G5).
 
 ---
 
-## 2. Design decisions and points requiring care
+## 2. Design decisions and points requiring care (updated after S0)
 
-1. **Faithfulness.** All theorems are about Mathlib's `Turing.TM0.step`, `TM0.eval`, `Turing.eval`. No re-implemented semantics in any headline statement. Raw list-based steppers are allowed only as internal tools with a proved simulation lemma `abs ∘ rawStep = Option.map abs ∘ TM0.step ∘ abs`.
-2. **Quotients.** `ListBlank` is a quotient (lists modulo trailing blanks). The canonical form `trim` is the only way to compute on it; every primrec lemma about `ListBlank` must factor through `trim` and be proved well-defined. Getting this wrong silently breaks injectivity of encodings.
-3. **Instances.** The `Primcodable (ListBlank Γ)`, `Tape`, `Cfg` instances are **scoped** (namespace `TuringRecursive`) to avoid future diamonds if Mathlib adds its own; include a round-trip test `decode (encode x) = some x`.
-4. **Choice independence.** Statements quantify over **arbitrary** `[Primcodable Γ]` on finite types (any encoding works because `Primrec.dom_finite` makes every function on a finite domain primrec). Never bake in `Fintype.equivFin` choices in statements.
-5. **Uniformity.** T-C uses a single type `TM0Code` with machines over `ℕ`, avoiding dependent types indexed by codes. Out-of-range symbols/states halt, so every code denotes some machine (no partial decoding).
-6. **Fixed encodings in T-D.** Encodings must be concrete named functions, never existentially quantified (an existential encoding can trivialize the equivalence: Route-1 lesson from `SympTopAutoForm`).
-7. **Universe.** `Primcodable` requires `Type`; state this restriction explicitly.
-8. **Output convention.** `TM0.eval` returns only `Tape.right₀`; T-A also provides the full-configuration version (`TM0.evalCfg_partrec`).
-9. **Upstreamability.** Mathlib style (naming, docstrings, `#lint`, ≤100 columns, no project-specific dependencies) so the library can be offered to Mathlib or TauCeti later.
+1. **Faithfulness.** Headline statements use only Mathlib's `StateTransition.eval`, `TM0.step`, `TM0.eval`. Raw list-based steppers are internal tools only, with a proved simulation lemma.
+2. **Quotients.** `ListBlank` is a quotient; the canonical form `trim` is the only way to compute on it. Every `Primrec` lemma factors through `trim`.
+3. **Instances.** `Primcodable (ListBlank Γ)`, `Tape`, `Cfg` are **scoped** (namespace `TuringRecursive`) to avoid diamonds if Mathlib later adds its own; round-trip tests required. S0 confirmed Mathlib and TauCeti have **no** `Encodable/Primcodable/DecidableEq/Fintype` instance on `ListBlank`, `Tape`, `TM0.Cfg/Stmt/Machine`.
+4. **Choice independence.** Statements quantify over arbitrary `[Primcodable Γ]`/`[Primcodable Λ]` on finite types (every function on a finite domain is primrec). Never bake `Fintype.equivFin` into a statement.
+5. **Uniformity.** One type `TM0Code` over `ℕ`; out-of-range halts, so every code denotes a machine.
+6. **Fixed encodings.** Every encoding in T-D/T-E is a concrete named function, never existentially quantified.
+7. **Universes.** (Corrected.) `Type*` throughout. Only T-D's existential state type is `Type`, because the alphabet `Γ₀` is fixed.
+8. **Output convention.** `TM0.eval` returns only `Tape.right₀`; T-A also provides the full-configuration version.
+9. **Upstreamability (Q2: Mathlib-PR quality).** Mathlib naming/docstrings, `#lint`, at most 100 columns, generality (T-B and the general `step_primrec_of_primrec` are stated for arbitrary machines), no project-specific dependencies. Generic list/Primrec lemmas go in a separate small file so they can be PR'd independently.
+10. **Mathlib gaps S0 found (small, to prove ourselves):** `Primrec.list_rdropWhile`, `Primrec.list_dropLast`, `Computable.iterate`, `Primrec.dite`, `Fintype PartrecToTM2.K'`, `reaches_iff_exists_iterate`.
 
 ---
 
@@ -86,7 +89,7 @@ flowchart LR
 |---|---|---|---|---|
 | **W0** | `@gemma-infra` (Argon) | Local-model engine of `MISSION_DIRECTIVE_CMPP.md` §6.3–6.7, built **here first** and reused by CMPP: `gemma_loop.py` (compiler-in-the-loop, ≤5 attempts, escalation files), `index.py` (BM25 over pinned Mathlib incl. `Computability/*`), outcome ledger, provenance checker; calibration on ≥40 hidden Mathlib `Primrec`/`Partrec` lemmas (pass@1/pass@5 per tier) | `docs/gemma_calibration.md`, `docs/routing.md` | tooling only |
 | **S0** | `@explorer` (read-only, Carbon) | Inventory: exact signatures of all lemmas in §0; check whether `Primrec` of list operations needed (`dropLast`, `reverse`, `getD`, `head?`, trailing-blank stripping) exist; how M3.2 handled finite supports in the Mathlib pipeline; plan for T-D encodings | board report | — |
-| **S1** | `@spec` (Carbon) | All headline statements of §1 and the M2 lemma list written as Lean declarations with `sorry` **on a spec branch only** (never merged), compiled; written rationale per statement | **user reviews and approves the statements**; verifier signs the faithfulness checklist (§2.1–2.8) | 300–500 |
+| **S1** | `@spec` (Carbon) | All headline statements of §1 (corrected) and the M2 lemma list written as Lean declarations with `sorry` **on a spec branch only** (never merged), compiled; `docs/S1_statements.md` with a rationale and a Mathlib-source citation per statement | **user reviews and approves the statements**; verifier signs the faithfulness checklist (§2.1–2.10) | 300–500 |
 | **M1** | `@eval` | T-B, `Reaches ↔ ∃ n, iterate` (port of `FinTM0.reaches_iff_exists_iterate_stepOpt`) | 0 `sorry`, gates | 200–400 |
 | **M2** | `@encode` | E: `trim`, scoped instances, primrec of tape/list-blank operations, round-trip tests; optional `primrec_tac` macro (a `first` over `Primrec.comp/pair/fst/snd/option_casesOn/list_*` combinators) to help both gemma and frontier | gates | 800–1500 |
 | **M3** | `@eval` | T-A, T-A′ | gates | 300–600 |
@@ -95,7 +98,7 @@ flowchart LR
 | **M6** | `@church-turing` | T-E (1)–(3), windowed universal TM0 | gates | 400–800 |
 | **M7** | `@uniform` | T-F (stretch, may be deferred) | gates | 500–1000 |
 
-Total honest estimate: **3.5–7.5k lines**. The mathematics is classical and well understood; the risk is engineering (quotient encodings, `Primrec` plumbing, the finite-support restriction in M5), not mathematical.
+Total estimate after S0: **about 2.5-5k lines** (S0 sums to roughly 2.0-4.3k; kept conservative). The mathematics is classical and shorter than first feared (T-B is nearly definitional). The risk is engineering: quotient encodings (M2) and the finite-support restriction (M5). These are S0 estimates, not yet validated by proofs.
 
 ---
 
