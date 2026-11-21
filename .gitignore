@@ -1,0 +1,10 @@
+/.lake/
+/build/
+/.worktrees/
+/.pause_workflow
+/.agents/gemma_usage.jsonl
+/.agents/gemma_scratch/
+/.agents/checkpoints/
+**/__pycache__/
+*.pyc
+.DS_Store

@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "lean-lsp": {
+      "command": "uvx",
+      "args": ["lean-lsp-mcp"],
+      "env": {
+        "LEAN_LOG_LEVEL": "WARNING",
+        "LEAN_NUM_THREADS": "2",
+        "LEAN_MCP_SCRATCH_SLOTS": "2",
+        "LEAN_MCP_MAX_OUTPUT_CHARS": "8000"
+      }
+    }
+  }
+}

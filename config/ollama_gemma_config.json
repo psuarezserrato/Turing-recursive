@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "S4TuringPoissonOllamaGemmaConfig",
+  "description": "24GB Unified RAM guarded configuration for headless local gemma4:12B (4-bit nvfp4 MLX) via Ollama.",
+  "version": "1.1.0",
+  "hardware_guardrails": {
+    "unified_ram_gb": 24,
+    "ollama_num_parallel": 1,
+    "locked_num_ctx": 32768,
+    "max_concurrent_lean_servers": 2,
+    "target_concurrent_lean_servers": 1,
+    "lean_num_threads": 2,
+    "lake_build_jobs": 2,
+    "max_gemma_retries_before_carbon_escalation": 5,
+    "agy_sdk_profile": "LocalOpenAIAgentConfig.lightweight()"
+  },
+  "service": {
+    "default_host": "http://localhost:11434",
+    "endpoints": {
+      "tags": "/api/tags",
+      "chat": "/api/chat",
+      "generate": "/api/generate",
+      "version": "/api/version"
+    },
+    "connect_timeout_seconds": 3.0,
+    "request_timeout_seconds": 120.0,
+    "keep_alive": "30m"
+  },
+  "primary_model": "gemma4:12B",
+  "model_fallback_cascade": [
+    "gemma4:12B",
+    "gemma-lean4:latest",
+    "gemma2:9b-instruct-q5_K_M",
+    "gemma2:9b"
+  ],
+  "parameter_profiles": {
+    "autoformalize": {
+      "temperature": 1.0,
+      "top_p": 0.95,
+      "top_k": 64,
+      "num_predict": 768,
+      "num_ctx": 32768
+    },
+    "tactic": {
+      "temperature": 1.0,
+      "top_p": 0.95,
+      "top_k": 64,
+      "num_predict": 256,
+      "num_ctx": 32768
+    },
+    "premise": {
+      "temperature": 1.0,
+      "top_p": 0.95,
+      "top_k": 64,
+      "num_predict": 384,
+      "num_ctx": 32768
+    },
+    "skeleton": {
+      "temperature": 1.0,
+      "top_p": 0.95,
+      "top_k": 64,
+      "num_predict": 1536,
+      "num_ctx": 32768
+    }
+  }
+}
