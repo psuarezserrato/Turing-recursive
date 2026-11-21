@@ -48,7 +48,7 @@ Additional required results are anti-vacuity witnesses (§6 G5).
 
 1. **Faithfulness.** All theorems are about Mathlib's `Turing.TM0.step`, `TM0.eval`, `Turing.eval`. No re-implemented semantics in any headline statement. Raw list-based steppers are allowed only as internal tools with a proved simulation lemma `abs ∘ rawStep = Option.map abs ∘ TM0.step ∘ abs`.
 2. **Quotients.** `ListBlank` is a quotient (lists modulo trailing blanks). The canonical form `trim` is the only way to compute on it; every primrec lemma about `ListBlank` must factor through `trim` and be proved well-defined. Getting this wrong silently breaks injectivity of encodings.
-3. **Instances.** The `Primcodable (ListBlank Γ)`, `Tape`, `Cfg` instances are **scoped** (namespace `TuringPartrec`) to avoid future diamonds if Mathlib adds its own; include a round-trip test `decode (encode x) = some x`.
+3. **Instances.** The `Primcodable (ListBlank Γ)`, `Tape`, `Cfg` instances are **scoped** (namespace `TuringRecursive`) to avoid future diamonds if Mathlib adds its own; include a round-trip test `decode (encode x) = some x`.
 4. **Choice independence.** Statements quantify over **arbitrary** `[Primcodable Γ]` on finite types (any encoding works because `Primrec.dom_finite` makes every function on a finite domain primrec). Never bake in `Fintype.equivFin` choices in statements.
 5. **Uniformity.** T-C uses a single type `TM0Code` with machines over `ℕ`, avoiding dependent types indexed by codes. Out-of-range symbols/states halt, so every code denotes some machine (no partial decoding).
 6. **Fixed encodings in T-D.** Encodings must be concrete named functions, never existentially quantified (an existential encoding can trivialize the equivalence: Route-1 lesson from `SympTopAutoForm`).
@@ -62,7 +62,7 @@ Additional required results are anti-vacuity witnesses (§6 G5).
 
 - New independent Lake project (decision Q1): `/Users/pablosuarez/Desktop/Turing-recursive`, library `TuringRecursive`, depends only on Mathlib at the pinned commit, toolchain `leanprover/lean4:v4.36.0`; `lake exe cache get` reuses the Mathlib cache already on disk. Own git repo, `main` + `.worktrees/<worker>`.
 - Copy and adapt from S4TP: `tools/workflow_control.py`, `tools/bootstrap_worktree.sh`, `tools/ollama_lean4_client.py`, `config/ollama_gemma_config.json`, `.agents/rules/lean-integrity.md`, `.mcp.json`.
-- Later (not in this mission's scope): S4TP adds `[[require]] name = "TuringPartrec", path = "../TuringPartrec"` and proves the `FinTM0`/`HaltsWithWindow` corollaries there.
+- Later (not in this mission's scope): S4TP adds `[[require]] name = "TuringRecursive", path = "../Turing-recursive"` and proves the `FinTM0`/`HaltsWithWindow` corollaries there.
 
 ---
 
