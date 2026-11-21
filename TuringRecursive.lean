@@ -6,3 +6,4 @@ public import Mathlib.Computability.TuringMachine.PostTuringMachine
 public import TuringRecursive.Eval
 public import TuringRecursive.ListPrimrec
 public import TuringRecursive.Encoding
+public import TuringRecursive.TM0Eval
