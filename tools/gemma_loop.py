@@ -38,6 +38,8 @@ FORBIDDEN_TOKENS_RE = re.compile(
 
 TIER_COMMENT_RE = re.compile(r"--\s*tier\s*:\s*(T[012])\b", re.IGNORECASE)
 
+MAX_PROMPT_CHARS = 8000
+
 TACTIC_STARTERS = {
     "intro", "intros", "rintro", "exact", "refine", "apply", "rw", "rwa",
     "simp", "dsimp", "simpa", "rcases", "cases", "obtain", "induction",
@@ -239,14 +241,14 @@ def build_prover_messages(
 
     if premises:
         p_lines = []
-        for i, p in enumerate(premises[:8], 1):
+        for i, p in enumerate(premises[:5], 1):
             doc_str = f" -- {p['doc']}" if p.get("doc") else ""
             p_lines.append(f"-- [{i}] {p['name']} ({p.get('file', '')}){doc_str}\n{p['signature']}")
         parts.append("Top retrieved premises:\n```lean4\n" + "\n".join(p_lines) + "\n```")
 
     if accepted_proofs:
         a_lines = []
-        for i, a in enumerate(accepted_proofs[:3], 1):
+        for i, a in enumerate(accepted_proofs[:2], 1):
             a_lines.append(f"-- Example {i}: {a['name']} ({a.get('file', '')})\n{a['signature']} :=\n  {a['proof']}")
         parts.append("Top retrieved verified proofs:\n```lean4\n" + "\n\n".join(a_lines) + "\n```")
 
@@ -266,14 +268,18 @@ def build_prover_messages(
         elif prev_candidate.strip():
             parts.append(f"Previous attempt ({attempt - 1}) code (DO NOT repeat this):\n```lean4\n{prev_candidate.strip()}\n```")
         parts.append(
-            f"Compiler errors from attempt {attempt - 1} (first <= 30 lines):\n```\n{prev_error_lines.strip()}\n```\n"
+            f"Compiler errors from attempt {attempt - 1} (first <= 15 lines):\n```\n{prev_error_lines.strip()}\n```\n"
             "Write a DIFFERENT proof that fixes the compiler error while keeping the declaration "
             "statement before `:=` byte-for-byte identical."
         )
 
+    user_content = "\n\n".join(parts)
+    if len(user_content) > MAX_PROMPT_CHARS:
+        user_content = user_content[-MAX_PROMPT_CHARS:]
+
     return [
         {"role": "system", "content": SYSTEM_RULES},
-        {"role": "user", "content": "\n\n".join(parts)},
+        {"role": "user", "content": user_content},
     ]
 
 
@@ -321,8 +327,13 @@ def validate_and_splice_candidate(
         spec_stmt_no_attr = _strip_leading_attributes(spec_stmt)
         cand_stmt_no_attr = _strip_leading_attributes(cand_stmt)
 
-        # Require exact byte-identity of the declaration statement
-        if cand_stmt != spec_stmt and cand_stmt_no_attr != spec_stmt_no_attr:
+        norm_cand = re.sub(r"\s+", " ", cand_stmt).strip()
+        norm_spec = re.sub(r"\s+", " ", spec_stmt).strip()
+        norm_cand_no_attr = re.sub(r"\s+", " ", cand_stmt_no_attr).strip()
+        norm_spec_no_attr = re.sub(r"\s+", " ", spec_stmt_no_attr).strip()
+
+        # Require token/character identity of the declaration statement; splice uses exact spec_stmt bytes
+        if norm_cand != norm_spec and norm_cand_no_attr != norm_spec_no_attr:
             return (
                 False,
                 f"Declaration statement before ':=' was modified.\n"
@@ -448,7 +459,7 @@ def run_lean_check(
     return accepted, proc.returncode, combined, lean_ms, False
 
 
-def first_n_error_lines(diagnostics: str, max_lines: int = 30) -> str:
+def first_n_error_lines(diagnostics: str, max_lines: int = 15) -> str:
     """Return the first `<= max_lines` non-empty diagnostic lines."""
     lines = [ln for ln in (diagnostics or "").splitlines() if ln.strip()]
     return "\n".join(lines[:max_lines])
@@ -490,9 +501,10 @@ def prove_declaration(
     module_ctx = extract_module_context(spec_text, decl.start_offset)
 
     ex_list = list(exclude or []) + [decl.name, decl.raw_name, decl.short_name]
-    query_str = f"{decl.name} {decl.statement}"
-    premises = idx.retrieve_premises(query_str, top_k=8, exclude=ex_list)
-    accepted_proofs = idx.retrieve_accepted_proofs(query_str, top_k=3, exclude=ex_list)
+    clean_q_name = re.sub(r"^cal_", "", decl.name)
+    query_str = f"{clean_q_name} {decl.statement}"
+    premises = idx.retrieve_premises(query_str, top_k=5, exclude=ex_list)
+    accepted_proofs = idx.retrieve_accepted_proofs(query_str, top_k=2, exclude=ex_list)
 
     caller = model_caller or ollama_lean4_client.query_ollama_chat
     checker = lean_checker or run_lean_check
@@ -525,13 +537,13 @@ def prove_declaration(
         )
         prompt_text = "\n".join(m["content"] for m in msgs)
 
-        # Locked sampling parameters per specification
+        # Locked sampling parameters per Option 1 specification
         opts = {
             "temperature": 1.0,
             "top_p": 0.95,
             "top_k": 64,
-            "num_ctx": 32768,
-            "num_predict": 1152 if think else 256,
+            "num_ctx": 16384,
+            "num_predict": 1024 if think else 256,
         }
 
         res = caller(
@@ -587,7 +599,7 @@ def prove_declaration(
                 "accepted": False,
             })
             prev_candidate = raw_lean
-            prev_errors = first_n_error_lines(err_msg, 30)
+            prev_errors = first_n_error_lines(err_msg, 15)
             continue
 
         valid_splice, spliced_or_err, cand_proof = validate_and_splice_candidate(decl, raw_lean)
@@ -628,7 +640,7 @@ def prove_declaration(
                 "accepted": False,
             })
             prev_candidate = raw_lean
-            prev_errors = first_n_error_lines(err_msg, 30)
+            prev_errors = first_n_error_lines(err_msg, 15)
             continue
 
         # Check for forbidden tokens in the spliced declaration before running Lean
@@ -717,7 +729,7 @@ def prove_declaration(
             "think": think,
             "candidate_code": spliced_or_err.strip(),
             "proof_body": cand_proof.strip(),
-            "compiler_error": "" if accepted else first_n_error_lines(diagnostics, 30),
+            "compiler_error": "" if accepted else first_n_error_lines(diagnostics, 15),
             "error_class": err_class,
             "latency_ms": round(latency_ms, 2),
             "lean_ms": round(lean_ms, 2),
@@ -745,7 +757,7 @@ def prove_declaration(
             }
 
         prev_candidate = spliced_or_err.strip()
-        prev_errors = first_n_error_lines(diagnostics, 30)
+        prev_errors = first_n_error_lines(diagnostics, 15)
 
     # All attempts exhausted -> write escalation JSON for frontier model
     escalation_file = escalations_dir / f"{safe_name}.json"

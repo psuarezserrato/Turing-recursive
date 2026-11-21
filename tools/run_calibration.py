@@ -691,8 +691,11 @@ def verify_all_gold_proofs(repo_root: Path) -> int:
 def run_benchmark(
     repo_root: Path,
     max_attempts: int = 5,
+    milestone: str = "W0-opt1",
     filter_tier: Optional[str] = None,
     filter_id: Optional[str] = None,
+    limit: Optional[int] = None,
+    resume: bool = False,
     output_json: Optional[Path] = None,
 ) -> Dict[str, Any]:
     """Run the compiler-in-the-loop calibration benchmark on the 40 stratified Mathlib lemmas."""
@@ -700,13 +703,27 @@ def run_benchmark(
     specs_dir = repo_root / ".agents" / "gemma_scratch" / "calibration_specs"
     specs_dir.mkdir(parents=True, exist_ok=True)
 
+    results: List[Dict[str, Any]] = []
+    prior_wall = 0.0
+    completed_ids = set()
+    if resume and output_json and output_json.is_file():
+        try:
+            prev_data = json.loads(output_json.read_text(encoding="utf-8"))
+            results = prev_data.get("results", [])
+            prior_wall = float(prev_data.get("total_wall_seconds") or sum(r.get("wall_seconds", 0.0) for r in results))
+            completed_ids = {r["id"] for r in results if r.get("id")}
+        except Exception:
+            results = []
+
     items = [
         it for it in CALIBRATION_BENCHMARK
         if (not filter_tier or it["tier"] == filter_tier)
         and (not filter_id or it["id"] == filter_id)
+        and (it["id"] not in completed_ids)
     ]
+    if limit is not None and limit > 0:
+        items = items[:limit]
 
-    results: List[Dict[str, Any]] = []
     t_start = time.time()
 
     for idx_num, item in enumerate(items, 1):
@@ -723,7 +740,7 @@ def run_benchmark(
             repo_root=repo_root,
             tier_override=item["tier"],
             max_attempts=max_attempts,
-            milestone="W0",
+            milestone=milestone,
             exclude=item["exclude"],
             idx=idx,
         )
@@ -749,16 +766,20 @@ def run_benchmark(
         results.append(rec)
         status_str = f"PASS@{acc_attempt}" if accepted else f"FAIL({len(attempts)})"
         print(
-            f"[{idx_num:02d}/{len(items):02d}] {item['id']} ({item['tier']}) "
+            f"[{len(results):02d}/40] {item['id']} ({item['tier']}) "
             f"{item['mathlib_name']:<35} -> {status_str:<8} ({wall_s:.1f}s, {total_tok} tok)",
             flush=True,
         )
 
         if output_json:
             output_json.parent.mkdir(parents=True, exist_ok=True)
-            output_json.write_text(json.dumps({"results": results}, indent=2) + "\n", encoding="utf-8")
+            cur_wall = prior_wall + (time.time() - t_start)
+            output_json.write_text(
+                json.dumps({"total_wall_seconds": round(cur_wall, 2), "results": results}, indent=2) + "\n",
+                encoding="utf-8",
+            )
 
-    total_wall = time.time() - t_start
+    total_wall = prior_wall + (time.time() - t_start)
     payload = {"total_wall_seconds": round(total_wall, 2), "results": results}
     if output_json:
         output_json.parent.mkdir(parents=True, exist_ok=True)
@@ -771,8 +792,11 @@ def main() -> int:
     parser.add_argument("--root", default=None, help="Override repository root")
     parser.add_argument("--verify-gold", action="store_true", help="Verify all 40 gold Mathlib proofs compile")
     parser.add_argument("--max-attempts", type=int, default=5, help="Max attempts per lemma (default 5)")
+    parser.add_argument("--milestone", default="W0-opt1", help="Ledger milestone label (default W0-opt1)")
     parser.add_argument("--tier", choices=["T0", "T1", "T2"], default=None, help="Filter by tier")
     parser.add_argument("--id", default=None, help="Filter by single benchmark item ID (e.g. T0_01)")
+    parser.add_argument("--limit", type=int, default=None, help="Run at most N items in this invocation")
+    parser.add_argument("--resume", action="store_true", help="Resume from existing output JSON")
     parser.add_argument(
         "--output",
         default=".agents/gemma_scratch/calibration_results.json",
@@ -790,8 +814,11 @@ def main() -> int:
     run_benchmark(
         repo_root=root,
         max_attempts=args.max_attempts,
+        milestone=args.milestone,
         filter_tier=args.tier,
         filter_id=args.id,
+        limit=args.limit,
+        resume=args.resume,
         output_json=out_path,
     )
     return 0

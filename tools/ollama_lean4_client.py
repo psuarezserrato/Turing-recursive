@@ -38,35 +38,35 @@ DEFAULT_PROFILES: Dict[str, Dict[str, Any]] = {
         "top_p": 0.95,
         "top_k": 64,
         "num_predict": 1024,
-        "num_ctx": 32768,
+        "num_ctx": 16384,
     },
     "autoformalize": {
         "temperature": 1.0,
         "top_p": 0.95,
         "top_k": 64,
         "num_predict": 768,
-        "num_ctx": 32768,
+        "num_ctx": 16384,
     },
     "tactic": {
         "temperature": 1.0,
         "top_p": 0.95,
         "top_k": 64,
         "num_predict": 256,
-        "num_ctx": 32768,
+        "num_ctx": 16384,
     },
     "premise": {
         "temperature": 1.0,
         "top_p": 0.95,
         "top_k": 64,
         "num_predict": 384,
-        "num_ctx": 32768,
+        "num_ctx": 16384,
     },
     "skeleton": {
         "temperature": 1.0,
         "top_p": 0.95,
         "top_k": 64,
         "num_predict": 1536,
-        "num_ctx": 32768,
+        "num_ctx": 16384,
     },
 }
 
@@ -182,7 +182,7 @@ def ensure_ollama_daemon(
     try:
         daemon_env = os.environ.copy()
         daemon_env["OLLAMA_NUM_PARALLEL"] = "1"
-        daemon_env["OLLAMA_CONTEXT_LENGTH"] = "32768"
+        daemon_env["OLLAMA_CONTEXT_LENGTH"] = "16384"
         proc = subprocess.Popen(
             [ollama_bin, "serve"],
             env=daemon_env,
@@ -346,7 +346,7 @@ def query_ollama_chat(
     profiles = ACTIVE_CONFIG.get("parameter_profiles", DEFAULT_PROFILES)
     opts = dict(profiles.get(task_type, DEFAULT_PROFILES.get("prove", DEFAULT_PROFILES["autoformalize"])))
     if think:
-        opts["num_predict"] = max(int(opts.get("num_predict", 1024)), 2048)
+        opts["num_predict"] = 1024
     if options_override:
         opts.update(options_override)
 

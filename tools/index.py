@@ -310,6 +310,9 @@ def extract_declarations_from_file(
         short_name = raw_name.rsplit(".", 1)[-1]
 
         compact_sig = re.sub(r"\s+", " ", raw_sig).strip()
+        if kind in ("def", "abbrev") and raw_proof and len(raw_proof) <= 240:
+            compact_rhs = re.sub(r"\s+", " ", raw_proof).strip()
+            compact_sig = f"{compact_sig} := {compact_rhs}"
         compact_type = re.sub(
             r"^(?:@\[[^\]]*\]\s*)*(?:(?:private|protected|noncomputable|scoped|local)\s+)*"
             r"(?:theorem|lemma|def|abbrev|instance|structure|class|inductive)\s+[A-Za-z0-9_'\.]+\s*",

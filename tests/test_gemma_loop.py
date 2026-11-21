@@ -49,6 +49,11 @@ class TestGemmaLoop(unittest.TestCase):
         self.assertFalse(ok3)
         self.assertIn("modified", reason)
 
+        # 4. Prompt size cap MAX_PROMPT_CHARS = 8000 is enforced
+        huge_ctx = " -- " + ("x" * 12000)
+        msgs = gemma_loop.build_prover_messages(d, huge_ctx, [], [], attempt=1)
+        self.assertLessEqual(len(msgs[1]["content"]), gemma_loop.MAX_PROMPT_CHARS)
+
     def test_prove_spec_file_accept_and_escalate(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
