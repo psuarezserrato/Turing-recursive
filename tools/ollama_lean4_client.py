@@ -33,33 +33,40 @@ DEFAULT_CASCADE = [
 ]
 
 DEFAULT_PROFILES: Dict[str, Dict[str, Any]] = {
+    "prove": {
+        "temperature": 1.0,
+        "top_p": 0.95,
+        "top_k": 64,
+        "num_predict": 384,
+        "num_ctx": 4096,
+    },
     "autoformalize": {
         "temperature": 1.0,
         "top_p": 0.95,
         "top_k": 64,
         "num_predict": 768,
-        "num_ctx": 32768,
+        "num_ctx": 4096,
     },
     "tactic": {
         "temperature": 1.0,
         "top_p": 0.95,
         "top_k": 64,
         "num_predict": 256,
-        "num_ctx": 32768,
+        "num_ctx": 4096,
     },
     "premise": {
         "temperature": 1.0,
         "top_p": 0.95,
         "top_k": 64,
         "num_predict": 384,
-        "num_ctx": 32768,
+        "num_ctx": 4096,
     },
     "skeleton": {
         "temperature": 1.0,
         "top_p": 0.95,
         "top_k": 64,
-        "num_predict": 1536,
-        "num_ctx": 32768,
+        "num_predict": 1024,
+        "num_ctx": 4096,
     },
 }
 
@@ -92,7 +99,7 @@ def load_config(config_path: Optional[str] = None) -> Dict[str, Any]:
             "default_host": DEFAULT_OLLAMA_HOST,
             "connect_timeout_seconds": 3.0,
             "request_timeout_seconds": 120.0,
-            "keep_alive": "30m",
+            "keep_alive": 0,
         },
         "primary_model": PRIMARY_MODEL,
         "model_fallback_cascade": DEFAULT_CASCADE,
@@ -175,7 +182,7 @@ def ensure_ollama_daemon(
     try:
         daemon_env = os.environ.copy()
         daemon_env["OLLAMA_NUM_PARALLEL"] = "1"
-        daemon_env["OLLAMA_CONTEXT_LENGTH"] = "32768"
+        daemon_env["OLLAMA_CONTEXT_LENGTH"] = "4096"
         proc = subprocess.Popen(
             [ollama_bin, "serve"],
             env=daemon_env,
@@ -193,6 +200,18 @@ def ensure_ollama_daemon(
         if is_ollama_running(base_url, timeout=1.5):
             return True, f"Started headless ollama serve (PID {proc.pid}) at {base_url}", proc.pid
     return False, f"Spawned ollama serve (PID {proc.pid}) but timed out after {timeout}s", proc.pid
+
+
+def unload_model(model: str = PRIMARY_MODEL, timeout: float = 5.0) -> bool:
+    """Explicitly stop/unload an Ollama model from unified RAM via `ollama stop <model>`."""
+    ollama_bin = find_ollama_binary()
+    if not ollama_bin:
+        return False
+    try:
+        proc = subprocess.run([ollama_bin, "stop", model], capture_output=True, timeout=timeout)
+        return proc.returncode == 0
+    except Exception:
+        return False
 
 
 def list_installed_models(base_url: str = DEFAULT_OLLAMA_HOST, timeout: float = 3.0) -> Tuple[bool, List[Dict[str, Any]], str]:
@@ -286,25 +305,36 @@ def log_gemma_usage(
     eval_count: Optional[int] = None,
     declaration: Optional[str] = None,
     error: Optional[str] = None,
+    milestone: str = "",
+    tier: str = "unclassified",
+    attempt: int = 1,
+    accepted: Optional[bool] = None,
+    error_class: Optional[str] = None,
+    lean_ms: float = 0.0,
 ) -> None:
-    """Append a structured record to <main_repo>/.agents/gemma_usage.jsonl."""
+    """Append a structured record to <main_repo>/.agents/gemma_usage.jsonl via tools/ledger.py."""
     try:
-        log_dir = resolve_main_repo() / ".agents"
-        log_dir.mkdir(parents=True, exist_ok=True)
-        record = {
-            "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-            "cwd": os.getcwd(),
-            "model": model,
-            "task_type": task_type,
-            "declaration": declaration or "",
-            "prompt_sha256_16": hashlib.sha256(prompt_text.encode("utf-8")).hexdigest()[:16],
-            "latency_ms": round(elapsed_ms, 2),
-            "eval_count": eval_count,
-            "status": status,
-            "error": error,
-        }
-        with open(log_dir / "gemma_usage.jsonl", "a", encoding="utf-8") as f:
-            f.write(json.dumps(record) + "\n")
+        tools_dir = str(Path(__file__).resolve().parent)
+        if tools_dir not in sys.path:
+            sys.path.insert(0, tools_dir)
+        import ledger
+        ledger.append_usage_record(
+            declaration=declaration or "",
+            milestone=milestone,
+            tier=tier,
+            attempt=attempt,
+            accepted=accepted,
+            error_class=error_class,
+            compiler_output=error or "",
+            tokens=eval_count,
+            latency_ms=elapsed_ms,
+            lean_ms=lean_ms,
+            model=model,
+            task_type=task_type,
+            prompt_text=prompt_text,
+            status=status,
+            error=error,
+        )
     except Exception:
         pass
 
@@ -319,12 +349,18 @@ def query_ollama_chat(
     dry_run: bool = False,
     declaration: Optional[str] = None,
     record_usage: bool = True,
+    milestone: str = "",
+    tier: str = "unclassified",
+    attempt: int = 1,
+    options_override: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """Send a headless chat completion request to Ollama /api/chat."""
     profiles = ACTIVE_CONFIG.get("parameter_profiles", DEFAULT_PROFILES)
-    opts = dict(profiles.get(task_type, DEFAULT_PROFILES["autoformalize"]))
+    opts = dict(profiles.get(task_type, DEFAULT_PROFILES.get("prove", DEFAULT_PROFILES["autoformalize"])))
     if think:
-        opts["num_predict"] = max(int(opts.get("num_predict", 1024)), 2048)
+        opts["num_predict"] = 1024
+    if options_override:
+        opts.update(options_override)
 
     prompt_repr = "\n".join(m["content"] for m in messages)
 
@@ -337,13 +373,25 @@ def query_ollama_chat(
             "```"
         )
         if record_usage:
-            log_gemma_usage(chosen, task_type, prompt_repr, 1.0, "mock", eval_count=8, declaration=declaration)
+            log_gemma_usage(
+                chosen,
+                task_type,
+                prompt_repr,
+                1.0,
+                "mock",
+                eval_count=8,
+                declaration=declaration,
+                milestone=milestone,
+                tier=tier,
+                attempt=attempt,
+            )
         return {
             "status": "mock",
             "model": chosen,
             "task_type": task_type,
             "think": think,
             "elapsed_ms": 1.0,
+            "eval_count": 8,
             "raw_response": mock_raw,
             "thinking": "",
             "lean_code": extract_lean_code(mock_raw),
@@ -358,7 +406,8 @@ def query_ollama_chat(
     if not chosen:
         return {"status": "error", "error": reason}
 
-    keep_alive = ACTIVE_CONFIG.get("service", {}).get("keep_alive", "30m")
+    svc_cfg = ACTIVE_CONFIG.get("service", {})
+    keep_alive = svc_cfg["keep_alive"] if "keep_alive" in svc_cfg else 0
     payload = {
         "model": chosen,
         "think": bool(think),
@@ -373,16 +422,42 @@ def query_ollama_chat(
     elapsed_ms = (time.time() - t0) * 1000.0
     if not ok:
         if record_usage:
-            log_gemma_usage(chosen, task_type, prompt_repr, elapsed_ms, "error", declaration=declaration, error=err)
-        return {"status": "error", "model": chosen, "error": err}
+            log_gemma_usage(
+                chosen,
+                task_type,
+                prompt_repr,
+                elapsed_ms,
+                "error",
+                declaration=declaration,
+                error=err,
+                milestone=milestone,
+                tier=tier,
+                attempt=attempt,
+            )
+        return {"status": "error", "model": chosen, "elapsed_ms": round(elapsed_ms, 2), "error": err}
 
     msg_obj = resp.get("message", {})
     raw_content = msg_obj.get("content", "") or ""
     thinking_text = msg_obj.get("thinking", "") or ""
     eval_count = resp.get("eval_count")
 
+    lean_code = extract_lean_code(raw_content)
+    if not lean_code and "```" in thinking_text:
+        lean_code = extract_lean_code(thinking_text)
+
     if record_usage:
-        log_gemma_usage(chosen, task_type, prompt_repr, elapsed_ms, "success", eval_count=eval_count, declaration=declaration)
+        log_gemma_usage(
+            chosen,
+            task_type,
+            prompt_repr,
+            elapsed_ms,
+            "success",
+            eval_count=eval_count,
+            declaration=declaration,
+            milestone=milestone,
+            tier=tier,
+            attempt=attempt,
+        )
 
     return {
         "status": "success",
@@ -394,7 +469,7 @@ def query_ollama_chat(
         "eval_count": eval_count,
         "raw_response": raw_content,
         "thinking": thinking_text,
-        "lean_code": extract_lean_code(raw_content),
+        "lean_code": lean_code,
     }
 
 
@@ -474,34 +549,16 @@ def cmd_run_task(args: argparse.Namespace, task_type: str) -> int:
 
 
 def cmd_ledger_summary(args: argparse.Namespace) -> int:
-    """Print summary statistics of local Gemma calls from .agents/gemma_usage.jsonl."""
-    log_path = resolve_main_repo() / ".agents" / "gemma_usage.jsonl"
-    if not log_path.is_file():
-        print("No usage records yet (.agents/gemma_usage.jsonl).")
-        return 0
-    rows = []
-    with open(log_path, "r", encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
-            if line:
-                try:
-                    rows.append(json.loads(line))
-                except Exception:
-                    pass
-    by_model: Dict[str, int] = {}
-    by_task: Dict[str, int] = {}
-    for r in rows:
-        by_model[r.get("model", "unknown")] = by_model.get(r.get("model", "unknown"), 0) + 1
-        by_task[r.get("task_type", "unknown")] = by_task.get(r.get("task_type", "unknown"), 0) + 1
-    summary = {"total_calls": len(rows), "by_model": by_model, "by_task": by_task}
+    """Print summary statistics of local Gemma calls from .agents/gemma_usage.jsonl via tools/ledger.py."""
+    tools_dir = str(Path(__file__).resolve().parent)
+    if tools_dir not in sys.path:
+        sys.path.insert(0, tools_dir)
+    import ledger
+    summary = ledger.summarize_ledger()
     if args.json:
         print(json.dumps(summary, indent=2))
     else:
-        print(f"Total local Ollama calls: {len(rows)}")
-        for m, c in sorted(by_model.items()):
-            print(f"  model {m}: {c}")
-        for t, c in sorted(by_task.items()):
-            print(f"  task {t}: {c}")
+        print(ledger.format_summary_text(summary))
     return 0
 
 

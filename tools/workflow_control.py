@@ -27,21 +27,14 @@ CHECKPOINTS_REL = ".agents/checkpoints"
 USAGE_LOG_REL = ".agents/gemma_usage.jsonl"
 
 CONTRACT_FILES: Dict[str, str] = {
-    "M0": "S4TuringPoisson/Interfaces.lean",
-    "M1.1": "S4TuringPoisson/Poisson/BivectorAndModular.lean",
-    "M1.2": "S4TuringPoisson/Poisson/JacobianPoisson.lean",
-    "M1.3": "S4TuringPoisson/Poisson/SingularCircleNormalForm.lean",
-    "M2.1": "S4TuringPoisson/Fibration/LocalSingularModels.lean",
-    "M2.2": "S4TuringPoisson/Fibration/S4Fibration.lean",
-    "M2.3": "S4TuringPoisson/Fibration/WrinkledGeneral4Manifold.lean",
-    "M3.1": "S4TuringPoisson/Dynamics/GeneralizedShift.lean",
-    "M3.2": "S4TuringPoisson/Dynamics/UndecidabilityAndTransfer.lean",
-    "M3.3": "S4TuringPoisson/Smoothing/DiskSmoothing.lean",
-    "M4.1": "S4TuringPoisson/Extension/AlignedUnimodularVolume.lean",
-    "M4.2": "S4TuringPoisson/Extension/BumpIsotopyLift.lean",
-    "M5": "S4TuringPoisson/Main.lean",
-    "C.Geom": "S4TuringPoisson/Checks/GeomChecks.lean",
-    "C.Comp": "S4TuringPoisson/Checks/CompChecks.lean",
+    "S1": "TuringRecursive/Spec.lean",
+    "M1": "TuringRecursive/Eval.lean",
+    "M2": "TuringRecursive/Encoding.lean",
+    "M3": "TuringRecursive/TM0Eval.lean",
+    "M4": "TuringRecursive/Uniform.lean",
+    "M5": "TuringRecursive/Equivalence.lean",
+    "M6": "TuringRecursive/Universal.lean",
+    "M7": "TuringRecursive/Stretch.lean",
 }
 
 SORRY_RE = re.compile(r"\b(sorry|admit)\b")
@@ -263,8 +256,8 @@ def run_self_tests() -> int:
     """Run isolated unit tests in a TemporaryDirectory without modifying live state."""
     with tempfile.TemporaryDirectory() as td:
         root = Path(td)
-        (root / "S4TuringPoisson").mkdir()
-        (root / "S4TuringPoisson" / "Interfaces.lean").write_text("theorem ok : True := trivial\n", encoding="utf-8")
+        (root / "TuringRecursive").mkdir()
+        (root / "TuringRecursive" / "Eval.lean").write_text("theorem ok : True := trivial\n", encoding="utf-8")
         ctl = WorkflowController(root)
         assert not ctl.is_paused()
         st0 = ctl.get_status()
