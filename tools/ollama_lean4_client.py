@@ -37,36 +37,36 @@ DEFAULT_PROFILES: Dict[str, Dict[str, Any]] = {
         "temperature": 1.0,
         "top_p": 0.95,
         "top_k": 64,
-        "num_predict": 1024,
-        "num_ctx": 16384,
+        "num_predict": 384,
+        "num_ctx": 8192,
     },
     "autoformalize": {
         "temperature": 1.0,
         "top_p": 0.95,
         "top_k": 64,
         "num_predict": 768,
-        "num_ctx": 16384,
+        "num_ctx": 8192,
     },
     "tactic": {
         "temperature": 1.0,
         "top_p": 0.95,
         "top_k": 64,
         "num_predict": 256,
-        "num_ctx": 16384,
+        "num_ctx": 8192,
     },
     "premise": {
         "temperature": 1.0,
         "top_p": 0.95,
         "top_k": 64,
         "num_predict": 384,
-        "num_ctx": 16384,
+        "num_ctx": 8192,
     },
     "skeleton": {
         "temperature": 1.0,
         "top_p": 0.95,
         "top_k": 64,
-        "num_predict": 1536,
-        "num_ctx": 16384,
+        "num_predict": 1024,
+        "num_ctx": 8192,
     },
 }
 
@@ -182,7 +182,7 @@ def ensure_ollama_daemon(
     try:
         daemon_env = os.environ.copy()
         daemon_env["OLLAMA_NUM_PARALLEL"] = "1"
-        daemon_env["OLLAMA_CONTEXT_LENGTH"] = "16384"
+        daemon_env["OLLAMA_CONTEXT_LENGTH"] = "8192"
         proc = subprocess.Popen(
             [ollama_bin, "serve"],
             env=daemon_env,

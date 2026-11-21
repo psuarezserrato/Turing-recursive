@@ -524,7 +524,7 @@ def prove_declaration(
                 "attempts": attempts_history,
             }
 
-        think = attempt >= 4
+        think = False
         msgs = build_prover_messages(
             decl=decl,
             module_context=module_ctx,
@@ -537,13 +537,13 @@ def prove_declaration(
         )
         prompt_text = "\n".join(m["content"] for m in msgs)
 
-        # Locked sampling parameters per Option 1 specification
+        # Locked sampling parameters per Option 1b specification
         opts = {
             "temperature": 1.0,
             "top_p": 0.95,
             "top_k": 64,
-            "num_ctx": 16384,
-            "num_predict": 1024 if think else 256,
+            "num_ctx": 8192,
+            "num_predict": 512 if attempt >= 4 else 384,
         }
 
         res = caller(

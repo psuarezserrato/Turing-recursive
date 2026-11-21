@@ -353,7 +353,8 @@ def main() -> int:
     parser.add_argument("--json", action="store_true", help="Emit JSON output")
     sub = parser.add_subparsers(dest="command")
 
-    sub.add_parser("summary", help="Report acceptance per tier, per milestone, and counts by origin")
+    p_sum = sub.add_parser("summary", help="Report acceptance per tier, per milestone, and counts by origin")
+    p_sum.add_argument("--json", action="store_true", dest="sub_json", help="Emit JSON output")
 
     p_rec = sub.add_parser("record", help="Append a verified outcome record to the ledger")
     p_rec.add_argument("--declaration", required=True)
@@ -402,7 +403,7 @@ def main() -> int:
         ledger_path=ledger_path,
         repo_root=Path(args.root) if args.root else None,
     )
-    if args.json:
+    if args.json or getattr(args, "sub_json", False):
         print(json.dumps(summary, indent=2))
     else:
         print(format_summary_text(summary))

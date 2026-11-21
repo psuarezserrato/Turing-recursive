@@ -54,6 +54,20 @@ class TestGemmaLoop(unittest.TestCase):
         msgs = gemma_loop.build_prover_messages(d, huge_ctx, [], [], attempt=1)
         self.assertLessEqual(len(msgs[1]["content"]), gemma_loop.MAX_PROMPT_CHARS)
 
+        # 5. Indentation-only differences on multiline statements are accepted and spliced with exact spec bytes
+        spec_multi = (
+            "theorem multi_thm (n : Nat) :\n"
+            "    n + 0 = n := by\n"
+            "  sorry\n"
+        )
+        d_multi = gemma_loop.parse_spec_declarations(spec_multi)[0]
+        ok_indent, spliced_indent, _ = gemma_loop.validate_and_splice_candidate(
+            d_multi,
+            "theorem multi_thm (n : Nat) :\n        n + 0 = n := by\n  rfl",
+        )
+        self.assertTrue(ok_indent)
+        self.assertTrue(spliced_indent.startswith("theorem multi_thm (n : Nat) :\n    n + 0 = n :="))
+
     def test_prove_spec_file_accept_and_escalate(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
@@ -130,9 +144,9 @@ class TestGemmaLoop(unittest.TestCase):
             self.assertEqual(res["accepted_count"], 1)
             self.assertEqual(res["escalated_count"], 1)
 
-            # Verify think=False for attempts 1..3 and think=True for attempts 4..5 on hard_thm
+            # Verify think=False on all 5 attempts under Option 1b
             hard_thinks = [th for (d, _a, th) in think_history if d == "hard_thm"]
-            self.assertEqual(hard_thinks, [False, False, False, True, True])
+            self.assertEqual(hard_thinks, [False, False, False, False, False])
 
             # Verify artifacts exist
             self.assertTrue((root / ".agents" / "gemma_accepted" / "easy_thm.lean").is_file())
