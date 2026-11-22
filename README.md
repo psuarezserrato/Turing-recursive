@@ -1,6 +1,6 @@
 # Turing-recursive (`TuringRecursive`)
 
-Lean 4 / Mathlib-PR-quality formalization proving the missing **TM → Partrec** direction (and its uniform and universal corollaries) alongside Mathlib's `Partrec → TM` pipeline.
+A Lean 4 formalization proving that every Turing machine (`TM0`) computes a partial recursive function (`Partrec`), completing the Church–Turing equivalence alongside Mathlib's `Partrec → TM` direction. It also establishes uniform machine encodings, the undecidability of the halting problem, and an explicit universal Turing machine.
 
 - **Lean toolchain**: `v4.36.0` (`autoImplicit = false`, `relaxedAutoImplicit = false`)
 - **Mathlib pin**: `fc4f59e577feb1a4956671bc04ac18aaaf8cd842`
