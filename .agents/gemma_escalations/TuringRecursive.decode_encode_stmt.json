@@ -1,0 +1,78 @@
+{
+  "declaration": "TuringRecursive.decode_encode_stmt",
+  "raw_name": "decode_encode_stmt",
+  "spec_file": "TuringRecursive/Encoding.lean",
+  "milestone": "M2",
+  "tier": "T0",
+  "statement": "theorem decode_encode_stmt {\u0393 : Type*} [Primcodable \u0393] (s : TM0.Stmt \u0393) :\n    Encodable.decode (Encodable.encode s) = some s",
+  "max_attempts": 5,
+  "escalated_at": "2026-11-21T22:53:22Z",
+  "retrieved_premises": [
+    "TuringRecursive.instPrimcodableStmt",
+    "Primcodable",
+    "TuringRecursive.stmtEquivSum",
+    "Encodable.decode\u2082_encode"
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "think": false,
+      "candidate_code": "theorem decode_encode_stmt {\u0393 : Type*} [Primcodable \u0393] (s : TM0.Stmt \u0393) :\n    Encodable.decode (Encodable.encode s) = some s :=\n  by\n  _iff (TuringRecursive.stmtEquivSum \u0393).codiff s\n  rw [TuringRecursive.stmtEquivSum]\n  \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive",
+      "proof_body": "by\n  _iff (TuringRecursive.stmtEquivSum \u0393).codiff s\n  rw [TuringRecursive.stmtEquivSum]\n  \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive.stmtEquivSum]\n    \u00b7 rw [TuringRecursive",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive.decode_encode_stmt_1.lean:188:3: error: unknown tactic\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive.decode_encode_stmt_1.lean:187:2: error: unsolved goals\n\u0393 : Type u_1\ninst\u271d : Primcodable \u0393\ns : TM0.Stmt \u0393\n\u22a2 Encodable.decode (Encodable.encode s) = some s",
+      "error_class": "unsolved goals",
+      "latency_ms": 64581.76,
+      "lean_ms": 6001.16,
+      "tokens": 384,
+      "accepted": false
+    },
+    {
+      "attempt": 2,
+      "think": false,
+      "candidate_code": "theorem decode_encode_stmt {\u0393 : Type*} [Primcodable \u0393] (s : TM0.Stmt \u0393) :\n    Encodable.decode (Encodable.encode s) = some s :=\n  by\n  -- Since Primcodable \u0393 implies Encodable (TM0.Stmt \u0393), \n  -- and the instance is defined via stmtEquivSum:\n  -- Encodable.decode (Encodable.encode s) = some s\n  -- is satisfied by the property of Encodable instances.\n  rw [Encodable.decode_\u2082_encode]",
+      "proof_body": "by\n  -- Since Primcodable \u0393 implies Encodable (TM0.Stmt \u0393), \n  -- and the instance is defined via stmtEquivSum:\n  -- Encodable.decode (Encodable.encode s) = some s\n  -- is satisfied by the property of Encodable instances.\n  rw [Encodable.decode_\u2082_encode]",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive.decode_encode_stmt_2.lean:192:6: error(lean.unknownIdentifier): Unknown constant `Encodable.decode_\u2082_encode`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive.decode_encode_stmt_2.lean:187:2: error: unsolved goals\n\u0393 : Type u_1\ninst\u271d : Primcodable \u0393\ns : TM0.Stmt \u0393\n\u22a2 Encodable.decode (Encodable.encode s) = some s",
+      "error_class": "unknown identifier",
+      "latency_ms": 33274.33,
+      "lean_ms": 5943.01,
+      "tokens": 134,
+      "accepted": false
+    },
+    {
+      "attempt": 3,
+      "think": false,
+      "candidate_code": "theorem decode_encode_stmt {\u0393 : Type*} [Primcodable \u0393] (s : TM0.Stmt \u0393) :\n    Encodable.decode (Encodable.encode s) = some s :=\n  by\n  -- The instance `Primcodable` on `TM0.Stmt \u0393` is provided via `stmtEquivSum`.\n  -- The `Encodable` instance on `TM0.Stmt \u0393` satisfies `decode_\u2082_encode`.\n  -- We use the theorem `decode_\u2082_encode` from Mathlib.\n  have h : Encodable.decode (Encodable.encode s) = some s := \n    Encodable.decode_\u2082_encode s\n  exact h",
+      "proof_body": "by\n  -- The instance `Primcodable` on `TM0.Stmt \u0393` is provided via `stmtEquivSum`.\n  -- The `Encodable` instance on `TM0.Stmt \u0393` satisfies `decode_\u2082_encode`.\n  -- We use the theorem `decode_\u2082_encode` from Mathlib.\n  have h : Encodable.decode (Encodable.encode s) = some s := \n    Encodable.decode_\u2082_encode s\n  exact h",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive.decode_encode_stmt_3.lean:192:4: error(lean.unknownIdentifier): Unknown constant `Encodable.decode_\u2082_encode`",
+      "error_class": "unknown identifier",
+      "latency_ms": 34491.76,
+      "lean_ms": 5760.99,
+      "tokens": 163,
+      "accepted": false
+    },
+    {
+      "attempt": 4,
+      "think": false,
+      "candidate_code": "theorem decode_encode_stmt {\u0393 : Type*} [Primcodable \u0393] (s : TM0.Stmt \u0393) :\n    Encodable.decode (Encodable.encode s) = some s :=\n  by\n  -- The Primcodable instance for TM0.Stmt \u0393 is provided by stmtEquivSum.\n  -- Since Primcodable \u0393 implies Encodable (TM0.Stmt \u0393), we can use the \n  -- standard property of Encodable instances.\n  rw [Encodable.decode\u2082_encode]",
+      "proof_body": "by\n  -- The Primcodable instance for TM0.Stmt \u0393 is provided by stmtEquivSum.\n  -- Since Primcodable \u0393 implies Encodable (TM0.Stmt \u0393), we can use the \n  -- standard property of Encodable instances.\n  rw [Encodable.decode\u2082_encode]",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive.decode_encode_stmt_4.lean:191:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern\n  Encodable.decode\u2082 ?m.8 (Encodable.encode ?a)\nin the target expression\n  Encodable.decode (Encodable.encode s) = some s\n\u0393 : Type u_1\ninst\u271d : Primcodable \u0393\ns : TM0.Stmt \u0393\n\u22a2 Encodable.decode (Encodable.encode s) = some s",
+      "error_class": "other",
+      "latency_ms": 30921.05,
+      "lean_ms": 5749.88,
+      "tokens": 127,
+      "accepted": false
+    },
+    {
+      "attempt": 5,
+      "think": false,
+      "candidate_code": "theorem decode_encode_stmt {\u0393 : Type*} [Primcodable \u0393] (s : TM0.Stmt \u0393) :\n    Encodable.decode (Encodable.encode s) = some s :=\n  by\n  -- The instance for `Encodable (TM0.Stmt \u0393)` is provided by `stmtEquivSum`.\n  -- According to the definition of `Encodable`, the `decode` of the `encode` of an element\n  -- must return `some` of that element.\n  -- We use the standard theorem `Encodable.decode\u2082_encode`.\n  apply Encodable.decode\u2082_encode",
+      "proof_body": "by\n  -- The instance for `Encodable (TM0.Stmt \u0393)` is provided by `stmtEquivSum`.\n  -- According to the definition of `Encodable`, the `decode` of the `encode` of an element\n  -- must return `some` of that element.\n  -- We use the standard theorem `Encodable.decode\u2082_encode`.\n  apply Encodable.decode\u2082_encode",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive.decode_encode_stmt_5.lean:192:2: error: Tactic `apply` failed: could not unify the conclusion of `@Encodable.decode\u2082_encode`\n  Encodable.decode\u2082 ?\u03b1 (Encodable.encode ?a) = some ?a\nwith the goal\n  Encodable.decode (Encodable.encode s) = some s\nNote: The full type of `@Encodable.decode\u2082_encode` is\n  \u2200 {\u03b1 : Type ?u.11} [inst : Encodable \u03b1] (a : \u03b1), Encodable.decode\u2082 \u03b1 (Encodable.encode a) = some a\nNote: The following definitions were not unfolded because their definition is not exposed:\n  Nat.land \u21a6 4\n\u0393 : Type u_1\ninst\u271d : Primcodable \u0393\ns : TM0.Stmt \u0393\n\u22a2 Encodable.decode (Encodable.encode s) = some s",
+      "error_class": "other",
+      "latency_ms": 34540.61,
+      "lean_ms": 5928.53,
+      "tokens": 145,
+      "accepted": false
+    }
+  ]
+}

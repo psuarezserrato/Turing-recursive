@@ -1,0 +1,78 @@
+{
+  "declaration": "TuringRecursive.TM0Code.eval_compile_nat",
+  "raw_name": "TM0Code.eval_compile_nat",
+  "spec_file": "TuringRecursive/Universal.lean",
+  "milestone": "M6",
+  "tier": "T0",
+  "statement": "theorem TM0Code.eval_compile_nat (m : TM0Code) (n : \u2115) :\n    (TM0Code.compile m).eval n =\n      (Part.ofOption (Encodable.decode (\u03b1 := TM0.Cfg \u2115 \u2115) n)).bind fun c \u21a6\n        (StateTransition.eval (TM0.step m.machine) c).map Encodable.encode",
+  "max_attempts": 5,
+  "escalated_at": "2026-11-22T01:34:26Z",
+  "retrieved_premises": [
+    "TuringRecursive.TM0Code.exists_compiler",
+    "TuringRecursive.univEvalNat",
+    "TuringRecursive.TM0Code.eval_partrec",
+    "TuringRecursive.TM0Code.exists_relabeling"
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "think": false,
+      "candidate_code": "theorem TM0Code.eval_compile_nat (m : TM0Code) (n : \u2115) :\n    (TM0Code.compile m).eval n =\n      (Part.ofOption (Encodable.decode (\u03b1 := TM0.Cfg \u2115 \u2115) n)).bind fun c \u21a6\n        (StateTransition.eval (TM0.step m.machine) c).map Encodable.encode :=\n  by\n  let \u27e8compile, h_primrec, h_eval_nat, h_eval_cfg\u27e9 := TM0Code.exists_compiler\n  let compiled_m := compile m\n  rfl\n  exact h_eval_nat m n",
+      "proof_body": "by\n  let \u27e8compile, h_primrec, h_eval_nat, h_eval_cfg\u27e9 := TM0Code.exists_compiler\n  let compiled_m := compile m\n  rfl\n  exact h_eval_nat m n",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.TM0Code.eval_compile_nat_1.lean:89:2: error: Tactic `rfl` failed: The left-hand side\n  m.compile.eval n\nis not definitionally equal to the right-hand side\n  (\u2191(Encodable.decode n)).bind fun c => Part.map Encodable.encode (StateTransition.eval (TM0.step m.machine) c)\nm : TM0Code\nn : \u2115\ncompile : TM0Code \u2192 Nat.Partrec.Code\nh_primrec : Primrec compile\nh_eval_nat :\n  \u2200 (m : TM0Code) (n : \u2115),\n    (compile m).eval n =\n      (\u2191(Encodable.decode n)).bind fun c => Part.map Encodable.encode (StateTransition.eval (TM0.step m.machine) c)",
+      "error_class": "other",
+      "latency_ms": 33114.69,
+      "lean_ms": 5035.31,
+      "tokens": 156,
+      "accepted": false
+    },
+    {
+      "attempt": 2,
+      "think": false,
+      "candidate_code": "theorem TM0Code.eval_compile_nat (m : TM0Code) (n : \u2115) :\n    (TM0Code.compile m).eval n =\n      (Part.ofOption (Encodable.decode (\u03b1 := TM0.Cfg \u2115 \u2115) n)).bind fun c \u21a6\n        (StateTransition.eval (TM0.step m.machine) c).map Encodable.encode :=\n  by\n  let \u27e8compile, h_primrec, h_eval_nat, h_eval_cfg\u27e9 := TM0Code.exists_compiler\n  exact h_eval_nat m n",
+      "proof_body": "by\n  let \u27e8compile, h_primrec, h_eval_nat, h_eval_cfg\u27e9 := TM0Code.exists_compiler\n  exact h_eval_nat m n",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.TM0Code.eval_compile_nat_2.lean:88:2: error: Type mismatch\n  h_eval_nat m n\nhas type\n  (compile m).eval n =\n    (\u2191(Encodable.decode n)).bind fun c => Part.map Encodable.encode (StateTransition.eval (TM0.step m.machine) c)\nbut is expected to have type\n  m.compile.eval n =\n    (\u2191(Encodable.decode n)).bind fun c => Part.map Encodable.encode (StateTransition.eval (TM0.step m.machine) c)",
+      "error_class": "type mismatch",
+      "latency_ms": 33477.36,
+      "lean_ms": 5662.2,
+      "tokens": 143,
+      "accepted": false
+    },
+    {
+      "attempt": 3,
+      "think": false,
+      "candidate_code": "theorem TM0Code.eval_compile_nat (m : TM0Code) (n : \u2115) :\n    (TM0Code.compile m).eval n =\n      (Part.ofOption (Encodable.decode (\u03b1 := TM0.Cfg \u2115 \u2115) n)).bind fun c \u21a6\n        (StateTransition.eval (TM0.step m.machine) c).map Encodable.encode :=\n  by\n  let \u27e8compile, h_primrec, h_eval_nat, h_eval_cfg\u27e9 := TM0Code.exists_compiler\n  have h : (compile m).eval n =\n    (Part.ofOption (Encodable.decode (\u03b1 := TM0.Cfg \u2115 \u2115) n)).bind fun c \u21a6\n      (StateTransition.eval (TM0.step m.machine) c).map Encodecode.encode := h_eval_nat m n\n  -- The goal is (TM0Code.compile m).eval n, not (compile m).eval n\n  -- But wait, TM0Code.compile is a function from TM0Code to Nat.Partrec.Code.\n  -- The expression (TM0Code.compile m) is exactly the same as (compile m).\n  rfl\n  exact h",
+      "proof_body": "by\n  let \u27e8compile, h_primrec, h_eval_nat, h_eval_cfg\u27e9 := TM0Code.exists_compiler\n  have h : (compile m).eval n =\n    (Part.ofOption (Encodable.decode (\u03b1 := TM0.Cfg \u2115 \u2115) n)).bind fun c \u21a6\n      (StateTransition.eval (TM0.step m.machine) c).map Encodecode.encode := h_eval_nat m n\n  -- The goal is (TM0Code.compile m).eval n, not (compile m).eval n\n  -- But wait, TM0Code.compile is a function from TM0Code to Nat.Partrec.Code.\n  -- The expression (TM0Code.compile m) is exactly the same as (compile m).\n  rfl\n  exact h",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.TM0Code.eval_compile_nat_3.lean:90:56: error(lean.unknownIdentifier): Unknown identifier `Encodecode.encode`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.TM0Code.eval_compile_nat_3.lean:94:2: error: Tactic `rfl` failed: The left-hand side\n  m.compile.eval n\nis not definitionally equal to the right-hand side\n  (\u2191(Encodable.decode n)).bind fun c => Part.map Encodable.encode (StateTransition.eval (TM0.step m.machine) c)\nm : TM0Code\nn : \u2115\ncompile : TM0Code \u2192 Nat.Partrec.Code\nh_primrec : Primrec compile\nh_eval_nat :\n  \u2200 (m : TM0Code) (n : \u2115),\n    (compile m).eval n =",
+      "error_class": "unknown identifier",
+      "latency_ms": 41903.79,
+      "lean_ms": 6142.71,
+      "tokens": 289,
+      "accepted": false
+    },
+    {
+      "attempt": 4,
+      "think": false,
+      "candidate_code": "theorem TM0Code.eval_compile_nat (m : TM0Code) (n : \u2115) :\n    (TM0Code.compile m).eval n =\n      (Part.ofOption (Encodable.decode (\u03b1 := TM0.Cfg \u2115 \u2115) n)).bind fun c \u21a6\n        (StateTransition.eval (TM0.step m.machine) c).map Encodable.encode :=\n  by\n  let \u27e8compile, h_primrec, h_eval_nat, h_eval_cfg\u27e9 := TM0Code.exists_compiler\n  exact h_eval_nat m n",
+      "proof_body": "by\n  let \u27e8compile, h_primrec, h_eval_nat, h_eval_cfg\u27e9 := TM0Code.exists_compiler\n  exact h_eval_nat m n",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.TM0Code.eval_compile_nat_4.lean:88:2: error: Type mismatch\n  h_eval_nat m n\nhas type\n  (compile m).eval n =\n    (\u2191(Encodable.decode n)).bind fun c => Part.map Encodable.encode (StateTransition.eval (TM0.step m.machine) c)\nbut is expected to have type\n  m.compile.eval n =\n    (\u2191(Encodable.decode n)).bind fun c => Part.map Encodable.encode (StateTransition.eval (TM0.step m.machine) c)",
+      "error_class": "type mismatch",
+      "latency_ms": 31395.0,
+      "lean_ms": 5980.23,
+      "tokens": 143,
+      "accepted": false
+    },
+    {
+      "attempt": 5,
+      "think": false,
+      "candidate_code": "theorem TM0Code.eval_compile_nat (m : TM0Code) (n : \u2115) :\n    (TM0Code.compile m).eval n =\n      (Part.ofOption (Encodable.decode (\u03b1 := TM0.Cfg \u2115 \u2115) n)).bind fun c \u21a6\n        (StateTransition.eval (TM0.step m.machine) c).map Encodable.encode :=\n  by\n  let \u27e8compile, h_primrec, h_eval_nat, h_eval_cfg\u27e9 := TM0Code.exists_compiler\n  have h : (compile m).eval n =\n    (Part.ofOption (Encodable.decode (\u03b1 := TM0.Cfg \u2115 \u2115) n)).bind fun c \u21a6\n      (StateTransition.eval (TM0.step m.machine) c).map Encodable.encode := h_eval_nat m n\n  rcases h with rfl",
+      "proof_body": "by\n  let \u27e8compile, h_primrec, h_eval_nat, h_eval_cfg\u27e9 := TM0Code.exists_compiler\n  have h : (compile m).eval n =\n    (Part.ofOption (Encodable.decode (\u03b1 := TM0.Cfg \u2115 \u2115) n)).bind fun c \u21a6\n      (StateTransition.eval (TM0.step m.machine) c).map Encodable.encode := h_eval_nat m n\n  rcases h with rfl",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.TM0Code.eval_compile_nat_5.lean:91:16: error: Tactic `subst` failed: invalid equality proof, it is not of the form (x = t) or (t = x)\n  (compile m).eval n =\n    (\u2191(Encodable.decode n)).bind fun c => Part.map Encodable.encode (StateTransition.eval (TM0.step m.machine) c)\nm : TM0Code\nn : \u2115\ncompile : TM0Code \u2192 Nat.Partrec.Code\nh_primrec : Primrec compile\nh_eval_nat :\n  \u2200 (m : TM0Code) (n : \u2115),\n    (compile m).eval n =\n      (\u2191(Encodable.decode n)).bind fun c => Part.map Encodable.encode (StateTransition.eval (TM0.step m.machine) c)\nh_eval_cfg :",
+      "error_class": "other",
+      "latency_ms": 35909.11,
+      "lean_ms": 6007.72,
+      "tokens": 221,
+      "accepted": false
+    }
+  ]
+}

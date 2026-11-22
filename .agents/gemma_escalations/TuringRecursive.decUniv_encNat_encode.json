@@ -1,0 +1,78 @@
+{
+  "declaration": "TuringRecursive.decUniv_encNat_encode",
+  "raw_name": "decUniv_encNat_encode",
+  "spec_file": "TuringRecursive/Universal.lean",
+  "milestone": "M6",
+  "tier": "T0",
+  "statement": "theorem decUniv_encNat_encode (c : TM0.Cfg \u2115 \u2115) :\n    decUniv (ListBlank.mk (encNat (Encodable.encode c))) = c",
+  "max_attempts": 5,
+  "escalated_at": "2026-11-22T01:41:15Z",
+  "retrieved_premises": [
+    "TuringRecursive.encUniv",
+    "TuringRecursive.decUniv",
+    "TuringRecursive.decNat_encNat",
+    "TuringRecursive.univEvalNat"
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "think": false,
+      "candidate_code": "theorem decUniv_encNat_encode (c : TM0.Cfg \u2115 \u2115) :\n    decUniv (ListBlank.mk (encNat (Encodable.encode c))) = c :=\n  by\n  rcases (Encodable.decode (\u03b1 := TM0Code \u00d7 TM0.Cfg \u2115 \u2115) (decNat (ListBlank.mk (encNat (Encodable.encode c))))) as \u27e8mc, _\u27e9\n  rfx (decNat_encNat (Encodable.encode c))\n  simp [decUniv]\n  rfx (Encodable.encode c) = (Encodable.encode c)\n  rfx (Encodable.decode (Encodable.encode c)) = (Encodable.encode c)\n  rfx (Encodable.decode (Encodable.encode c)).getD default = c",
+      "proof_body": "by\n  rcases (Encodable.decode (\u03b1 := TM0Code \u00d7 TM0.Cfg \u2115 \u2115) (decNat (ListBlank.mk (encNat (Encodable.encode c))))) as \u27e8mc, _\u27e9\n  rfx (decNat_encNat (Encodable.encode c))\n  simp [decUniv]\n  rfx (Encodable.encode c) = (Encodable.encode c)\n  rfx (Encodable.decode (Encodable.encode c)) = (Encodable.encode c)\n  rfx (Encodable.decode (Encodable.encode c)).getD default = c",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.decUniv_encNat_encode_1.lean:127:3: error: unknown tactic",
+      "error_class": "syntax",
+      "latency_ms": 30819.25,
+      "lean_ms": 6011.66,
+      "tokens": 199,
+      "accepted": false
+    },
+    {
+      "attempt": 2,
+      "think": false,
+      "candidate_code": "theorem decUniv_encNat_encode (c : TM0.Cfg \u2115 \u2115) :\n    decUniv (ListBlank.mk (encNat (Encodable.encode c))) = c :=\n  by\n  simp [decUniv]\n  rfl",
+      "proof_body": "by\n  simp [decUniv]\n  rfl",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.decUniv_encNat_encode_2.lean:127:2: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached\nNote: Use `set_option maxHeartbeats <num>` to set the limit.\nHint: Additional diagnostic information may be available using the `set_option diagnostics true` command.",
+      "error_class": "timeout",
+      "latency_ms": 20286.18,
+      "lean_ms": 8056.04,
+      "tokens": 66,
+      "accepted": false
+    },
+    {
+      "attempt": 3,
+      "think": false,
+      "candidate_code": "theorem decUniv_encNat_encode (c : TM0.Cfg \u2115 \u2115) :\n    decUniv (ListBlank.mk (encNat (Encodable.encode c))) = c :=\n  by\n  simp [decUniv]\n  -- decUniv (ListBlank.mk (encNat (Encodable.encode c))) \n  -- = (Encodable.decode (decNat (ListBlank.mk (encNat (Encodable.encode c))))).getD default\n  -- = (Encodable.decode (Encodable.encode c)).getD default\n  -- = c\n  convert (Encodable.decode (Encodable.encode c)).getD default\n  rfl",
+      "proof_body": "by\n  simp [decUniv]\n  -- decUniv (ListBlank.mk (encNat (Encodable.encode c))) \n  -- = (Encodable.decode (decNat (ListBlank.mk (encNat (Encodable.encode c))))).getD default\n  -- = (Encodable.decode (Encodable.encode c)).getD default\n  -- = c\n  convert (Encodable.decode (Encodable.encode c)).getD default\n  rfl",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.decUniv_encNat_encode_3.lean:131:2: error: Type mismatch\n  (Encodable.decode (Encodable.encode c)).getD default\nhas type\n  ?m.15\nof sort `Type ?u.10` but is expected to have type\n  ?m.9\nof sort `Prop`",
+      "error_class": "type mismatch",
+      "latency_ms": 27589.8,
+      "lean_ms": 1704.16,
+      "tokens": 163,
+      "accepted": false
+    },
+    {
+      "attempt": 4,
+      "think": false,
+      "candidate_code": "theorem decUniv_encNat_encode (c : TM0.Cfg \u2115 \u2115) :\n    decUniv (ListBlank.mk (encNat (Encodable.encode c))) = c :=\n  by\n  simp [decUniv]\n  rw [decNat_encNat]\n  simp [Encodable.decode_encode]\n  rfl",
+      "proof_body": "by\n  simp [decUniv]\n  rw [decNat_encNat]\n  simp [Encodable.decode_encode]\n  rfl",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.decUniv_encNat_encode_4.lean:128:8: error(lean.unknownIdentifier): Unknown constant `Encodable.decode_encode`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.decUniv_encNat_encode_4.lean:129:2: error: No goals to be solved",
+      "error_class": "unknown identifier",
+      "latency_ms": 23214.01,
+      "lean_ms": 1739.74,
+      "tokens": 84,
+      "accepted": false
+    },
+    {
+      "attempt": 5,
+      "think": false,
+      "candidate_code": "theorem decUniv_encNat_encode (c : TM0.Cfg \u2115 \u2115) :\n    decUniv (ListBlank.mk (encNat (Encodable.encode c))) = c :=\n  by\n  simp [decUniv]\n  rw [decNat_encNat]\n  -- Use the fact that decode (encode x) = x for TM0Code \u00d7 TM0.Cfg \u2115 \u2115\n  have h : (Encodable.decode (\u03b1 := TM0Code \u00d7 TM0.Cfg \u2115 \u2115) (Encodable.encode c)) = (Encodable.encode c) := \n    Encodable.decode_encode\n  rw [h]\n  rfl",
+      "proof_body": "by\n  simp [decUniv]\n  rw [decNat_encNat]\n  -- Use the fact that decode (encode x) = x for TM0Code \u00d7 TM0.Cfg \u2115 \u2115\n  have h : (Encodable.decode (\u03b1 := TM0Code \u00d7 TM0.Cfg \u2115 \u2115) (Encodable.encode c)) = (Encodable.encode c) := \n    Encodable.decode_encode\n  rw [h]\n  rfl",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.decUniv_encNat_encode_5.lean:129:82: error: Type mismatch\n  Encodable.encode c\nhas type\n  \u2115\nbut is expected to have type\n  Option (TM0Code \u00d7 TM0.Cfg \u2115 \u2115)\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.decUniv_encNat_encode_5.lean:130:4: error(lean.unknownIdentifier): Unknown constant `Encodable.decode_encode`",
+      "error_class": "unknown identifier",
+      "latency_ms": 32496.18,
+      "lean_ms": 2199.91,
+      "tokens": 164,
+      "accepted": false
+    }
+  ]
+}

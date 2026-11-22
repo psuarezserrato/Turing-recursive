@@ -1,0 +1,78 @@
+{
+  "declaration": "TuringRecursive.decode_encode_dir",
+  "raw_name": "decode_encode_dir",
+  "spec_file": "TuringRecursive/Encoding.lean",
+  "milestone": "M2",
+  "tier": "T0",
+  "statement": "theorem decode_encode_dir (d : Dir) :\n    Encodable.decode (Encodable.encode d) = some d",
+  "max_attempts": 5,
+  "escalated_at": "2026-11-21T22:49:35Z",
+  "retrieved_premises": [
+    "Encodable.decode\u2082_encode",
+    "Encodable.decode\u2082_eq_some",
+    "Encodable.encodek\u2082",
+    "Encodable.decodeList_encodeList_eq_self"
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "think": false,
+      "candidate_code": "theorem decode_encode_dir (d : Dir) :\n    Encodable.decode (Encodable.encode d) = some d :=\n  by\n  exact decode\u2082_encode",
+      "proof_body": "by\n  exact decode\u2082_encode",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive.decode_encode_dir_1.lean:184:8: error(lean.unknownIdentifier): Unknown identifier `decode\u2082_encode`",
+      "error_class": "unknown identifier",
+      "latency_ms": 15508.68,
+      "lean_ms": 5880.82,
+      "tokens": 49,
+      "accepted": false
+    },
+    {
+      "attempt": 2,
+      "think": false,
+      "candidate_code": "theorem decode_encode_dir (d : Dir) :\n    Encodable.decode (Encodable.encode d) = some d :=\n  by\n  exact decode\u2082_encode",
+      "proof_body": "by\n  exact decode\u2082_encode",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive.decode_encode_dir_2.lean:184:8: error(lean.unknownIdentifier): Unknown identifier `decode\u2082_encode`",
+      "error_class": "unknown identifier",
+      "latency_ms": 16725.09,
+      "lean_ms": 5666.37,
+      "tokens": 49,
+      "accepted": false
+    },
+    {
+      "attempt": 3,
+      "think": false,
+      "candidate_code": "theorem decode_encode_dir (d : Dir) :\n    Encodable.decode (Encodable.encode d) = some d :=\n  by\n  _norm_compress\n  apply decode\u2082_encode",
+      "proof_body": "by\n  _norm_compress\n  apply decode\u2082_encode",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive.decode_encode_dir_3.lean:184:3: error: unknown tactic\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive.decode_encode_dir_3.lean:183:2: error: unsolved goals\nd : Dir\n\u22a2 Encodable.decode (Encodable.encode d) = some d",
+      "error_class": "unsolved goals",
+      "latency_ms": 17659.71,
+      "lean_ms": 5838.76,
+      "tokens": 51,
+      "accepted": false
+    },
+    {
+      "attempt": 4,
+      "think": false,
+      "candidate_code": "theorem decode_encode_dir (d : Dir) :\n    Encodable.decode (Encodable.encode d) = some d :=\n  by\n  exact decode\u2082_encode",
+      "proof_body": "by\n  exact decode\u2082_encode",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive.decode_encode_dir_4.lean:184:8: error(lean.unknownIdentifier): Unknown identifier `decode\u2082_encode`",
+      "error_class": "unknown identifier",
+      "latency_ms": 17686.56,
+      "lean_ms": 5565.16,
+      "tokens": 49,
+      "accepted": false
+    },
+    {
+      "attempt": 5,
+      "think": false,
+      "candidate_code": "theorem decode_encode_dir (d : Dir) :\n    Encodable.decode (Encodable.encode d) = some d :=\n  by\n  exact decode\u2082_encode",
+      "proof_body": "by\n  exact decode\u2082_encode",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive.decode_encode_dir_5.lean:184:8: error(lean.unknownIdentifier): Unknown identifier `decode\u2082_encode`",
+      "error_class": "unknown identifier",
+      "latency_ms": 17588.93,
+      "lean_ms": 5991.94,
+      "tokens": 49,
+      "accepted": false
+    }
+  ]
+}

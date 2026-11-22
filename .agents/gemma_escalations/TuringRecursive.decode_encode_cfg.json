@@ -1,0 +1,78 @@
+{
+  "declaration": "TuringRecursive.decode_encode_cfg",
+  "raw_name": "decode_encode_cfg",
+  "spec_file": "TuringRecursive/Encoding.lean",
+  "milestone": "M2",
+  "tier": "T0",
+  "statement": "theorem decode_encode_cfg {\u0393 \u039b : Type*} [Inhabited \u0393] [Primcodable \u0393] [Primcodable \u039b]\n    (c : TM0.Cfg \u0393 \u039b) : Encodable.decode (Encodable.encode c) = some c",
+  "max_attempts": 5,
+  "escalated_at": "2026-11-21T23:02:03Z",
+  "retrieved_premises": [
+    "TuringRecursive.instPrimcodableCfg",
+    "TuringRecursive.cfgEquivProd",
+    "Primcodable",
+    "Turing.TM0.Cfg.inhabited"
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "think": false,
+      "candidate_code": "theorem decode_encode_cfg {\u0393 \u039b : Type*} [Inhabited \u0393] [Primcodable \u0393] [Primcodable \u039b]\n    (c : TM0.Cfg \u0393 \u039b) : Encodable.decode (Encodable.encode c) = some c :=\n  by\n  simp only [cfgEquivProd, Encodable.decode_encode]\n  simp [cfgEquivProd]\n  rfl",
+      "proof_body": "by\n  simp only [cfgEquivProd, Encodable.decode_encode]\n  simp [cfgEquivProd]\n  rfl",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive.decode_encode_cfg_1.lean:200:27: error(lean.unknownIdentifier): Unknown constant `Encodable.decode_encode`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive.decode_encode_cfg_1.lean:200:2: error: `simp` made no progress",
+      "error_class": "unknown identifier",
+      "latency_ms": 27331.59,
+      "lean_ms": 5885.45,
+      "tokens": 98,
+      "accepted": false
+    },
+    {
+      "attempt": 2,
+      "think": false,
+      "candidate_code": "theorem decode_encode_cfg {\u0393 \u039b : Type*} [Inhabited \u0393] [Primcodable \u0393] [Primcodable \u039b]\n    (c : TM0.Cfg \u0393 \u039b) : Encodable.decode (Encodable.encode c) = some c :=\n  by\n  simp [cfgEquivProd]\n  exact Encodable.decode_encode",
+      "proof_body": "by\n  simp [cfgEquivProd]\n  exact Encodable.decode_encode",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive.decode_encode_cfg_2.lean:201:2: error: No goals to be solved\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive.decode_encode_cfg_2.lean:200:8: warning: This simp argument is unused:\n  cfgEquivProd\nHint: Omit it from the simp argument list.\n  [apply] simp\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+      "error_class": "other",
+      "latency_ms": 42269.17,
+      "lean_ms": 5984.27,
+      "tokens": 208,
+      "accepted": false
+    },
+    {
+      "attempt": 3,
+      "think": false,
+      "candidate_code": "theorem decode_encode_cfg {\u0393 \u039b : Type*} [Inhabited \u0393] [Primcodable \u0393] [Primcodable \u039b]\n    (c : TM0.Cfg \u0393 \u039b) : Encodable.decode (Encodable.encode c) = some c :=\n  by\n  simp [cfgEquivProd]\n  exact Encodable.decode_encode",
+      "proof_body": "by\n  simp [cfgEquivProd]\n  exact Encodable.decode_encode",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive.decode_encode_cfg_3.lean:201:2: error: No goals to be solved\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive.decode_encode_cfg_3.lean:200:8: warning: This simp argument is unused:\n  cfgEquivProd\nHint: Omit it from the simp argument list.\n  [apply] simp\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+      "error_class": "other",
+      "latency_ms": 28401.19,
+      "lean_ms": 6139.9,
+      "tokens": 86,
+      "accepted": false
+    },
+    {
+      "attempt": 4,
+      "think": false,
+      "candidate_code": "theorem decode_encode_cfg {\u0393 \u039b : Type*} [Inhabited \u0393] [Primcodable \u0393] [Primcodable \u039b]\n    (c : TM0.Cfg \u0393 \u039b) : Encodable.decode (Encodable.encode c) = some c :=\n  by\n  simp only [cfgEquivProd, Encodable.decode_encode]",
+      "proof_body": "by\n  simp only [cfgEquivProd, Encodable.decode_encode]",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive.decode_encode_cfg_4.lean:200:27: error(lean.unknownIdentifier): Unknown constant `Encodable.decode_encode`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive.decode_encode_cfg_4.lean:200:2: error: `simp` made no progress",
+      "error_class": "unknown identifier",
+      "latency_ms": 28788.34,
+      "lean_ms": 6158.2,
+      "tokens": 89,
+      "accepted": false
+    },
+    {
+      "attempt": 5,
+      "think": false,
+      "candidate_code": "theorem decode_encode_cfg {\u0393 \u039b : Type*} [Inhabited \u0393] [Primcodable \u0393] [Primcodable \u039b]\n    (c : TM0.Cfg \u0393 \u039b) : Encodable.decode (Encodable.encode c) = some c :=\n  by\n  simp [cfgEquivProd]\n  exact Encodable.decode_encode",
+      "proof_body": "by\n  simp [cfgEquivProd]\n  exact Encodable.decode_encode",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive.decode_encode_cfg_5.lean:201:2: error: No goals to be solved\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive.decode_encode_cfg_5.lean:200:8: warning: This simp argument is unused:\n  cfgEquivProd\nHint: Omit it from the simp argument list.\n  [apply] simp\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+      "error_class": "other",
+      "latency_ms": 28156.13,
+      "lean_ms": 6163.74,
+      "tokens": 86,
+      "accepted": false
+    }
+  ]
+}

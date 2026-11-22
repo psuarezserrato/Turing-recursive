@@ -13,6 +13,7 @@ and verified outcome logging (`tools/ledger.py`).
 
 import argparse
 import bisect
+import hashlib
 import json
 import os
 import re
@@ -85,8 +86,12 @@ class SpecDeclaration:
 
 
 def sanitize_decl_filename(name: str) -> str:
-    """Convert a Lean declaration name into a safe filesystem stem."""
-    return re.sub(r"[^A-Za-z0-9_.-]+", "_", name).strip("_") or "decl"
+    """Convert a Lean declaration name into a safe, collision-free filesystem stem."""
+    cleaned = re.sub(r"[^A-Za-z0-9_.-]+", "_", name).strip("_") or "decl"
+    if re.search(r"[^A-Za-z0-9_.-]", name):
+        digest = hashlib.sha256(name.encode("utf-8")).hexdigest()[:8]
+        return f"{cleaned}_{digest}"
+    return cleaned
 
 
 def infer_tier_from_context(
@@ -744,6 +749,9 @@ def prove_declaration(
                 f"attempt: {attempt}, spec: {spec_path.name})\n"
             )
             accepted_file.write_text(accepted_header + spliced_or_err, encoding="utf-8")
+            stale_escalation = escalations_dir / f"{safe_name}.json"
+            if stale_escalation.is_file():
+                stale_escalation.unlink()
             accepted_replacements[decl.start_offset] = spliced_or_err
             return {
                 "declaration": decl.name,

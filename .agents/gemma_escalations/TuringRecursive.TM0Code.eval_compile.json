@@ -1,0 +1,78 @@
+{
+  "declaration": "TuringRecursive.TM0Code.eval_compile",
+  "raw_name": "TM0Code.eval_compile",
+  "spec_file": "TuringRecursive/Universal.lean",
+  "milestone": "M6",
+  "tier": "T0",
+  "statement": "theorem TM0Code.eval_compile (m : TM0Code) (c : TM0.Cfg \u2115 \u2115) :\n    (TM0Code.compile m).eval (Encodable.encode c) =\n      (StateTransition.eval (TM0.step m.machine) c).map Encodable.encode",
+  "max_attempts": 5,
+  "escalated_at": "2026-11-22T01:37:56Z",
+  "retrieved_premises": [
+    "TuringRecursive.TM0Code.exists_compiler",
+    "TuringRecursive.univEvalNat",
+    "TuringRecursive.TM0Code.exists_relabeling",
+    "TuringRecursive.TM0Code.eval_partrec"
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "think": false,
+      "candidate_code": "theorem TM0Code.eval_compile (m : TM0Code) (c : TM0.Cfg \u2115 \u2115) :\n    (TM0Code.compile m).eval (Encodable.encode c) =\n      (StateTransition.eval (TM0.step m.machine) c).map Encodable.encode :=\n  by\n  let \u27e8compile, h_prim, h1, h2\u27e9 := TM0Code.exists_compiler\n  simp [compile]\n  exact h2 m c",
+      "proof_body": "by\n  let \u27e8compile, h_prim, h1, h2\u27e9 := TM0Code.exists_compiler\n  simp [compile]\n  exact h2 m c",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.TM0Code.eval_compile_1.lean:92:8: error: Invalid argument: Variable `compile` is not a proposition or let-declaration\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.TM0Code.eval_compile_1.lean:92:2: error: `simp` made no progress\nNote: The target expression is not type-correct under the `implicit` transparency level, which may have triggered the failure. This is usually caused by unfolding of semireducible definitions in prior tactic steps. Use `set_option linter.tacticCheckInstances true` to investigate the source of the issue.\nFull error:\n  function expected\n    m.compile.eval (Encodable.encode c)",
+      "error_class": "other",
+      "latency_ms": 28904.55,
+      "lean_ms": 5065.03,
+      "tokens": 118,
+      "accepted": false
+    },
+    {
+      "attempt": 2,
+      "think": false,
+      "candidate_code": "theorem TM0Code.eval_compile (m : TM0Code) (c : TM0.Cfg \u2115 \u2115) :\n    (TM0Code.compile m).eval (Encodable.encode c) =\n      (StateTransition.eval (TM0.step m.machine) c).map Encodable.encode :=\n  by\n  let \u27e8compile, _, _, h_eval\u27e9 := TM0Code.exists_compiler\n  -- The proof is obtained by applying the equality property from the existence of the compiler\n  -- and ensuring the types align with the expected application.\n  exact h_eval m c",
+      "proof_body": "by\n  let \u27e8compile, _, _, h_eval\u27e9 := TM0Code.exists_compiler\n  -- The proof is obtained by applying the equality property from the existence of the compiler\n  -- and ensuring the types align with the expected application.\n  exact h_eval m c",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.TM0Code.eval_compile_2.lean:94:2: error: Type mismatch\n  h_eval m c\nhas type\n  (compile m).eval (Encodable.encode c) = Part.map Encodable.encode (StateTransition.eval (TM0.step m.machine) c)\nbut is expected to have type\n  m.compile.eval (Encodable.encode c) = Part.map Encodable.encode (StateTransition.eval (TM0.step m.machine) c)",
+      "error_class": "type mismatch",
+      "latency_ms": 33707.09,
+      "lean_ms": 5472.16,
+      "tokens": 140,
+      "accepted": false
+    },
+    {
+      "attempt": 3,
+      "think": false,
+      "candidate_code": "theorem TM0Code.eval_compile (m : TM0Code) (c : TM0.Cfg \u2115 \u2115) :\n    (TM0Code.compile m).eval (Encodable.encode c) =\n      (StateTransition.eval (TM0.step m.machine) c).map Encodable.encode :=\n  by\n  let \u27e8compile, h_prim, h1, h2\u27e9 := TM0Code.exists_compiler\n  -- h2 is the property: \u2200 (m : TM0Code) (c : TM0.Cfg \u2115 \u2115), (compile m).eval (Encodable.encode c) = (StateTransition.eval (TM0.step m.machine) c).map Encodable.encode\n  -- The error in previous attempts was a mismatch between `compile m` and `m.compile`.\n  -- Based on the existence theorem, the compiler is a function `TM0Code \u2192 Nat.Partrec.Code`.\n  -- We apply h2 to the machine description m and configuration c.\n  exact h2 m c",
+      "proof_body": "by\n  let \u27e8compile, h_prim, h1, h2\u27e9 := TM0Code.exists_compiler\n  -- h2 is the property: \u2200 (m : TM0Code) (c : TM0.Cfg \u2115 \u2115), (compile m).eval (Encodable.encode c) = (StateTransition.eval (TM0.step m.machine) c).map Encodable.encode\n  -- The error in previous attempts was a mismatch between `compile m` and `m.compile`.\n  -- Based on the existence theorem, the compiler is a function `TM0Code \u2192 Nat.Partrec.Code`.\n  -- We apply h2 to the machine description m and configuration c.\n  exact h2 m c",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.TM0Code.eval_compile_3.lean:96:2: error: Type mismatch\n  h2 m c\nhas type\n  (compile m).eval (Encodable.encode c) = Part.map Encodable.encode (StateTransition.eval (TM0.step m.machine) c)\nbut is expected to have type\n  m.compile.eval (Encodable.encode c) = Part.map Encodable.encode (StateTransition.eval (TM0.step m.machine) c)",
+      "error_class": "type mismatch",
+      "latency_ms": 41865.76,
+      "lean_ms": 6095.38,
+      "tokens": 245,
+      "accepted": false
+    },
+    {
+      "attempt": 4,
+      "think": false,
+      "candidate_code": "theorem TM0Code.eval_compile (m : TM0Code) (c : TM0.Cfg \u2115 \u2115) :\n    (TM0Code.compile m).eval (Encodable.encode c) =\n      (StateTransition.eval (TM0.step m.machine) c).map Encodable.encode :=\n  by\n  let \u27e8compile, _, _, h_eval\u27e9 := TM0Code.exists_compiler\n  -- The compiler is a function TM0Code \u2192 Nat.Partrec.Code.\n  -- The result of (compile m) is a Nat.Partrec.Code.\n  -- The property h_eval provides the equality for the application of (compile m).\n  exact h_eval m c",
+      "proof_body": "by\n  let \u27e8compile, _, _, h_eval\u27e9 := TM0Code.exists_compiler\n  -- The compiler is a function TM0Code \u2192 Nat.Partrec.Code.\n  -- The result of (compile m) is a Nat.Partrec.Code.\n  -- The property h_eval provides the equality for the application of (compile m).\n  exact h_eval m c",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.TM0Code.eval_compile_4.lean:95:2: error: Type mismatch\n  h_eval m c\nhas type\n  (compile m).eval (Encodable.encode c) = Part.map Encodable.encode (StateTransition.eval (TM0.step m.machine) c)\nbut is expected to have type\n  m.compile.eval (Encodable.encode c) = Part.map Encodable.encode (StateTransition.eval (TM0.step m.machine) c)",
+      "error_class": "type mismatch",
+      "latency_ms": 34509.74,
+      "lean_ms": 5524.07,
+      "tokens": 166,
+      "accepted": false
+    },
+    {
+      "attempt": 5,
+      "think": false,
+      "candidate_code": "theorem TM0Code.eval_compile (m : TM0Code) (c : TM0.Cfg \u2115 \u2115) :\n    (TM0Code.compile m).eval (Encodable.encode c) =\n      (StateTransition.eval (TM0.step m.machine) c).map Encodable.encode :=\n  by\n  let \u27e8compile, _, _, h_eval\u27e9 := TM0Code.exists_compiler\n  -- The compiler in TM0Code.exists_compiler is a function from TM0Code to Nat.Partrec.Code.\n  -- The definition of TM0Code.compile is compile m.\n  -- Thus, (TM0Code.compile m).eval is (compile m).eval.\n  -- The property h_eval has type:\n  -- \u2200 (m : TM0Code) (c : TM0.Cfg \u2115 \u2115), (compile m).eval (Encodable.encode c) = \n  -- (StateTransition.eval (TM0.step m.machine) c).map Encodable.encode\n  -- By substituting m and c into h_eval, we get the desired equality.\n  exact h_eval m c",
+      "proof_body": "by\n  let \u27e8compile, _, _, h_eval\u27e9 := TM0Code.exists_compiler\n  -- The compiler in TM0Code.exists_compiler is a function from TM0Code to Nat.Partrec.Code.\n  -- The definition of TM0Code.compile is compile m.\n  -- Thus, (TM0Code.compile m).eval is (compile m).eval.\n  -- The property h_eval has type:\n  -- \u2200 (m : TM0Code) (c : TM0.Cfg \u2115 \u2115), (compile m).eval (Encodable.encode c) = \n  -- (StateTransition.eval (TM0.step m.machine) c).map Encodable.encode\n  -- By substituting m and c into h_eval, we get the desired equality.\n  exact h_eval m c",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.TM0Code.eval_compile_5.lean:99:2: error: Type mismatch\n  h_eval m c\nhas type\n  (compile m).eval (Encodable.encode c) = Part.map Encodable.encode (StateTransition.eval (TM0.step m.machine) c)\nbut is expected to have type\n  m.compile.eval (Encodable.encode c) = Part.map Encodable.encode (StateTransition.eval (TM0.step m.machine) c)",
+      "error_class": "type mismatch",
+      "latency_ms": 43184.45,
+      "lean_ms": 5455.64,
+      "tokens": 266,
+      "accepted": false
+    }
+  ]
+}

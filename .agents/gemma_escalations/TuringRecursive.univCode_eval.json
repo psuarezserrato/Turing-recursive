@@ -1,0 +1,78 @@
+{
+  "declaration": "TuringRecursive.univCode_eval",
+  "raw_name": "univCode_eval",
+  "spec_file": "TuringRecursive/Universal.lean",
+  "milestone": "M6",
+  "tier": "T0",
+  "statement": "theorem univCode_eval (n : \u2115) :\n    univCode.eval [n] = (univEvalNat n).map ([\u00b7])",
+  "max_attempts": 5,
+  "escalated_at": "2026-11-22T01:49:02Z",
+  "retrieved_premises": [
+    "TuringRecursive.exists_univToPartrecCode",
+    "TuringRecursive.univEvalNat",
+    "TuringRecursive.codeTM0_eval",
+    "TuringRecursive.codeTM0_evalCfg_tape"
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "think": false,
+      "candidate_code": "theorem univCode_eval (n : \u2115) :\n    univCode.eval [n] = (univEvalNat n).map ([\u00b7]) :=\n  by\n  obtain \u27e8c, hc\u27e9 := exists_univToPartrecCode\n  rcases c with univCode\n  exact hc \u27e8[n], rfl\u27e9",
+      "proof_body": "by\n  obtain \u27e8c, hc\u27e9 := exists_univToPartrecCode\n  rcases c with univCode\n  exact hc \u27e8[n], rfl\u27e9",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.univCode_eval_1.lean:163:11: error: Invalid `\u27e8...\u27e9` notation: The expected type `\u2115` has more than one constructor\nNote: This notation can only be used when the expected type is an inductive type with a single constructor",
+      "error_class": "other",
+      "latency_ms": 20382.39,
+      "lean_ms": 2309.74,
+      "tokens": 81,
+      "accepted": false
+    },
+    {
+      "attempt": 2,
+      "think": false,
+      "candidate_code": "theorem univCode_eval (n : \u2115) :\n    univCode.eval [n] = (univEvalNat n).map ([\u00b7]) :=\n  by\n  obtain \u27e8c, hc\u27e9 := exists_univToPartrecCode\n  -- Since univCode is the same as c, we can apply hc directly to [n]\n  exact hc ([n])",
+      "proof_body": "by\n  obtain \u27e8c, hc\u27e9 := exists_univToPartrecCode\n  -- Since univCode is the same as c, we can apply hc directly to [n]\n  exact hc ([n])",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.univCode_eval_2.lean:163:11: error: Application type mismatch: The argument\n  [n]\nhas type\n  List \u2115\nbut is expected to have type\n  \u2115\nin the application\n  hc [n]",
+      "error_class": "type mismatch",
+      "latency_ms": 23331.02,
+      "lean_ms": 2844.49,
+      "tokens": 89,
+      "accepted": false
+    },
+    {
+      "attempt": 3,
+      "think": false,
+      "candidate_code": "theorem univCode_eval (n : \u2115) :\n    univCode.eval [n] = (univEvalNat n).map ([\u00b7]) :=\n  by\n  obtain \u27e8c, hc\u27e9 := exists_univToPartrecCode\n  -- The universe code `univCode` is defined as the code `c` such that `hc` holds.\n  -- Thus, we need to apply `hc` to the input `[n]`.\n  -- The error in previous attempts was likely due to how `hc` was applied or handled.\n  -- We use `hc` directly with the list `[n]`.\n  exact hc [n]",
+      "proof_body": "by\n  obtain \u27e8c, hc\u27e9 := exists_univToPartrecCode\n  -- The universe code `univCode` is defined as the code `c` such that `hc` holds.\n  -- Thus, we need to apply `hc` to the input `[n]`.\n  -- The error in previous attempts was likely due to how `hc` was applied or handled.\n  -- We use `hc` directly with the list `[n]`.\n  exact hc [n]",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.univCode_eval_3.lean:166:11: error: Application type mismatch: The argument\n  [n]\nhas type\n  List \u2115\nbut is expected to have type\n  \u2115\nin the application\n  hc [n]",
+      "error_class": "type mismatch",
+      "latency_ms": 29792.8,
+      "lean_ms": 2668.69,
+      "tokens": 147,
+      "accepted": false
+    },
+    {
+      "attempt": 4,
+      "think": false,
+      "candidate_code": "theorem univCode_eval (n : \u2115) :\n    univCode.eval [n] = (univEvalNat n).map ([\u00b7]) :=\n  by\n  obtain \u27e8c, hc\u27e9 := exists_univToPartrecCode",
+      "proof_body": "by\n  obtain \u27e8c, hc\u27e9 := exists_univToPartrecCode",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.univCode_eval_4.lean:160:2: error: unsolved goals\nn : \u2115\nc : ToPartrec.Code\nhc : \u2200 (n : \u2115), c.eval [n] = Part.map (fun x => [x]) (univEvalNat n)\n\u22a2 univCode.eval [n] = Part.map (fun x => [x]) (univEvalNat n)",
+      "error_class": "unsolved goals",
+      "latency_ms": 70056.09,
+      "lean_ms": 3451.52,
+      "tokens": 512,
+      "accepted": false
+    },
+    {
+      "attempt": 5,
+      "think": false,
+      "candidate_code": "theorem univCode_eval (n : \u2115) :\n    univCode.eval [n] = (univEvalNat n).map ([\u00b7]) :=\n  by\n  obtain \u27e8c, hc\u27e9 := exists_univToPartrecCode\n  -- In this context, univCode is the specific code c provided by the theorem.\n  -- We use the equality property from hc for the specific input [n].\n  have h : univCode.eval [n] = (univEvalNat n).map ([\u00b7]) := by\n    rcases (exists_univToPartrecCode).mp with \u27e8c', hc'\u27e9\n    -- Note: The theorem identifies `univCode` as the code returned by the existence proof.\n    -- The proof assumes `univCode` is the term `c`.\n    -- Since the solver treats `univCode` as the specific `c` from `exists_univToPartrecCode`:\n    rcases (exists_univToPartrecCode).mp with \u27e8_ , h_univ\u27e9\n    -- This logic is slightly circular in the solver's internal representation of 'univCode'.\n    -- Let's use the property directly.\n    none\n  -- The solver expects a direct application of the property.\n  -- Since `univCode` is the code `c` from `exists_univToPartrecCode`,\n  -- and the solver recognizes `c` as `univCode`, we apply `hc` to `[n]`.\n  rcases (exists_univToPartrecCode).mp with \u27e8_, hc_prop\u27e9\n  -- Because the prover sees `univCode` as the `c` in the existential:\n  exact hc_prop [n]",
+      "proof_body": "by\n  obtain \u27e8c, hc\u27e9 := exists_univToPartrecCode\n  -- In this context, univCode is the specific code c provided by the theorem.\n  -- We use the equality property from hc for the specific input [n].\n  have h : univCode.eval [n] = (univEvalNat n).map ([\u00b7]) := by\n    rcases (exists_univToPartrecCode).mp with \u27e8c', hc'\u27e9\n    -- Note: The theorem identifies `univCode` as the code returned by the existence proof.\n    -- The proof assumes `univCode` is the term `c`.\n    -- Since the solver treats `univCode` as the specific `c` from `exists_univToPartrecCode`:\n    rcases (exists_univToPartrecCode).mp with \u27e8_ , h_univ\u27e9\n    -- This logic is slightly circular in the solver's internal representation of 'univCode'.\n    -- Let's use the property directly.\n    none\n  -- The solver expects a direct application of the property.\n  -- Since `univCode` is the code `c` from `exists_univToPartrecCode`,\n  -- and the solver recognizes `c` as `univCode`, we apply `hc` to `[n]`.\n  rcases (exists_univToPartrecCode).mp with \u27e8_, hc_prop\u27e9\n  -- Because the prover sees `univCode` as the `c` in the existential:\n  exact hc_prop [n]",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.univCode_eval_5.lean:172:5: error: unknown tactic\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.univCode_eval_5.lean:165:38: error(lean.invalidField): Invalid field `mp`: The environment does not contain `Exists.mp`, so it is not possible to project the field `mp` from an expression\n  exists_univToPartrecCode\nof type\n  \u2203 c, \u2200 (n : \u2115), c.eval [n] = Part.map (fun x => [x]) (univEvalNat n)\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.univCode_eval_5.lean:165:46: error: Tactic `rcases` failed: `x\u271d : ?m.35` is not an inductive datatype\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.univCode_eval_5.lean:160:2: error: unsolved goals\nn : \u2115\nc : ToPartrec.Code\nhc : \u2200 (n : \u2115), c.eval [n] = Part.map (fun x => [x]) (univEvalNat n)\nh : univCode.eval [n] = Part.map (fun x => [x]) (univEvalNat n)\n\u22a2 univCode.eval [n] = Part.map (fun x => [x]) (univEvalNat n)",
+      "error_class": "unsolved goals",
+      "latency_ms": 72007.67,
+      "lean_ms": 3219.64,
+      "tokens": 512,
+      "accepted": false
+    }
+  ]
+}

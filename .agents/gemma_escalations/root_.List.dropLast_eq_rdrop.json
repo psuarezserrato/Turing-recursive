@@ -1,0 +1,78 @@
+{
+  "declaration": "_root_.List.dropLast_eq_rdrop",
+  "raw_name": "_root_.List.dropLast_eq_rdrop",
+  "spec_file": "TuringRecursive/ListPrimrec.lean",
+  "milestone": "M2",
+  "tier": "T0",
+  "statement": "theorem _root_.List.dropLast_eq_rdrop {\u03b1 : Type*} (l : List \u03b1) :\n    l.dropLast = l.rdrop 1",
+  "max_attempts": 5,
+  "escalated_at": "2026-11-21T22:32:51Z",
+  "retrieved_premises": [
+    "List.rdropWhile_last_not",
+    "List.rdrop_eq_reverse_drop_reverse",
+    "List.rdropWhile_eq_self_iff",
+    "List.dropLast_drop_eq_drop_dropLast"
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "think": false,
+      "candidate_code": "theorem _root_.List.dropLast_eq_rdrop {\u03b1 : Type*} (l : List \u03b1) :\n    l.dropLast = l.rdrop 1 :=\n  by\n  simp_rw [rdrop_eq_reverse_drop_reverse]\n  simp",
+      "proof_body": "by\n  simp_rw [rdrop_eq_reverse_drop_reverse]\n  simp",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/root_.List.dropLast_eq_rdrop_1.lean:17:11: error(lean.unknownIdentifier): Unknown identifier `rdrop_eq_reverse_drop_reverse`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/root_.List.dropLast_eq_rdrop_1.lean:17:11: error: `simp` made no progress",
+      "error_class": "unknown identifier",
+      "latency_ms": 15998.65,
+      "lean_ms": 8999.47,
+      "tokens": 70,
+      "accepted": false
+    },
+    {
+      "attempt": 2,
+      "think": false,
+      "candidate_code": "theorem _root_.List.dropLast_eq_rdrop {\u03b1 : Type*} (l : List \u03b1) :\n    l.dropLast = l.rdrop 1 :=\n  by\n  simp_rw [rdrop_eq_reverse_drop_reverse]\n  simp_rw [reverse_drop_eq_drop_reverse]\n  simp",
+      "proof_body": "by\n  simp_rw [rdrop_eq_reverse_drop_reverse]\n  simp_rw [reverse_drop_eq_drop_reverse]\n  simp",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/root_.List.dropLast_eq_rdrop_2.lean:17:11: error(lean.unknownIdentifier): Unknown identifier `rdrop_eq_reverse_drop_reverse`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/root_.List.dropLast_eq_rdrop_2.lean:17:11: error: `simp` made no progress",
+      "error_class": "unknown identifier",
+      "latency_ms": 17975.73,
+      "lean_ms": 6070.75,
+      "tokens": 82,
+      "accepted": false
+    },
+    {
+      "attempt": 3,
+      "think": false,
+      "candidate_code": "theorem _root_.List.dropLast_eq_rdrop {\u03b1 : Type*} (l : List \u03b1) :\n    l.dropLast = l.rdrop 1 :=\n  by\n  ext\n  simp only [rdrop_eq_reverse_drop_reverse, reverse_drop_eq_drop_reverse]\n  simp",
+      "proof_body": "by\n  ext\n  simp only [rdrop_eq_reverse_drop_reverse, reverse_drop_eq_drop_reverse]\n  simp",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/root_.List.dropLast_eq_rdrop_3.lean:18:13: error(lean.unknownIdentifier): Unknown identifier `rdrop_eq_reverse_drop_reverse`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/root_.List.dropLast_eq_rdrop_3.lean:18:44: error(lean.unknownIdentifier): Unknown identifier `reverse_drop_eq_drop_reverse`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/root_.List.dropLast_eq_rdrop_3.lean:18:2: error: `simp` made no progress",
+      "error_class": "unknown identifier",
+      "latency_ms": 17146.23,
+      "lean_ms": 5665.79,
+      "tokens": 82,
+      "accepted": false
+    },
+    {
+      "attempt": 4,
+      "think": false,
+      "candidate_code": "theorem _root_.List.dropLast_eq_rdrop {\u03b1 : Type*} (l : List \u03b1) :\n    l.dropLast = l.rdrop 1 :=\n  by\n  simp_rw [rdrop_eq_reverse_drop_reverse]\n  simp_rw [reverse_drop_eq_drop_reverse]\n  simp",
+      "proof_body": "by\n  simp_rw [rdrop_eq_reverse_drop_reverse]\n  simp_rw [reverse_drop_eq_drop_reverse]\n  simp",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/root_.List.dropLast_eq_rdrop_4.lean:17:11: error(lean.unknownIdentifier): Unknown identifier `rdrop_eq_reverse_drop_reverse`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/root_.List.dropLast_eq_rdrop_4.lean:17:11: error: `simp` made no progress",
+      "error_class": "unknown identifier",
+      "latency_ms": 17894.79,
+      "lean_ms": 5859.73,
+      "tokens": 82,
+      "accepted": false
+    },
+    {
+      "attempt": 5,
+      "think": false,
+      "candidate_code": "theorem _root_.List.dropLast_eq_rdrop {\u03b1 : Type*} (l : List \u03b1) :\n    l.dropLast = l.rdrop 1 :=\n  by\n  simp_rw [rdrop_eq_reverse_drop_reverse]\n  simp_rw [reverse_drop_eq_drop_reverse]\n  simp",
+      "proof_body": "by\n  simp_rw [rdrop_eq_reverse_drop_reverse]\n  simp_rw [reverse_drop_eq_drop_reverse]\n  simp",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/root_.List.dropLast_eq_rdrop_5.lean:17:11: error(lean.unknownIdentifier): Unknown identifier `rdrop_eq_reverse_drop_reverse`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/root_.List.dropLast_eq_rdrop_5.lean:17:11: error: `simp` made no progress",
+      "error_class": "unknown identifier",
+      "latency_ms": 17691.6,
+      "lean_ms": 5735.17,
+      "tokens": 86,
+      "accepted": false
+    }
+  ]
+}

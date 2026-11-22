@@ -1,0 +1,78 @@
+{
+  "declaration": "StateTransition.iterate_flip_bind_none",
+  "raw_name": "StateTransition.iterate_flip_bind_none",
+  "spec_file": "TuringRecursive/Eval.lean",
+  "milestone": "M1",
+  "tier": "T0",
+  "statement": "@[simp]\ntheorem StateTransition.iterate_flip_bind_none {\u03c3 : Type*} (f : \u03c3 \u2192 Option \u03c3) (n : \u2115) :\n    (flip Option.bind f)^[n] none = none",
+  "max_attempts": 5,
+  "escalated_at": "2026-11-21T22:08:15Z",
+  "retrieved_premises": [
+    "StateTransition.FRespects",
+    "StateTransition.EvalsTo.trans",
+    "StateTransition.Respects",
+    "StateTransition.mem_eval"
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "think": false,
+      "candidate_code": "@[simp]\ntheorem StateTransition.iterate_flip_bind_none {\u03c3 : Type*} (f : \u03c3 \u2192 Option \u03c3) (n : \u2115) :\n    (flip Option.bind f)^[n] none = none :=\n  by\n  induction n with\n  | zero => by rw [Function.iterate_apply_zero]\n  | succ n ih => by\n    rw [Function.iterate_apply_succ, ih]\n    unfold flip\n    simp",
+      "proof_body": "by\n  induction n with\n  | zero => by rw [Function.iterate_apply_zero]\n  | succ n ih => by\n    rw [Function.iterate_apply_succ, ih]\n    unfold flip\n    simp",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/eval/.agents/gemma_scratch/StateTransition.iterate_flip_bind_none_1.lean:30:11: error: unexpected token 'by'; expected '?', '_', '{' or tactic\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/eval/.agents/gemma_scratch/StateTransition.iterate_flip_bind_none_1.lean:30:9: error: unsolved goals\ncase zero\n\u03c3 : Type u_1\nf : \u03c3 \u2192 Option \u03c3\n\u22a2 (flip Option.bind f)^[0] none = none\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/eval/.agents/gemma_scratch/StateTransition.iterate_flip_bind_none_1.lean:29:2: error: Alternative `succ` has not been provided",
+      "error_class": "unsolved goals",
+      "latency_ms": 20527.77,
+      "lean_ms": 5801.53,
+      "tokens": 129,
+      "accepted": false
+    },
+    {
+      "attempt": 2,
+      "think": false,
+      "candidate_code": "@[simp]\ntheorem StateTransition.iterate_flip_bind_none {\u03c3 : Type*} (f : \u03c3 \u2192 Option \u03c3) (n : \u2115) :\n    (flip Option.bind f)^[n] none = none :=\n  by\n  induction n with\n  | zero => by\n    simp [Function.iterate_apply_zero]\n  | succ n ih => by\n    simp [Function.iterate_apply_succ]\n    rw [ih]\n    unfold flip\n    simp",
+      "proof_body": "by\n  induction n with\n  | zero => by\n    simp [Function.iterate_apply_zero]\n  | succ n ih => by\n    simp [Function.iterate_apply_succ]\n    rw [ih]\n    unfold flip\n    simp",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/eval/.agents/gemma_scratch/StateTransition.iterate_flip_bind_none_2.lean:30:11: error: unexpected token 'by'; expected '?', '_', '{' or tactic\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/eval/.agents/gemma_scratch/StateTransition.iterate_flip_bind_none_2.lean:30:9: error: unsolved goals\ncase zero\n\u03c3 : Type u_1\nf : \u03c3 \u2192 Option \u03c3\n\u22a2 (flip Option.bind f)^[0] none = none\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/eval/.agents/gemma_scratch/StateTransition.iterate_flip_bind_none_2.lean:29:2: error: Alternative `succ` has not been provided",
+      "error_class": "unsolved goals",
+      "latency_ms": 22811.19,
+      "lean_ms": 5683.11,
+      "tokens": 119,
+      "accepted": false
+    },
+    {
+      "attempt": 3,
+      "think": false,
+      "candidate_code": "@[simp]\ntheorem StateTransition.iterate_flip_bind_none {\u03c3 : Type*} (f : \u03c3 \u2192 Option \u03c3) (n : \u2115) :\n    (flip Option.bind f)^[n] none = none :=\n  by\n  induction n with\n  | zero => by\n    simp [Function.iterate_apply_zero]\n  | succ n ih => by\n    simp [Function.iterate_apply_succ]\n    rw [ih]\n    unfold flip\n    simp",
+      "proof_body": "by\n  induction n with\n  | zero => by\n    simp [Function.iterate_apply_zero]\n  | succ n ih => by\n    simp [Function.iterate_apply_succ]\n    rw [ih]\n    unfold flip\n    simp",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/eval/.agents/gemma_scratch/StateTransition.iterate_flip_bind_none_3.lean:30:11: error: unexpected token 'by'; expected '?', '_', '{' or tactic\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/eval/.agents/gemma_scratch/StateTransition.iterate_flip_bind_none_3.lean:30:9: error: unsolved goals\ncase zero\n\u03c3 : Type u_1\nf : \u03c3 \u2192 Option \u03c3\n\u22a2 (flip Option.bind f)^[0] none = none\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/eval/.agents/gemma_scratch/StateTransition.iterate_flip_bind_none_3.lean:29:2: error: Alternative `succ` has not been provided",
+      "error_class": "unsolved goals",
+      "latency_ms": 23499.98,
+      "lean_ms": 5957.36,
+      "tokens": 135,
+      "accepted": false
+    },
+    {
+      "attempt": 4,
+      "think": false,
+      "candidate_code": "@[simp]\ntheorem StateTransition.iterate_flip_bind_none {\u03c3 : Type*} (f : \u03c3 \u2192 Option \u03c3) (n : \u2115) :\n    (flip Option.bind f)^[n] none = none :=\n  by\n  induction n with\n  | zero => rw [Function.iterate_apply_zero]\n  | succ n ih => \n    rw [Function.iterate_apply_succ, ih]\n    unfold flip\n    simp",
+      "proof_body": "by\n  induction n with\n  | zero => rw [Function.iterate_apply_zero]\n  | succ n ih => \n    rw [Function.iterate_apply_succ, ih]\n    unfold flip\n    simp",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/eval/.agents/gemma_scratch/StateTransition.iterate_flip_bind_none_4.lean:30:16: error(lean.unknownIdentifier): Unknown identifier `Function.iterate_apply_zero`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/eval/.agents/gemma_scratch/StateTransition.iterate_flip_bind_none_4.lean:32:8: error(lean.unknownIdentifier): Unknown identifier `Function.iterate_apply_succ`",
+      "error_class": "unknown identifier",
+      "latency_ms": 23317.83,
+      "lean_ms": 5704.23,
+      "tokens": 108,
+      "accepted": false
+    },
+    {
+      "attempt": 5,
+      "think": false,
+      "candidate_code": "@[simp]\ntheorem StateTransition.iterate_flip_bind_none {\u03c3 : Type*} (f : \u03c3 \u2192 Option \u03c3) (n : \u2115) :\n    (flip Option.bind f)^[n] none = none :=\n  by\n  induction n with\n  | zero => \n    simp [Function.iterate_apply_zero]\n  | succ n ih => \n    simp [Function.iterate_apply_succ]\n    rw [ih]\n    unfold flip\n    simp",
+      "proof_body": "by\n  induction n with\n  | zero => \n    simp [Function.iterate_apply_zero]\n  | succ n ih => \n    simp [Function.iterate_apply_succ]\n    rw [ih]\n    unfold flip\n    simp",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/eval/.agents/gemma_scratch/StateTransition.iterate_flip_bind_none_5.lean:31:10: error(lean.unknownIdentifier): Unknown identifier `Function.iterate_apply_zero`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/eval/.agents/gemma_scratch/StateTransition.iterate_flip_bind_none_5.lean:33:10: error(lean.unknownIdentifier): Unknown identifier `Function.iterate_apply_succ`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/eval/.agents/gemma_scratch/StateTransition.iterate_flip_bind_none_5.lean:35:4: error: No goals to be solved",
+      "error_class": "unknown identifier",
+      "latency_ms": 23981.74,
+      "lean_ms": 5778.17,
+      "tokens": 135,
+      "accepted": false
+    }
+  ]
+}

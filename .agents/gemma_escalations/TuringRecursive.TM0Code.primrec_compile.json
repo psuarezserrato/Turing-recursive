@@ -1,0 +1,78 @@
+{
+  "declaration": "TuringRecursive.TM0Code.primrec_compile",
+  "raw_name": "TM0Code.primrec_compile",
+  "spec_file": "TuringRecursive/Universal.lean",
+  "milestone": "M6",
+  "tier": "T0",
+  "statement": "theorem TM0Code.primrec_compile : Primrec TM0Code.compile",
+  "max_attempts": 5,
+  "escalated_at": "2026-11-22T01:31:01Z",
+  "retrieved_premises": [
+    "TuringRecursive.TM0Code.compile",
+    "TuringRecursive.TM0Code.exists_compiler",
+    "TuringRecursive.TM0Code.machine_primrec",
+    "TuringRecursive.TM0Code.step_primrec"
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "think": false,
+      "candidate_code": "theorem TM0Code.primrec_compile : Primrec TM0Code.compile :=\n  by\n  rcases TM0Code.exists_compiler with \u27e8compile, h_primrec, h_eval1, h_eval2\u27e9\n  simp [TM0Code.compile]\n  exact h_primrec",
+      "proof_body": "by\n  rcases TM0Code.exists_compiler with \u27e8compile, h_primrec, h_eval1, h_eval2\u27e9\n  simp [TM0Code.compile]\n  exact h_primrec",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.TM0Code.primrec_compile_1.lean:81:2: error: Type mismatch\n  h_primrec\nhas type\n  Primrec compile\nbut is expected to have type\n  Primrec exists_compiler.choose",
+      "error_class": "type mismatch",
+      "latency_ms": 15710.44,
+      "lean_ms": 6034.69,
+      "tokens": 77,
+      "accepted": false
+    },
+    {
+      "attempt": 2,
+      "think": false,
+      "candidate_code": "theorem TM0Code.primrec_compile : Primrec TM0Code.compile :=\n  by\n  rcases TM0Code.exists_compiler with \u27e8compile, h_primrec, h_eval1, h_eval2\u27e9\n  have h : TM0Code.compile = compile := by\n    rfl\n  exact h_primrec.mp (fun _ := h)",
+      "proof_body": "by\n  rcases TM0Code.exists_compiler with \u27e8compile, h_primrec, h_eval1, h_eval2\u27e9\n  have h : TM0Code.compile = compile := by\n    rfl\n  exact h_primrec.mp (fun _ := h)",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.TM0Code.primrec_compile_2.lean:82:27: error: unexpected token ':='; expected '\u21a6', '=>'\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.TM0Code.primrec_compile_2.lean:81:4: error: Tactic `rfl` failed: The left-hand side\n  TM0Code.compile\nis not definitionally equal to the right-hand side\n  compile\ncompile : TM0Code \u2192 Nat.Partrec.Code\nh_primrec : Primrec compile\nh_eval1 :\n  \u2200 (m : TM0Code) (n : \u2115),\n    (compile m).eval n =\n      (\u2191(Encodable.decode n)).bind fun c => Part.map Encodable.encode (StateTransition.eval (TM0.step m.machine) c)\nh_eval2 :",
+      "error_class": "syntax",
+      "latency_ms": 27027.29,
+      "lean_ms": 3818.95,
+      "tokens": 188,
+      "accepted": false
+    },
+    {
+      "attempt": 3,
+      "think": false,
+      "candidate_code": "theorem TM0Code.primrec_compile : Primrec TM0Code.compile :=\n  by\n  rcases TM0Code.exists_compiler with \u27e8compile, h_primrec, h_eval1, h_eval2\u27e9\n  let f := TM0Code.compile\n  show Primrec f\n  rcases h_primrec with \u27e8h_eq, _\u27e9\n  exact h_eq.mp (fun _ => rfl)",
+      "proof_body": "by\n  rcases TM0Code.exists_compiler with \u27e8compile, h_primrec, h_eval1, h_eval2\u27e9\n  let f := TM0Code.compile\n  show Primrec f\n  rcases h_primrec with \u27e8h_eq, _\u27e9\n  exact h_eq.mp (fun _ => rfl)",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.TM0Code.primrec_compile_3.lean:82:24: error: Tactic `cases` failed with a nested error:\nDependent elimination failed: Failed to solve equation\n  (fun n => Encodable.encode (Option.map compile (Encodable.decode n))) = fun x => 0\nat case `Nat.Primrec.zero`",
+      "error_class": "other",
+      "latency_ms": 22967.38,
+      "lean_ms": 4939.0,
+      "tokens": 108,
+      "accepted": false
+    },
+    {
+      "attempt": 4,
+      "think": false,
+      "candidate_code": "theorem TM0Code.primrec_compile : Primrec TM0Code.compile :=\n  by\n  rcases TM0Code.exists_compiler with \u27e8compile, h_primrec, _, _\u27e9\n  let f := TM0Code.compile\n  -- Use the equality provided by the primrec property\n  exact h_primrec.mp (fun _ := by \n    rfl\n  )",
+      "proof_body": "by\n  rcases TM0Code.exists_compiler with \u27e8compile, h_primrec, _, _\u27e9\n  let f := TM0Code.compile\n  -- Use the equality provided by the primrec property\n  exact h_primrec.mp (fun _ := by \n    rfl\n  )",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.TM0Code.primrec_compile_4.lean:82:27: error: unexpected token ':='; expected '\u21a6', '=>'\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.TM0Code.primrec_compile_4.lean:82:18: error(lean.invalidField): Invalid field `mp`: The environment does not contain `Nat.Primrec.mp`, so it is not possible to project the field `mp` from an expression\n  h_primrec\nof type\n  Nat.Primrec fun n => Encodable.encode (Option.map compile (Encodable.decode n))",
+      "error_class": "syntax",
+      "latency_ms": 40311.66,
+      "lean_ms": 4868.88,
+      "tokens": 97,
+      "accepted": false
+    },
+    {
+      "attempt": 5,
+      "think": false,
+      "candidate_code": "theorem TM0Code.primrec_compile : Primrec TM0Code.compile :=\n  by\n  rcases TM0Code.exists_compiler with \u27e8_, h_primrec, _, _\u27e9\n  let f := TM0Code.compile\n  -- The Primrec proof is provided by the existence of a compiler\n  -- which is proven to be primitive recursive.\n  exact h_primrec.mp (fun _ => rfl)",
+      "proof_body": "by\n  rcases TM0Code.exists_compiler with \u27e8_, h_primrec, _, _\u27e9\n  let f := TM0Code.compile\n  -- The Primrec proof is provided by the existence of a compiler\n  -- which is proven to be primitive recursive.\n  exact h_primrec.mp (fun _ => rfl)",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.TM0Code.primrec_compile_5.lean:83:18: error(lean.invalidField): Invalid field `mp`: The environment does not contain `Nat.Primrec.mp`, so it is not possible to project the field `mp` from an expression\n  h_primrec\nof type\n  Nat.Primrec fun n => Encodable.encode (Option.map w\u271d (Encodable.decode n))",
+      "error_class": "other",
+      "latency_ms": 30134.31,
+      "lean_ms": 4723.21,
+      "tokens": 104,
+      "accepted": false
+    }
+  ]
+}

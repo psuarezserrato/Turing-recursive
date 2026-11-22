@@ -1,0 +1,78 @@
+{
+  "declaration": "TuringRecursive._root_.Turing.ListBlank.trim_injective",
+  "raw_name": "_root_.Turing.ListBlank.trim_injective",
+  "spec_file": "TuringRecursive/Encoding.lean",
+  "milestone": "M2",
+  "tier": "T0",
+  "statement": "theorem _root_.Turing.ListBlank.trim_injective {\u0393 : Type*} [Inhabited \u0393] [DecidableEq \u0393] :\n    Function.Injective (@ListBlank.trim \u0393 _ _)",
+  "max_attempts": 5,
+  "escalated_at": "2026-11-21T22:41:39Z",
+  "retrieved_premises": [
+    "TuringRecursive._root_.Turing.ListBlank.mk_trim",
+    "TuringRecursive._root_.Turing.ListBlank.trim_congr",
+    "TuringRecursive._root_.Turing.ListBlank.trim",
+    "Turing.ListBlank.inhabited"
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "think": false,
+      "candidate_code": "theorem _root_.Turing.ListBlank.trim_injective {\u0393 : Type*} [Inhabited \u0393] [DecidableEq \u0393] :\n    Function.Injective (@ListBlank.trim \u0393 _ _) :=\n  by\n  let f := ListBlank.trim\n  intro x y h\n  let x' := f x\n  let y' := f y\n  have h_eq : x' = y' := h\n  rcases x with \u27e8l, n\u27e9\n  rcases y with \u27e8l', n'\u27e9\n  have h_n : n = n' := by\n    rw [ListBlank.trim_length]\n    exact h_eq\n  have h_l : l = l' := by\n    rw [ListBlank.trim_congr]\n    exact h_eq\n  cases h_l\n  cases h_n\n  simp [ListBlank.trim]\n  \u00b7 rw [List.rdropWhile_eq]\n    exact h\n  \u00b7 rw [List.rdropWhile_eq]\n    exact h",
+      "proof_body": "by\n  let f := ListBlank.trim\n  intro x y h\n  let x' := f x\n  let y' := f y\n  have h_eq : x' = y' := h\n  rcases x with \u27e8l, n\u27e9\n  rcases y with \u27e8l', n'\u27e9\n  have h_n : n = n' := by\n    rw [ListBlank.trim_length]\n    exact h_eq\n  have h_l : l = l' := by\n    rw [ListBlank.trim_congr]\n    exact h_eq\n  cases h_l\n  cases h_n\n  simp [ListBlank.trim]\n  \u00b7 rw [List.rdropWhile_eq]\n    exact h\n  \u00b7 rw [List.rdropWhile_eq]\n    exact h",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive._root_.Turing.ListBlank.trim_injective_1.lean:59:11: error: typeclass instance problem is stuck\n  DecidableEq ?m.7\nNote: Lean will not try to resolve this typeclass instance problem because the type argument to `DecidableEq` is a metavariable. This argument must be fully determined before Lean will try to resolve the typeclass.\nHint: Adding type annotations and supplying implicit arguments to functions can give Lean more information for typeclass resolution. For example, if you have a variable `x` that you intend to be a `Nat`, but Lean reports it as having an unresolved type like `?m`, replacing `x` with `(x : Nat)` can get typeclass resolution un-stuck.",
+      "error_class": "other",
+      "latency_ms": 31131.49,
+      "lean_ms": 5913.76,
+      "tokens": 244,
+      "accepted": false
+    },
+    {
+      "attempt": 2,
+      "think": false,
+      "candidate_code": "theorem _root_.Turing.ListBlank.trim_injective {\u0393 : Type*} [Inhabited \u0393] [DecidableEq \u0393] :\n    Function.Injective (@ListBlank.trim \u0393 _ _) :=\n  by\n  let f := ListBlank.trim\n  intro x y h\n  rcases x with \u27e8l, n\u27e9\n  rcases y with \u27e8l', n'\u27e9\n  -- ListBlank.trim x = l.liftOn (List.rdropWhile (\u00b7 == default))\n  -- and ListBlank.trim x = (list of length n)\n  -- Length is preserved by the trim operation for ListBlank\n  have h_len : n = n' := by\n    rw [ListBlank.trim_length]\n    exact h\n  -- Because the length n is fixed and the list l is the content before the blank\n  -- The trim preserves the content and the length.\n  have h_content : l = l' := by\n    rw [ListBlank.trim_congr]\n    exact h\n  -- By induction on n, the list of length n is uniquely determined by its content\n  obtain h_unique := List.mem_unique (n : \u2115)\n  apply h_unique\n  \u00b7 exact h_len\n  \u00b7 exact h_content",
+      "proof_body": "by\n  let f := ListBlank.trim\n  intro x y h\n  rcases x with \u27e8l, n\u27e9\n  rcases y with \u27e8l', n'\u27e9\n  -- ListBlank.trim x = l.liftOn (List.rdropWhile (\u00b7 == default))\n  -- and ListBlank.trim x = (list of length n)\n  -- Length is preserved by the trim operation for ListBlank\n  have h_len : n = n' := by\n    rw [ListBlank.trim_length]\n    exact h\n  -- Because the length n is fixed and the list l is the content before the blank\n  -- The trim preserves the content and the length.\n  have h_content : l = l' := by\n    rw [ListBlank.trim_congr]\n    exact h\n  -- By induction on n, the list of length n is uniquely determined by its content\n  obtain h_unique := List.mem_unique (n : \u2115)\n  apply h_unique\n  \u00b7 exact h_len\n  \u00b7 exact h_content",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive._root_.Turing.ListBlank.trim_injective_2.lean:59:11: error: typeclass instance problem is stuck\n  DecidableEq ?m.7\nNote: Lean will not try to resolve this typeclass instance problem because the type argument to `DecidableEq` is a metavariable. This argument must be fully determined before Lean will try to resolve the typeclass.\nHint: Adding type annotations and supplying implicit arguments to functions can give Lean more information for typeclass resolution. For example, if you have a variable `x` that you intend to be a `Nat`, but Lean reports it as having an unresolved type like `?m`, replacing `x` with `(x : Nat)` can get typeclass resolution un-stuck.",
+      "error_class": "other",
+      "latency_ms": 38242.9,
+      "lean_ms": 5855.78,
+      "tokens": 292,
+      "accepted": false
+    },
+    {
+      "attempt": 3,
+      "think": false,
+      "candidate_code": "theorem _root_.Turing.ListBlank.trim_injective {\u0393 : Type*} [Inhabited \u0393] [DecidableEq \u0393] :\n    Function.Injective (@ListBlank.trim \u0393 _ _) :=\n  by\n  let f := ListBlank.trim\n  intro x y h\n  rcases x with \u27e8l, n\u27e9\n  rcases y with \u27e8l', n'\u27e9",
+      "proof_body": "by\n  let f := ListBlank.trim\n  intro x y h\n  rcases x with \u27e8l, n\u27e9\n  rcases y with \u27e8l', n'\u27e9",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive._root_.Turing.ListBlank.trim_injective_3.lean:59:11: error: typeclass instance problem is stuck\n  DecidableEq ?m.7\nNote: Lean will not try to resolve this typeclass instance problem because the type argument to `DecidableEq` is a metavariable. This argument must be fully determined before Lean will try to resolve the typeclass.\nHint: Adding type annotations and supplying implicit arguments to functions can give Lean more information for typeclass resolution. For example, if you have a variable `x` that you intend to be a `Nat`, but Lean reports it as having an unresolved type like `?m`, replacing `x` with `(x : Nat)` can get typeclass resolution un-stuck.",
+      "error_class": "other",
+      "latency_ms": 46168.81,
+      "lean_ms": 5716.65,
+      "tokens": 384,
+      "accepted": false
+    },
+    {
+      "attempt": 4,
+      "think": false,
+      "candidate_code": "theorem _root_.Turing.ListBlank.trim_injective {\u0393 : Type*} [Inhabited \u0393] [DecidableEq \u0393] :\n    Function.Injective (@ListBlank.trim \u0393 _ _) :=\n  by\n  let f := ListBlank.trim\n  intro x y h\n  rcases x with \u27e8l, n\u27e9\n  rcases y with \u27e8l', n'\u27e9",
+      "proof_body": "by\n  let f := ListBlank.trim\n  intro x y h\n  rcases x with \u27e8l, n\u27e9\n  rcases y with \u27e8l', n'\u27e9",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive._root_.Turing.ListBlank.trim_injective_4.lean:59:11: error: typeclass instance problem is stuck\n  DecidableEq ?m.7\nNote: Lean will not try to resolve this typeclass instance problem because the type argument to `DecidableEq` is a metavariable. This argument must be fully determined before Lean will try to resolve the typeclass.\nHint: Adding type annotations and supplying implicit arguments to functions can give Lean more information for typeclass resolution. For example, if you have a variable `x` that you intend to be a `Nat`, but Lean reports it as having an unresolved type like `?m`, replacing `x` with `(x : Nat)` can get typeclass resolution un-stuck.",
+      "error_class": "other",
+      "latency_ms": 66586.18,
+      "lean_ms": 5449.95,
+      "tokens": 512,
+      "accepted": false
+    },
+    {
+      "attempt": 5,
+      "think": false,
+      "candidate_code": "theorem _root_.Turing.ListBlank.trim_injective {\u0393 : Type*} [Inhabited \u0393] [DecidableEq \u0393] :\n    Function.Injective (@ListBlank.trim \u0393 _ _) :=\n  by\n  intro x y h\n  rcases x with \u27e8l, n\u27e9\n  rcases y with \u27e8l', n'\u27e9\n  -- ListBlank.trim x = l.liftOn (List.rdropWhile (\u00b7 == default))\n  -- Based on the definition, the trim operation removes leading blanks.\n  -- However, the definition of ListBlank and its trim ensures that the\n  -- resulting list represents the contents after trimming.\n  -- Since ListBlank is a representation of a list where leading blanks are \n  -- handled/removed by trim, we can show that if the trimmed result is \n  -- the same, then the original values must be equal.\n  have h_n : n = n' := by\n    -- The length of the trimmed list is determined by the number of non-default \n    -- elements. In ListBlank, the length is fixed.\n    apply ListBlank.trim_length\n    exact h\n  have h_l : l = l' := by\n    rw [ListBlank.trim_congr]\n    exact h\n  -- Since the trim operation is defined such that it preserves the \n  -- unique representation of the trimmed list, and ListBlank provides \n  -- that representation.\n  simp [ListBlank.trim]\n  exact h",
+      "proof_body": "by\n  intro x y h\n  rcases x with \u27e8l, n\u27e9\n  rcases y with \u27e8l', n'\u27e9\n  -- ListBlank.trim x = l.liftOn (List.rdropWhile (\u00b7 == default))\n  -- Based on the definition, the trim operation removes leading blanks.\n  -- However, the definition of ListBlank and its trim ensures that the\n  -- resulting list represents the contents after trimming.\n  -- Since ListBlank is a representation of a list where leading blanks are \n  -- handled/removed by trim, we can show that if the trimmed result is \n  -- the same, then the original values must be equal.\n  have h_n : n = n' := by\n    -- The length of the trimmed list is determined by the number of non-default \n    -- elements. In ListBlank, the length is fixed.\n    apply ListBlank.trim_length\n    exact h\n  have h_l : l = l' := by\n    rw [ListBlank.trim_congr]\n    exact h\n  -- Since the trim operation is defined such that it preserves the \n  -- unique representation of the trimmed list, and ListBlank provides \n  -- that representation.\n  simp [ListBlank.trim]\n  exact h",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive._root_.Turing.ListBlank.trim_injective_5.lean:69:13: error(lean.unknownIdentifier): Unknown identifier `n`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive._root_.Turing.ListBlank.trim_injective_5.lean:69:17: error(lean.unknownIdentifier): Unknown identifier `n'`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive._root_.Turing.ListBlank.trim_injective_5.lean:58:2: error: unsolved goals\ncase mk.nil.mk.nil\n\u0393 : Type u_1\ninst\u271d\u00b9 : Inhabited \u0393\ninst\u271d : DecidableEq \u0393\nx y : ListBlank \u0393\nh : ListBlank.trim (Quot.mk \u21d1(BlankRel.setoid \u0393) []) = ListBlank.trim (Quot.mk \u21d1(BlankRel.setoid \u0393) [])\n\u22a2 Quot.mk \u21d1(BlankRel.setoid \u0393) [] = Quot.mk \u21d1(BlankRel.setoid \u0393) []\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive._root_.Turing.ListBlank.trim_injective_5.lean:56:8: error: (kernel) declaration has metavariables 'Turing.ListBlank.trim_injective'",
+      "error_class": "unknown identifier",
+      "latency_ms": 51569.43,
+      "lean_ms": 5868.12,
+      "tokens": 338,
+      "accepted": false
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "declaration": "TuringRecursive.univEvalNat_encode",
+  "raw_name": "univEvalNat_encode",
+  "spec_file": "TuringRecursive/Universal.lean",
+  "milestone": "M6",
+  "tier": "T0",
+  "statement": "theorem univEvalNat_encode (m : TM0Code) (c : TM0.Cfg \u2115 \u2115) :\n    univEvalNat (Encodable.encode (m, c)) =\n      (StateTransition.eval (TM0.step m.machine) c).map Encodable.encode",
+  "max_attempts": 5,
+  "escalated_at": "2026-11-22T01:45:12Z",
+  "retrieved_premises": [
+    "TuringRecursive.univEvalNat",
+    "TuringRecursive.TM0Code.exists_compiler",
+    "TuringRecursive.codeTM0_evalCfg_tape",
+    "TuringRecursive.TM0Code.exists_relabeling"
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "think": false,
+      "candidate_code": "theorem univEvalNat_encode (m : TM0Code) (c : TM0.Cfg \u2115 \u2115) :\n    univEvalNat (Encodable.encode (m, c)) =\n      (StateTransition.eval (TM0.step m.machine) c).map Encodable.encode :=\n  by\n  rcases Encodable.decode (\u03b1 := TM0Code \u00d7 TM0.Cfg \u2115 \u2115) (Encodable.encode (m, c)) with \u27e8m', c', h_decode\u27e9\n  -- Since Encodable.encode is injective, and (m, c) encodes to (m, c)\n  -- we can prove m' = m and c' = c.\n  -- However, we can use the property of Encodable.decode directly.\n  -- The definition of univEvalNat is:\n  -- (Part.ofOption (Encodable.decode (\u03b1 := TM0.Cfg \u2115 \u2115) n)).bind fun c \u21a6 (StateTransition.eval (TM0.step m.machine) c).map Encodable.encode\n  -- Here n = Encodable.encode (m, c).\n  -- Let's evaluate the parts of the definition.\n  -- 1. Encodable.decode (\u03b1 := TM0.Cfg \u2115 \u2115) (Encodable.encode (m, c)) = some c\n  -- 2. The result of univEvalNat is then the result of (StateTransition.eval (TM0.step m.machine) c).map Encodable.encode\n  -- This matches the goal.\n  refine univEvalNat (Encodable.encode (m, c))\n  rlemma (hm : Enc",
+      "proof_body": "by\n  rcases Encodable.decode (\u03b1 := TM0Code \u00d7 TM0.Cfg \u2115 \u2115) (Encodable.encode (m, c)) with \u27e8m', c', h_decode\u27e9\n  -- Since Encodable.encode is injective, and (m, c) encodes to (m, c)\n  -- we can prove m' = m and c' = c.\n  -- However, we can use the property of Encodable.decode directly.\n  -- The definition of univEvalNat is:\n  -- (Part.ofOption (Encodable.decode (\u03b1 := TM0.Cfg \u2115 \u2115) n)).bind fun c \u21a6 (StateTransition.eval (TM0.step m.machine) c).map Encodable.encode\n  -- Here n = Encodable.encode (m, c).\n  -- Let's evaluate the parts of the definition.\n  -- 1. Encodable.decode (\u03b1 := TM0.Cfg \u2115 \u2115) (Encodable.encode (m, c)) = some c\n  -- 2. The result of univEvalNat is then the result of (StateTransition.eval (TM0.step m.machine) c).map Encodable.encode\n  -- This matches the goal.\n  refine univEvalNat (Encodable.encode (m, c))\n  rlemma (hm : Enc",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.univEvalNat_encode_1.lean:151:3: error: unknown tactic\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.univEvalNat_encode_1.lean:151:8: error: unexpected token '('; expected identifier",
+      "error_class": "syntax",
+      "latency_ms": 56151.9,
+      "lean_ms": 2767.39,
+      "tokens": 384,
+      "accepted": false
+    },
+    {
+      "attempt": 2,
+      "think": false,
+      "candidate_code": "theorem univEvalNat_encode (m : TM0Code) (c : TM0.Cfg \u2115 \u2115) :\n    univEvalNat (Encodable.encode (m, c)) =\n      (StateTransition.eval (TM0.step m.machine) c).map Encodable.encode :=\n  by\n  let n := Encodable.encode (m, c)\n  rcases Encodable.decode (\u03b1 := TM0Code \u00d7 TM0.Cfg \u2115 \u2115) n with \u27e8m', c', h_decode\u27e9\n  have h_m : m = m' := by\n    have h_eq : (m, c) = (m', c') := by\n      rcases h_decode with h_eq_decode\n      exact h_eq_decode\n    exact (h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq",
+      "proof_body": "by\n  let n := Encodable.encode (m, c)\n  rcases Encodable.decode (\u03b1 := TM0Code \u00d7 TM0.Cfg \u2115 \u2115) n with \u27e8m', c', h_decode\u27e9\n  have h_m : m = m' := by\n    have h_eq : (m, c) = (m', c') := by\n      rcases h_decode with h_eq_decode\n      exact h_eq_decode\n    exact (h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq.mp (fun _ => h_eq",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.univEvalNat_encode_2.lean:145:411: error: unexpected token '/--'; expected ')', ',' or ':'\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.univEvalNat_encode_2.lean:141:17: error(lean.unknownIdentifier): Unknown identifier `m'`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.univEvalNat_encode_2.lean:142:26: error(lean.unknownIdentifier): Unknown identifier `m'`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.univEvalNat_encode_2.lean:142:30: error(lean.unknownIdentifier): Unknown identifier `c'`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.univEvalNat_encode_2.lean:143:13: error(lean.unknownIdentifier): Unknown identifier `h_decode`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.univEvalNat_encode_2.lean:138:2: error: unsolved goals\ncase none\nm : TM0Code\nc : TM0.Cfg \u2115 \u2115\nn : \u2115 := Encodable.encode (m, c)\nh_m : m = sorry\n\u22a2 univEvalNat (Encodable.encode (m, c)) = Part.map Encodable.encode (StateTransition.eval (TM0.step m.machine) c)",
+      "error_class": "unknown identifier",
+      "latency_ms": 52232.38,
+      "lean_ms": 2924.66,
+      "tokens": 384,
+      "accepted": false
+    },
+    {
+      "attempt": 3,
+      "think": false,
+      "candidate_code": "theorem univEvalNat_encode (m : TM0Code) (c : TM0.Cfg \u2115 \u2115) :\n    univEvalNat (Encodable.encode (m, c)) =\n      (StateTransition.eval (TM0.step m.machine) c).map Encodable.encode :=\n  by\n  rcases Encodable.decode (\u03b1 := TM0Code \u00d7 TM0.Cfg \u2115 \u2115) (Encodable.encode (m, c)) with \u27e8m', c', h_decode\u27e9\n  have h_eq : (m, c) = (m', c') := by\n    rcases h_decode with h_eq_dec\n    exact h_eq_dec\n  rw [h_eq]\n  -- Since univEvalNat (Encodable.encode (m, c)) is by definition (StateTransition.eval (TM0.step m.machine) c).map Encodable.encode\n  -- we just need to show the equality of the computation.\n  simp",
+      "proof_body": "by\n  rcases Encodable.decode (\u03b1 := TM0Code \u00d7 TM0.Cfg \u2115 \u2115) (Encodable.encode (m, c)) with \u27e8m', c', h_decode\u27e9\n  have h_eq : (m, c) = (m', c') := by\n    rcases h_decode with h_eq_dec\n    exact h_eq_dec\n  rw [h_eq]\n  -- Since univEvalNat (Encodable.encode (m, c)) is by definition (StateTransition.eval (TM0.step m.machine) c).map Encodable.encode\n  -- we just need to show the equality of the computation.\n  simp",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.univEvalNat_encode_3.lean:140:24: error(lean.unknownIdentifier): Unknown identifier `m'`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.univEvalNat_encode_3.lean:140:28: error(lean.unknownIdentifier): Unknown identifier `c'`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.univEvalNat_encode_3.lean:141:11: error(lean.unknownIdentifier): Unknown identifier `h_decode`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.univEvalNat_encode_3.lean:138:2: error: unsolved goals\ncase none\nm : TM0Code\nc : TM0.Cfg \u2115 \u2115\nh_eq : (m, c) = (sorry, sorry)\n\u22a2 univEvalNat (Nat.pair (Encodable.encode (sorry ())) (Encodable.encode (sorry ()))) =\n    Part.map Encodable.encode (StateTransition.eval (TM0.step m.machine) c)\ncase some\nm : TM0Code",
+      "error_class": "unknown identifier",
+      "latency_ms": 38756.17,
+      "lean_ms": 4649.54,
+      "tokens": 231,
+      "accepted": false
+    },
+    {
+      "attempt": 4,
+      "think": false,
+      "candidate_code": "theorem univEvalNat_encode (m : TM0Code) (c : TM0.Cfg \u2115 \u2115) :\n    univEvalNat (Encodable.encode (m, c)) =\n      (StateTransition.eval (TM0.step m.machine) c).map Encodable.encode :=\n  by\n  rcases Encodable.decode (\u03b1 := TM0Code \u00d7 TM0.Cfg \u2115 \u2115) (Encodable.encode (m, c)) with \u27e8m', c', h_dec\u27e9\n  have h : (m, c) = (m', c') := by\n    rcases h_dec with h_eq\n    exact h_eq\n  rw [h]\n  simp [univEvalNat]",
+      "proof_body": "by\n  rcases Encodable.decode (\u03b1 := TM0Code \u00d7 TM0.Cfg \u2115 \u2115) (Encodable.encode (m, c)) with \u27e8m', c', h_dec\u27e9\n  have h : (m, c) = (m', c') := by\n    rcases h_dec with h_eq\n    exact h_eq\n  rw [h]\n  simp [univEvalNat]",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.univEvalNat_encode_4.lean:140:21: error(lean.unknownIdentifier): Unknown identifier `m'`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.univEvalNat_encode_4.lean:140:25: error(lean.unknownIdentifier): Unknown identifier `c'`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.univEvalNat_encode_4.lean:141:11: error(lean.unknownIdentifier): Unknown identifier `h_dec`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.univEvalNat_encode_4.lean:138:2: error: unsolved goals\ncase none\nm : TM0Code\nc : TM0.Cfg \u2115 \u2115\nh : (m, c) = (sorry, sorry)\n\u22a2 Part.map Encodable.encode (StateTransition.eval (TM0.step (sorry ()).machine) (sorry ())) =\n    Part.map Encodable.encode (StateTransition.eval (TM0.step m.machine) c)\ncase some\nm : TM0Code",
+      "error_class": "unknown identifier",
+      "latency_ms": 34625.38,
+      "lean_ms": 5707.28,
+      "tokens": 171,
+      "accepted": false
+    },
+    {
+      "attempt": 5,
+      "think": false,
+      "candidate_code": "theorem univEvalNat_encode (m : TM0Code) (c : TM0.Cfg \u2115 \u2115) :\n    univEvalNat (Encodable.encode (m, c)) =\n      (StateTransition.eval (TM0.step m.machine) c).map Encodable.encode :=\n  by\n  let n := Encodable.encode (m, c)\n  rcases Encodable.decode (\u03b1 := TM0Code \u00d7 TM0.Cfg \u2115 \u2115) n with \u27e8m', c', h_dec\u27e9\n  have h : (m, c) = (m', c') := by\n    rcases h_dec with h_eq\n    exact h_eq\n  rw [h]\n  simp [univEvalNat]",
+      "proof_body": "by\n  let n := Encodable.encode (m, c)\n  rcases Encodable.decode (\u03b1 := TM0Code \u00d7 TM0.Cfg \u2115 \u2115) n with \u27e8m', c', h_dec\u27e9\n  have h : (m, c) = (m', c') := by\n    rcases h_dec with h_eq\n    exact h_eq\n  rw [h]\n  simp [univEvalNat]",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.univEvalNat_encode_5.lean:141:21: error(lean.unknownIdentifier): Unknown identifier `m'`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.univEvalNat_encode_5.lean:141:25: error(lean.unknownIdentifier): Unknown identifier `c'`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.univEvalNat_encode_5.lean:142:11: error(lean.unknownIdentifier): Unknown identifier `h_dec`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/universal/.agents/gemma_scratch/TuringRecursive.univEvalNat_encode_5.lean:138:2: error: unsolved goals\ncase none\nm : TM0Code\nc : TM0.Cfg \u2115 \u2115\nn : \u2115 := Encodable.encode (m, c)\nh : (m, c) = (sorry, sorry)\n\u22a2 Part.map Encodable.encode (StateTransition.eval (TM0.step (sorry ()).machine) (sorry ())) =\n    Part.map Encodable.encode (StateTransition.eval (TM0.step m.machine) c)\ncase some",
+      "error_class": "unknown identifier",
+      "latency_ms": 33673.1,
+      "lean_ms": 5133.15,
+      "tokens": 176,
+      "accepted": false
+    }
+  ]
+}

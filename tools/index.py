@@ -20,12 +20,11 @@ import math
 import os
 import pickle
 import re
+import subprocess
 import sys
 import time
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Sequence, Set, Tuple
-
-MAIN_REPO = Path("/Users/pablosuarez/Desktop/Turing-recursive")
 
 DEFAULT_MATHLIB_SUBDIRS = (
     "Mathlib/Computability",
@@ -72,17 +71,39 @@ SCOPE_CMD_RE = re.compile(
 SORRY_TOKEN_RE = re.compile(r"\b(?:sorry|sorryAx|admit|axiom)\b")
 
 
+def _git_common_repo_root(start_dir: Path) -> Path:
+    """Resolve the shared main repository root via git-common-dir, or return `start_dir`."""
+    try:
+        raw = subprocess.check_output(
+            ["git", "-C", str(start_dir), "rev-parse", "--git-common-dir"],
+            stderr=subprocess.DEVNULL,
+            text=True,
+            timeout=2.0,
+        ).strip()
+        if raw:
+            p = Path(raw)
+            p = (start_dir / p).resolve() if not p.is_absolute() else p.resolve()
+            if p.name == ".git":
+                return p.parent
+    except Exception:
+        pass
+    return start_dir
+
+
 def resolve_repo_root(root_arg: Optional[str] = None) -> Path:
     """Resolve worktree or repository root."""
     if root_arg:
         return Path(root_arg).resolve()
+    env_root = os.environ.get("TURING_RECURSIVE_ROOT")
+    if env_root and Path(env_root).is_dir():
+        return Path(env_root).resolve()
     cwd = Path.cwd()
     if (cwd / "lakefile.toml").is_file():
         return cwd
     here_root = Path(__file__).resolve().parent.parent
     if (here_root / "lakefile.toml").is_file():
         return here_root
-    return MAIN_REPO
+    return _git_common_repo_root(here_root)
 
 
 def mask_comments_and_strings(content: str) -> str:
@@ -555,8 +576,10 @@ class RepositoryIndex:
     ) -> "RepositoryIndex":
         root = resolve_repo_root(str(repo_root) if repo_root else None)
         mathlib_root = root / ".lake" / "packages" / "mathlib"
-        if not mathlib_root.is_dir() and (MAIN_REPO / ".lake" / "packages" / "mathlib").is_dir():
-            mathlib_root = MAIN_REPO / ".lake" / "packages" / "mathlib"
+        if not mathlib_root.is_dir():
+            common_root = _git_common_repo_root(root)
+            if (common_root / ".lake" / "packages" / "mathlib").is_dir():
+                mathlib_root = common_root / ".lake" / "packages" / "mathlib"
 
         all_decls: List[Dict[str, Any]] = []
         all_proofs: List[Dict[str, Any]] = []

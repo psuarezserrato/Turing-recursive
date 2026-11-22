@@ -26,10 +26,21 @@ class TestWorkflowControl(unittest.TestCase):
 
     def test_contract_files_match_turing_recursive_milestones(self):
         keys = set(workflow_control.CONTRACT_FILES.keys())
-        self.assertEqual(keys, {"S1", "M1", "M2", "M3", "M4", "M5", "M6", "M7"})
+        self.assertEqual(keys, {"M1", "M2a", "M2", "M3", "M4", "M5", "M6", "M7"})
         for path in workflow_control.CONTRACT_FILES.values():
             self.assertTrue(path.startswith("TuringRecursive/"))
             self.assertTrue(path.endswith(".lean"))
+
+    def test_strip_lean_comments_preserves_strings(self):
+        src = (
+            'def s : String := "-- not a comment /- neither -/"\n'
+            "def c : Char := '\"'\n"
+            "-- real comment sorry\n"
+            "theorem after_str : True := trivial\n"
+        )
+        stripped = workflow_control.strip_lean_comments(src)
+        self.assertNotIn("real comment", stripped)
+        self.assertIn("theorem after_str : True := trivial", stripped)
 
     def test_pause_resume_and_scan_contracts(self):
         with tempfile.TemporaryDirectory() as td:

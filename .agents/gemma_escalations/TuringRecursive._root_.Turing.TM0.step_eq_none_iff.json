@@ -1,0 +1,78 @@
+{
+  "declaration": "TuringRecursive._root_.Turing.TM0.step_eq_none_iff",
+  "raw_name": "_root_.Turing.TM0.step_eq_none_iff",
+  "spec_file": "TuringRecursive/TM0Eval.lean",
+  "milestone": "M3",
+  "tier": "T0",
+  "statement": "@[simp]\ntheorem _root_.Turing.TM0.step_eq_none_iff {\u0393 \u039b : Type*} [Inhabited \u0393] [Inhabited \u039b]\n    (M : TM0.Machine \u0393 \u039b) (c : TM0.Cfg \u0393 \u039b) :\n    TM0.step M c = none \u2194 M c.q c.Tape.head = none",
+  "max_attempts": 5,
+  "escalated_at": "2026-11-21T23:30:03Z",
+  "retrieved_premises": [
+    "TuringRecursive._root_.Primrec.cfg_tape",
+    "TuringRecursive._root_.Primrec.cfg_mk",
+    "TuringRecursive._root_.Primrec.cfg_q",
+    "TuringRecursive.cfgEquivProd"
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "think": false,
+      "candidate_code": "@[simp]\ntheorem _root_.Turing.TM0.step_eq_none_iff {\u0393 \u039b : Type*} [Inhabited \u0393] [Inhabited \u039b]\n    (M : TM0.Machine \u0393 \u039b) (c : TM0.Cfg \u0393 \u039b) :\n    TM0.step M c = none \u2194 M c.q c.Tape.head = none :=\n  by\n  constructor\n  \u00b7 intro h\n    _ \u2190 ext _\n    simp at h\n    exact h\n  \u00b7 intro h\n    _ \u2190 ext _\n    simp at h\n    exact h",
+      "proof_body": "by\n  constructor\n  \u00b7 intro h\n    _ \u2190 ext _\n    simp at h\n    exact h\n  \u00b7 intro h\n    _ \u2190 ext _\n    simp at h\n    exact h",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/tm0-eval/.agents/gemma_scratch/TuringRecursive._root_.Turing.TM0.step_eq_none_iff_1.lean:39:60: error: unexpected token '/--'; expected 'lemma'\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/tm0-eval/.agents/gemma_scratch/TuringRecursive._root_.Turing.TM0.step_eq_none_iff_1.lean:44:61: error: unexpected token '/--'; expected 'lemma'\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/tm0-eval/.agents/gemma_scratch/TuringRecursive._root_.Turing.TM0.step_eq_none_iff_1.lean:59:4: error: unsolved goals\ncase mp\n\u0393 : Type u_1\n\u039b : Type u_2\ninst\u271d\u00b9 : Inhabited \u0393\ninst\u271d : Inhabited \u039b\nM : TM0.Machine \u0393 \u039b\nc : TM0.Cfg \u0393 \u039b\nh : TM0.step M c = none\n\u22a2 M c.q c.Tape.head = none",
+      "error_class": "unsolved goals",
+      "latency_ms": 21112.22,
+      "lean_ms": 6148.58,
+      "tokens": 136,
+      "accepted": false
+    },
+    {
+      "attempt": 2,
+      "think": false,
+      "candidate_code": "@[simp]\ntheorem _root_.Turing.TM0.step_eq_none_iff {\u0393 \u039b : Type*} [Inhabited \u0393] [Inhabited \u039b]\n    (M : TM0.Machine \u0393 \u039b) (c : TM0.Cfg \u0393 \u039b) :\n    TM0.step M c = none \u2194 M c.q c.Tape.head = none :=\n  by\n  constructor\n  \u00b7 intro h\n    simp at h\n    exact h\n  \u00b7 intro h\n    simp at h\n    exact h",
+      "proof_body": "by\n  constructor\n  \u00b7 intro h\n    simp at h\n    exact h\n  \u00b7 intro h\n    simp at h\n    exact h",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/tm0-eval/.agents/gemma_scratch/TuringRecursive._root_.Turing.TM0.step_eq_none_iff_2.lean:39:60: error: unexpected token '/--'; expected 'lemma'\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/tm0-eval/.agents/gemma_scratch/TuringRecursive._root_.Turing.TM0.step_eq_none_iff_2.lean:44:61: error: unexpected token '/--'; expected 'lemma'\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/tm0-eval/.agents/gemma_scratch/TuringRecursive._root_.Turing.TM0.step_eq_none_iff_2.lean:59:4: error: `simp` made no progress\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/tm0-eval/.agents/gemma_scratch/TuringRecursive._root_.Turing.TM0.step_eq_none_iff_2.lean:62:4: error: `simp` made no progress",
+      "error_class": "syntax",
+      "latency_ms": 24753.39,
+      "lean_ms": 5939.45,
+      "tokens": 124,
+      "accepted": false
+    },
+    {
+      "attempt": 3,
+      "think": false,
+      "candidate_code": "@[simp]\ntheorem _root_.Turing.TM0.step_eq_none_iff {\u0393 \u039b : Type*} [Inhabited \u0393] [Inhabited \u039b]\n    (M : TM0.Machine \u0393 \u039b) (c : TM0.Cfg \u0393 \u039b) :\n    TM0.step M c = none \u2194 M c.q c.Tape.head = none :=\n  by\n  constructor\n  \u00b7 intro h\n    simp at h\n    exact h\n  \u00b7 intro h\n    simp at h\n    exact h",
+      "proof_body": "by\n  constructor\n  \u00b7 intro h\n    simp at h\n    exact h\n  \u00b7 intro h\n    simp at h\n    exact h",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/tm0-eval/.agents/gemma_scratch/TuringRecursive._root_.Turing.TM0.step_eq_none_iff_3.lean:39:60: error: unexpected token '/--'; expected 'lemma'\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/tm0-eval/.agents/gemma_scratch/TuringRecursive._root_.Turing.TM0.step_eq_none_iff_3.lean:44:61: error: unexpected token '/--'; expected 'lemma'\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/tm0-eval/.agents/gemma_scratch/TuringRecursive._root_.Turing.TM0.step_eq_none_iff_3.lean:59:4: error: `simp` made no progress\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/tm0-eval/.agents/gemma_scratch/TuringRecursive._root_.Turing.TM0.step_eq_none_iff_3.lean:62:4: error: `simp` made no progress",
+      "error_class": "syntax",
+      "latency_ms": 23407.7,
+      "lean_ms": 5685.34,
+      "tokens": 128,
+      "accepted": false
+    },
+    {
+      "attempt": 4,
+      "think": false,
+      "candidate_code": "@[simp]\ntheorem _root_.Turing.TM0.step_eq_none_iff {\u0393 \u039b : Type*} [Inhabited \u0393] [Inhabited \u039b]\n    (M : TM0.Machine \u0393 \u039b) (c : TM0.Cfg \u0393 \u039b) :\n    TM0.step M c = none \u2194 M c.q c.Tape.head = none :=\n  by\n  constructor\n  \u00b7 intro h\n    simp at h\n    exact h\n  \u00b7 intro h\n    simp at h\n    exact h",
+      "proof_body": "by\n  constructor\n  \u00b7 intro h\n    simp at h\n    exact h\n  \u00b7 intro h\n    simp at h\n    exact h",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/tm0-eval/.agents/gemma_scratch/TuringRecursive._root_.Turing.TM0.step_eq_none_iff_4.lean:39:60: error: unexpected token '/--'; expected 'lemma'\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/tm0-eval/.agents/gemma_scratch/TuringRecursive._root_.Turing.TM0.step_eq_none_iff_4.lean:44:61: error: unexpected token '/--'; expected 'lemma'\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/tm0-eval/.agents/gemma_scratch/TuringRecursive._root_.Turing.TM0.step_eq_none_iff_4.lean:59:4: error: `simp` made no progress\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/tm0-eval/.agents/gemma_scratch/TuringRecursive._root_.Turing.TM0.step_eq_none_iff_4.lean:62:4: error: `simp` made no progress",
+      "error_class": "syntax",
+      "latency_ms": 24112.67,
+      "lean_ms": 6042.9,
+      "tokens": 124,
+      "accepted": false
+    },
+    {
+      "attempt": 5,
+      "think": false,
+      "candidate_code": "@[simp]\ntheorem _root_.Turing.TM0.step_eq_none_iff {\u0393 \u039b : Type*} [Inhabited \u0393] [Inhabited \u039b]\n    (M : TM0.Machine \u0393 \u039b) (c : TM0.Cfg \u0393 \u039b) :\n    TM0.step M c = none \u2194 M c.q c.Tape.head = none :=\n  by\n  constructor\n  \u00b7 intro h\n    simp at h\n    exact h\n  \u00b7 intro h\n    simp at h\n    exact h",
+      "proof_body": "by\n  constructor\n  \u00b7 intro h\n    simp at h\n    exact h\n  \u00b7 intro h\n    simp at h\n    exact h",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/tm0-eval/.agents/gemma_scratch/TuringRecursive._root_.Turing.TM0.step_eq_none_iff_5.lean:39:60: error: unexpected token '/--'; expected 'lemma'\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/tm0-eval/.agents/gemma_scratch/TuringRecursive._root_.Turing.TM0.step_eq_none_iff_5.lean:44:61: error: unexpected token '/--'; expected 'lemma'\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/tm0-eval/.agents/gemma_scratch/TuringRecursive._root_.Turing.TM0.step_eq_none_iff_5.lean:59:4: error: `simp` made no progress\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/tm0-eval/.agents/gemma_scratch/TuringRecursive._root_.Turing.TM0.step_eq_none_iff_5.lean:62:4: error: `simp` made no progress",
+      "error_class": "syntax",
+      "latency_ms": 24728.06,
+      "lean_ms": 5915.53,
+      "tokens": 128,
+      "accepted": false
+    }
+  ]
+}

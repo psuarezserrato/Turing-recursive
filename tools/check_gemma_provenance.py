@@ -2,13 +2,12 @@
 """
 tools/check_gemma_provenance.py — Local-Model Provenance Gate (G8) Checker
 
-Given a git diff range (e.g. `main...HEAD`), lists every NEW declaration whose tier is
-T0 or T1 (recorded in a comment `-- tier: T0|T1|T2` placed directly above the declaration,
-or inferred as T1 if absent for `Primrec`/list lemmas) and requires EITHER:
-  1. `.agents/gemma_accepted/<decl>.lean`, OR
+Given a git diff range (e.g. `main...HEAD`), lists every NEW declaration in the enforced
+tiers (default: `T0`, matching `docs/routing.md`; configurable via `--tiers`) and requires EITHER:
+  1. `.agents/gemma_accepted/<decl>.lean` matching the declaration name, OR
   2. `.agents/gemma_escalations/<decl>.json` with >= 5 recorded failed attempts.
 
-Exits 0 if all T0/T1 declarations satisfy provenance, or non-zero (1) otherwise.
+Exits 0 if all enforced-tier declarations satisfy provenance, or non-zero (1) otherwise.
 """
 
 import argparse
@@ -92,6 +91,35 @@ def candidate_artifact_stems(decl: gemma_loop.SpecDeclaration) -> List[str]:
     return stems
 
 
+ACCEPTED_HEADER_RE = re.compile(
+    r"^--\s*Verified by gemma_loop\.py\s*\(\s*declaration:\s*([^,\s)]+)",
+    re.MULTILINE,
+)
+
+
+def _accepted_file_matches_decl(text: str, decl: gemma_loop.SpecDeclaration) -> bool:
+    """
+    Verify that an accepted `.lean` artifact file actually declares `decl`
+    (prevents filename-sanitization collisions such as `fooₗ` vs `foo`).
+    """
+    hdr = ACCEPTED_HEADER_RE.search(text)
+    if hdr:
+        recorded_name = hdr.group(1).strip()
+        if recorded_name not in {decl.name, decl.raw_name}:
+            return False
+
+    parsed = gemma_loop.parse_spec_declarations(text)
+    if parsed:
+        target_names = {n for n in (decl.name, decl.raw_name) if n}
+        for p in parsed:
+            if p.name in target_names or p.raw_name in target_names:
+                return True
+        return False
+
+    # Fallback when file has no `:=` (e.g., partial stub in a test)
+    return hdr is not None
+
+
 def check_declaration_provenance(
     decl: gemma_loop.SpecDeclaration,
     tier: str,
@@ -112,7 +140,7 @@ def check_declaration_provenance(
             cand = accepted_dir / f"{stem}.lean"
             if cand.is_file():
                 text = cand.read_text(encoding="utf-8", errors="replace").strip()
-                if text:
+                if text and _accepted_file_matches_decl(text, decl):
                     return {
                         "declaration": decl.name,
                         "raw_name": decl.raw_name,
@@ -245,7 +273,7 @@ def check_git_diff_provenance(
     escalations_dir: Optional[Path] = None,
     required_attempts: int = 5,
     explicit_files: Optional[Sequence[str]] = None,
-    enforced_tiers: Sequence[str] = ("T0", "T1"),
+    enforced_tiers: Sequence[str] = ("T0",),
 ) -> Dict[str, Any]:
     """
     Audit all new T0/T1 declarations introduced across `diff_range` (or `explicit_files`).
@@ -350,7 +378,7 @@ def main() -> int:
     parser.add_argument("--accepted-dir", default=None, help="Override .agents/gemma_accepted directory")
     parser.add_argument("--escalations-dir", default=None, help="Override .agents/gemma_escalations directory")
     parser.add_argument("--required-attempts", type=int, default=5, help="Required failed attempts for escalation (default 5)")
-    parser.add_argument("--tiers", default="T0,T1", help="Comma-separated tiers requiring Gemma provenance (default: T0,T1)")
+    parser.add_argument("--tiers", default="T0", help="Comma-separated tiers requiring Gemma provenance (default: T0)")
     parser.add_argument("--files", nargs="*", default=None, help="Explicit .lean files to check instead of git diff --name-only")
     parser.add_argument("--json", action="store_true", help="Emit JSON output")
 
@@ -376,8 +404,8 @@ def main() -> int:
     else:
         status = "PASSED" if report.get("passed") else "FAILED"
         print(
-            f"[G8 Provenance {status}] diff={diff_range} | "
-            f"T0/T1 declarations checked: {report.get('t0_t1_checked_count', 0)} | "
+            f"[G8 Provenance {status}] diff={diff_range} | tiers={','.join(enforced_tiers)} | "
+            f"declarations checked: {report.get('t0_t1_checked_count', 0)} | "
             f"gemma_accepted: {report.get('origin_counts', {}).get('gemma_accepted', 0)} | "
             f"escalated: {report.get('origin_counts', {}).get('escalated', 0)} | "
             f"violations: {len(report.get('violations', []))}"

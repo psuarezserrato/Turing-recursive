@@ -4,7 +4,7 @@ tools/ollama_lean4_client.py — Headless Local gemma4:12B Client for Lean 4
 
 Zero-external-dependency Python 3 client talking to local Ollama
 (http://localhost:11434/api/chat) for Lean 4 autoformalization, tactic synthesis,
-premise selection, and proof skeletons in S4TuringPoisson.
+premise selection, and proof skeletons in Turing-recursive.
 """
 
 import argparse
@@ -23,7 +23,6 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 DEFAULT_OLLAMA_HOST = "http://localhost:11434"
-MAIN_REPO = Path("/Users/pablosuarez/Desktop/Turing-recursive")
 PRIMARY_MODEL = "gemma4:12B"
 DEFAULT_CASCADE = [
     "gemma4:12B",
@@ -73,9 +72,25 @@ DEFAULT_PROFILES: Dict[str, Dict[str, Any]] = {
 
 def resolve_main_repo() -> Path:
     """Resolve the shared main repository root so usage logs stay centralized across worktrees."""
-    if MAIN_REPO.is_dir():
-        return MAIN_REPO
-    return Path(__file__).resolve().parent.parent
+    env_root = os.environ.get("TURING_RECURSIVE_ROOT")
+    if env_root:
+        return Path(env_root).resolve()
+    here_root = Path(__file__).resolve().parent.parent
+    try:
+        raw = subprocess.check_output(
+            ["git", "-C", str(here_root), "rev-parse", "--git-common-dir"],
+            stderr=subprocess.DEVNULL,
+            text=True,
+            timeout=2.0,
+        ).strip()
+        if raw:
+            p = Path(raw)
+            p = (here_root / p).resolve() if not p.is_absolute() else p.resolve()
+            if p.name == ".git":
+                return p.parent
+    except Exception:
+        pass
+    return here_root
 
 
 def load_config(config_path: Optional[str] = None) -> Dict[str, Any]:
@@ -127,7 +142,7 @@ def find_ollama_binary() -> Optional[str]:
 
 def http_get_json(url: str, timeout: float = 3.0) -> Tuple[bool, Any, str]:
     """Perform a GET request returning parsed JSON."""
-    req = urllib.request.Request(url, headers={"User-Agent": "S4TuringPoisson-OllamaClient/1.0"})
+    req = urllib.request.Request(url, headers={"User-Agent": "TuringRecursive-OllamaClient/1.0"})
     try:
         with urllib.request.urlopen(req, timeout=timeout) as resp:
             if resp.status != 200:
@@ -145,7 +160,7 @@ def http_post_json(url: str, payload: Dict[str, Any], timeout: float = 120.0) ->
         data=data,
         headers={
             "Content-Type": "application/json",
-            "User-Agent": "S4TuringPoisson-OllamaClient/1.0",
+            "User-Agent": "TuringRecursive-OllamaClient/1.0",
         },
     )
     try:
@@ -255,10 +270,10 @@ def build_messages(task_type: str, prompt: str, goal: Optional[str] = None,
     """Build system/user chat messages for the specified Lean 4 task."""
     if task_type == "autoformalize":
         sys_msg = (
-            "You are an expert Lean 4 formalizer working with Mathlib v4.36.0 and TauCeti "
-            "(Poisson geometry, symplectic manifolds, singular Lefschetz/wrinkled fibrations, and TM0 computability). "
+            "You are an expert Lean 4 formalizer working with Mathlib v4.36.0 "
+            "(Computability, Primrec, Partrec, StateTransition, and Turing.TM0). "
             "Translate the informal statement into valid Lean 4 using snake_case for terms/theorems, "
-            "UpperCamelCase for structures/classes, explicit smoothness/non-vanishing hypotheses, "
+            "UpperCamelCase for structures/classes, explicit hypotheses, "
             "and enclose output in a single ```lean4 ... ``` block."
         )
         user_msg = f"Formalize in Lean 4:\n{prompt.strip()}"
@@ -280,8 +295,8 @@ def build_messages(task_type: str, prompt: str, goal: Optional[str] = None,
         user_msg = "\n\n".join(parts)
     elif task_type == "premise":
         sys_msg = (
-            "You are a Mathlib v4.36.0 and TauCeti premise retrieval assistant. "
-            "List up to 6 likely Lean 4 / Mathlib / TauCeti declaration names and concise type hints relevant to the goal."
+            "You are a Mathlib v4.36.0 premise retrieval assistant. "
+            "List up to 6 likely Lean 4 / Mathlib declaration names and concise type hints relevant to the goal."
         )
         user_msg = f"Goal and context:\n```lean4\n{(goal or prompt).strip()}\n```"
     else:  # skeleton

@@ -5,6 +5,7 @@
 /.agents/gemma_usage.jsonl
 /.agents/gemma_scratch/
 /.agents/checkpoints/
+/.agents/bm25_index.pkl
 **/__pycache__/
 *.pyc
 .DS_Store

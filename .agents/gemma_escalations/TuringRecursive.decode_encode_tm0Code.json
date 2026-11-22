@@ -1,0 +1,78 @@
+{
+  "declaration": "TuringRecursive.decode_encode_tm0Code",
+  "raw_name": "decode_encode_tm0Code",
+  "spec_file": "TuringRecursive/Uniform.lean",
+  "milestone": "M4",
+  "tier": "T0",
+  "statement": "theorem decode_encode_tm0Code (m : TM0Code) :\n    Encodable.decode (Encodable.encode m) = some m",
+  "max_attempts": 5,
+  "escalated_at": "2026-11-21T23:55:01Z",
+  "retrieved_premises": [
+    "TuringRecursive.decode_encode_stmt",
+    "TuringRecursive.decode_encode_cfg",
+    "TuringRecursive.decode_encode_dir",
+    "TuringRecursive.decode_encode_tape"
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "think": false,
+      "candidate_code": "theorem decode_encode_tm0Code (m : TM0Code) :\n    Encodable.decode (Encodable.encode m) = some m :=\n  by\n  let machine := m.machine\n  let list := m.tm0CodeEquivList\n  -- The interpretation of TM0Code is that it represents a machine.\n  -- The encoding of TM0Code is based on the encoding of its machine.\n  -- Since decode_encode_machine holds, and machine is a function of m,\n  -- the result follows from the property of the encoding of the machine representation.\n  simp [TM0Code.machine, TM0Code.tm0CodeEquivList]\n  reflexivity",
+      "proof_body": "by\n  let machine := m.machine\n  let list := m.tm0CodeEquivList\n  -- The interpretation of TM0Code is that it represents a machine.\n  -- The encoding of TM0Code is based on the encoding of its machine.\n  -- Since decode_encode_machine holds, and machine is a function of m,\n  -- the result follows from the property of the encoding of the machine representation.\n  simp [TM0Code.machine, TM0Code.tm0CodeEquivList]\n  reflexivity",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/uniform/.agents/gemma_scratch/TuringRecursive.decode_encode_tm0Code_1.lean:90:3: error: unknown tactic\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/uniform/.agents/gemma_scratch/TuringRecursive.decode_encode_tm0Code_1.lean:84:16: error(lean.invalidField): Invalid field `tm0CodeEquivList`: The environment does not contain `TuringRecursive.TM0Code.tm0CodeEquivList`, so it is not possible to project the field `tm0CodeEquivList` from an expression\n  m\nof type `TM0Code`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/uniform/.agents/gemma_scratch/TuringRecursive.decode_encode_tm0Code_1.lean:82:2: error: unsolved goals\nm : TM0Code\nmachine : TM0.Machine \u2115 \u2115 := m.machine\n\u22a2 Encodable.decode (Encodable.encode m) = some m",
+      "error_class": "unsolved goals",
+      "latency_ms": 24772.73,
+      "lean_ms": 6016.57,
+      "tokens": 158,
+      "accepted": false
+    },
+    {
+      "attempt": 2,
+      "think": false,
+      "candidate_code": "theorem decode_encode_tm0Code (m : TM0Code) :\n    Encodable.decode (Encodable.encode m) = some m :=\n  by\n  -- TM0Code's instance of Encodable is derived from its machine.\n  -- Since the machine part satisfies decode_encode_machine, the whole structure does too.\n  apply Encodable.decode_encode_machine (m.machine)\n  \u00b7 exact Encodable.encodek (m.machine)\n  \u00b7 exact Encodable.decode_encode_machine (m.machine)",
+      "proof_body": "by\n  -- TM0Code's instance of Encodable is derived from its machine.\n  -- Since the machine part satisfies decode_encode_machine, the whole structure does too.\n  apply Encodable.decode_encode_machine (m.machine)\n  \u00b7 exact Encodable.encodek (m.machine)\n  \u00b7 exact Encodable.decode_encode_machine (m.machine)",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/uniform/.agents/gemma_scratch/TuringRecursive.decode_encode_tm0Code_2.lean:85:8: error(lean.unknownIdentifier): Unknown constant `Encodable.decode_encode_machine`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/uniform/.agents/gemma_scratch/TuringRecursive.decode_encode_tm0Code_2.lean:86:2: error: No goals to be solved",
+      "error_class": "unknown identifier",
+      "latency_ms": 25992.22,
+      "lean_ms": 1803.38,
+      "tokens": 131,
+      "accepted": false
+    },
+    {
+      "attempt": 3,
+      "think": false,
+      "candidate_code": "theorem decode_encode_tm0Code (m : TM0Code) :\n    Encodable.decode (Encodable.encode m) = some m :=\n  by\n  refine Encodable.decode_encode_machine (m.machine)\n  \u00b7 exact Encodable.encodek (m.machine)\n  \u00b7 exact Encodable.decode_encode_machine (m.machine)",
+      "proof_body": "by\n  refine Encodable.decode_encode_machine (m.machine)\n  \u00b7 exact Encodable.encodek (m.machine)\n  \u00b7 exact Encodable.decode_encode_machine (m.machine)",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/uniform/.agents/gemma_scratch/TuringRecursive.decode_encode_tm0Code_3.lean:83:9: error(lean.unknownIdentifier): Unknown constant `Encodable.decode_encode_machine`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/uniform/.agents/gemma_scratch/TuringRecursive.decode_encode_tm0Code_3.lean:84:2: error: No goals to be solved",
+      "error_class": "unknown identifier",
+      "latency_ms": 19563.19,
+      "lean_ms": 1718.98,
+      "tokens": 93,
+      "accepted": false
+    },
+    {
+      "attempt": 4,
+      "think": false,
+      "candidate_code": "theorem decode_encode_tm0Code (m : TM0Code) :\n    Encodable.decode (Encodable.encode m) = some m :=\n  by\n  apply Encodable.decode_encode_machine (m.machine)",
+      "proof_body": "by\n  apply Encodable.decode_encode_machine (m.machine)",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/uniform/.agents/gemma_scratch/TuringRecursive.decode_encode_tm0Code_4.lean:83:8: error(lean.unknownIdentifier): Unknown constant `Encodable.decode_encode_machine`",
+      "error_class": "unknown identifier",
+      "latency_ms": 17734.2,
+      "lean_ms": 1986.62,
+      "tokens": 63,
+      "accepted": false
+    },
+    {
+      "attempt": 5,
+      "think": false,
+      "candidate_code": "theorem decode_encode_tm0Code (m : TM0Code) :\n    Encodable.decode (Encodable.encode m) = some m :=\n  by\n  refine Encodable.decode_encode_machine (m.machine)\n  \u00b7 exact Encodable.encodek (m.machine)\n  \u00b7 exact Encodable.decode_encode_machine (m.machine)",
+      "proof_body": "by\n  refine Encodable.decode_encode_machine (m.machine)\n  \u00b7 exact Encodable.encodek (m.machine)\n  \u00b7 exact Encodable.decode_encode_machine (m.machine)",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/uniform/.agents/gemma_scratch/TuringRecursive.decode_encode_tm0Code_5.lean:83:9: error(lean.unknownIdentifier): Unknown constant `Encodable.decode_encode_machine`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/uniform/.agents/gemma_scratch/TuringRecursive.decode_encode_tm0Code_5.lean:84:2: error: No goals to be solved",
+      "error_class": "unknown identifier",
+      "latency_ms": 19308.39,
+      "lean_ms": 2075.18,
+      "tokens": 93,
+      "accepted": false
+    }
+  ]
+}

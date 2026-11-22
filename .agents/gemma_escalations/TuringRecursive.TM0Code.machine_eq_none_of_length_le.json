@@ -1,0 +1,77 @@
+{
+  "declaration": "TuringRecursive.TM0Code.machine_eq_none_of_length_le",
+  "raw_name": "TM0Code.machine_eq_none_of_length_le",
+  "spec_file": "TuringRecursive/Uniform.lean",
+  "milestone": "M4",
+  "tier": "T0",
+  "statement": "theorem TM0Code.machine_eq_none_of_length_le (m : TM0Code) {q : \u2115} (hq : m.table.length \u2264 q)\n    (a : \u2115) : m.machine q a = none",
+  "max_attempts": 5,
+  "escalated_at": "2026-11-22T00:00:31Z",
+  "retrieved_premises": [
+    "TuringRecursive.TM0Code.machine",
+    "TuringRecursive.TM0Code",
+    "TuringRecursive.tm0CodeEquivList",
+    "TuringRecursive._root_.Turing.TM0.step_eq_none_iff"
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "think": false,
+      "candidate_code": "theorem TM0Code.machine_eq_none_of_length_le (m : TM0Code) {q : \u2115} (hq : m.table.length \u2264 q)\n    (a : \u2115) : m.machine q a = none :=\n  by\n  let m_machine := TM0Code.machine m\n  simp at m_machine\n  -- m.table[q] is None because q >= m.table.length\n  have h_none : m.table.memq q = false := by\n    simp at hq\n  refine m_machine q a\n  simp [m_machine]\n  -- (m.table[q]?) = None\n  have h_none_val : (m.table[q]?) = none := by\n    simp [h_none]\n  \u00b7 exact h_none_val\n  \u00b7 contradiction",
+      "proof_body": "by\n  let m_machine := TM0Code.machine m\n  simp at m_machine\n  -- m.table[q] is None because q >= m.table.length\n  have h_none : m.table.memq q = false := by\n    simp at hq\n  refine m_machine q a\n  simp [m_machine]\n  -- (m.table[q]?) = None\n  have h_none_val : (m.table[q]?) = none := by\n    simp [h_none]\n  \u00b7 exact h_none_val\n  \u00b7 contradiction",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/uniform/.agents/gemma_scratch/TuringRecursive.TM0Code.machine_eq_none_of_length_le_1.lean:97:2: error: `simp` made no progress\nNote: The target expression is not type-correct under the `implicit` transparency level, which may have triggered the failure. This is usually caused by unfolding of semireducible definitions in prior tactic steps. Use `set_option linter.tacticCheckInstances true` to investigate the source of the issue.\nFull error:\n  function expected\n    m.machine q",
+      "error_class": "other",
+      "latency_ms": 36338.55,
+      "lean_ms": 6020.51,
+      "tokens": 203,
+      "accepted": false
+    },
+    {
+      "attempt": 2,
+      "think": false,
+      "candidate_code": "theorem TM0Code.machine_eq_none_of_length_le (m : TM0Code) {q : \u2115} (hq : m.table.length \u2264 q)\n    (a : \u2115) : m.machine q a = none :=\n  by\n  let machine := TM0Code.machine m\n  -- m.table[q] is None because q >= m.table.length\n  have h_out : q \u2265 m.table.length := by\n    simp at hq\n  -- (m.table[q]?) results in None because q is out of bounds\n  have h_none : (m.table[q]?) = none := by\n    simp [machine]\n    apply (List.memq_max.mp h_out).mp\n  -- The join of None with any value is None\n  refine machine q a\n  simp [machine]\n  rw [h_none]\n  simp",
+      "proof_body": "by\n  let machine := TM0Code.machine m\n  -- m.table[q] is None because q >= m.table.length\n  have h_out : q \u2265 m.table.length := by\n    simp at hq\n  -- (m.table[q]?) results in None because q is out of bounds\n  have h_none : (m.table[q]?) = none := by\n    simp [machine]\n    apply (List.memq_max.mp h_out).mp\n  -- The join of None with any value is None\n  refine machine q a\n  simp [machine]\n  rw [h_none]\n  simp",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/uniform/.agents/gemma_scratch/TuringRecursive.TM0Code.machine_eq_none_of_length_le_2.lean:99:4: error: `simp` made no progress\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/uniform/.agents/gemma_scratch/TuringRecursive.TM0Code.machine_eq_none_of_length_le_2.lean:103:11: error(lean.unknownIdentifier): Unknown constant `List.memq_max.mp`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/uniform/.agents/gemma_scratch/TuringRecursive.TM0Code.machine_eq_none_of_length_le_2.lean:105:2: error: Type mismatch\n  machine q a\nhas type\n  Option (\u2115 \u00d7 TM0.Stmt \u2115)\nof sort `Type` but is expected to have type\n  m.machine q a = none\nof sort `Prop`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/uniform/.agents/gemma_scratch/TuringRecursive.TM0Code.machine_eq_none_of_length_le_2.lean:102:10: warning: This simp argument is unused:\n  machine\nHint: Omit it from the simp argument list.",
+      "error_class": "unknown identifier",
+      "latency_ms": 39586.81,
+      "lean_ms": 2635.47,
+      "tokens": 214,
+      "accepted": false
+    },
+    {
+      "attempt": 3,
+      "think": false,
+      "candidate_code": "theorem TM0Code.machine_eq_none_of_length_le (m : TM0Code) {q : \u2115} (hq : m.table.length \u2264 q)\n    (a : \u2115) : m.machine q a = none :=\n  by\n  let machine := TM0Code.machine m\n  -- Since q \u2265 m.table.length, q is not in the list's indices.\n  -- Specifically, for a list of length L, valid indices are 0 to L-1.\n  have h_out : q \u2265 m.table.length := by\n    simp at hq\n  -- List.memq is true iff q < m.table.length. Since q \u2265 m.table.length, it is false.\n  have h_not_mem : m.table.memq q = false := by\n    apply List.memq_max.mp h_out\n  -- The definition of machine is (m.table[q]?).bind fun row \u21a6 (row[a]?).join\n  -- Since m.table[q]? is None when q is not in memq, the bind over None is None.\n  simp [machine]\n  apply (List.memq_not_memq.mp h_not_mem)",
+      "proof_body": "by\n  let machine := TM0Code.machine m\n  -- Since q \u2265 m.table.length, q is not in the list's indices.\n  -- Specifically, for a list of length L, valid indices are 0 to L-1.\n  have h_out : q \u2265 m.table.length := by\n    simp at hq\n  -- List.memq is true iff q < m.table.length. Since q \u2265 m.table.length, it is false.\n  have h_not_mem : m.table.memq q = false := by\n    apply List.memq_max.mp h_out\n  -- The definition of machine is (m.table[q]?).bind fun row \u21a6 (row[a]?).join\n  -- Since m.table[q]? is None when q is not in memq, the bind over None is None.\n  simp [machine]\n  apply (List.memq_not_memq.mp h_not_mem)",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/uniform/.agents/gemma_scratch/TuringRecursive.TM0Code.machine_eq_none_of_length_le_3.lean:100:4: error: `simp` made no progress\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/uniform/.agents/gemma_scratch/TuringRecursive.TM0Code.machine_eq_none_of_length_le_3.lean:102:27: error(lean.invalidField): Invalid field `memq`: The environment does not contain `List.memq`, so it is not possible to project the field `memq` from an expression\n  m.table\nof type\n  List (List (Option (\u2115 \u00d7 TM0.Stmt \u2115)))\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/uniform/.agents/gemma_scratch/TuringRecursive.TM0Code.machine_eq_none_of_length_le_3.lean:103:10: error(lean.unknownIdentifier): Unknown constant `List.memq_max.mp`\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/uniform/.agents/gemma_scratch/TuringRecursive.TM0Code.machine_eq_none_of_length_le_3.lean:106:2: error: `simp` made no progress\nNote: The target expression is not type-correct under the `implicit` transparency level, which may have triggered the failure. This is usually caused by unfolding of semireducible definitions in prior tactic steps. Use `set_option linter.tacticCheckInstances true` to investigate the source of the issue.\nFull error:\n  function expected\n    m.machine q",
+      "error_class": "unknown identifier",
+      "latency_ms": 48813.35,
+      "lean_ms": 3295.17,
+      "tokens": 288,
+      "accepted": false
+    },
+    {
+      "attempt": 4,
+      "think": false,
+      "candidate_code": "theorem TM0Code.machine_eq_none_of_length_le (m : TM0Code) {q : \u2115} (hq : m.table.length \u2264 q)\n    (a : \u2115) : m.machine q a = none :=\n  by\n  let machine := TM0Code.machine m\n  -- q < m.table.length is false because q \u2265 m.table.length\n  have h_not_mem : q < m.table.length := by\n    simp at hq\n    linetoq_false\n  -- For a list, if index q is not less than length, it is out of bounds\n  -- The `?` operator on a list returns `none` if the index is >= length\n  have h_out : (m.table[q]?) = none := by\n    simp [machine]\n    exact List.memq_max.mp (Eq.not_memq (by rw [h_not_mem])) -- Actually simpler to use:\n    -- For list, (m.table[q]?) = none is true if q \u2265 m.table.length\n    -- Since hq implies q \u2265 m.table.length (it's \u2115, so it's either < or \u2265),\n    -- we use the fact that List.memq is false for q >= length.\n    sorry\n  -- Re-writing more cleanly:\n  let f := machine q a\n  -- f = (m.table[q]?).bind fun row => (row[a]?).join\n  -- If m.table[q]? is none, then the bind over it is none.\n  have h_none : (m.table[q]?) = none := by\n    simp [machine]\n    -- Since q >= m.table.length, m.table[q] is not in the list\n    have h_not_in : q < m.table.length = False := by\n      simp at hq\n      linetoq_false\n    -- List.memq_max says if q >= length, then memq is false\n    exact List.memq_max.mp (Eq.not_memq (by rw [h_not_in]))",
+      "compiler_error": "error: forbidden token 'sorry' in candidate proof",
+      "error_class": "other",
+      "latency_ms": 83015.57,
+      "lean_ms": 0.0,
+      "tokens": 512,
+      "accepted": false
+    },
+    {
+      "attempt": 5,
+      "think": false,
+      "candidate_code": "theorem TM0Code.machine_eq_none_of_length_le (m : TM0Code) {q : \u2115} (hq : m.table.length \u2264 q)\n    (a : \u2115) : m.machine q a = none :=\n  by\n  let machine := TM0Code.machine m\n  -- List.memq n l is true iff n < l.\n  -- From hq, q \u2265 m.table.length.\n  -- Thus, q < m.table.length is false.\n  have h_not_mem : q < m.table.length := by\n    simp at hq\n    lineto\n  -- List.get? returns None if the index is out of bounds.\n  have h_none : (m.table[q]?) = none := by\n    simp [h_not_mem]\n  -- The machine function is (m.table[q]?).bind fun row \u21a6 (row[a]?).join\n  -- Since (m.table[q]?) = none, the bind yields none.\n  simp [machine]\n  exact (none.bind (fun _ => (m.table[a]?)?) `_none` h_none",
+      "proof_body": "by\n  let machine := TM0Code.machine m\n  -- List.memq n l is true iff n < l.\n  -- From hq, q \u2265 m.table.length.\n  -- Thus, q < m.table.length is false.\n  have h_not_mem : q < m.table.length := by\n    simp at hq\n    lineto\n  -- List.get? returns None if the index is out of bounds.\n  have h_none : (m.table[q]?) = none := by\n    simp [h_not_mem]\n  -- The machine function is (m.table[q]?).bind fun row \u21a6 (row[a]?).join\n  -- Since (m.table[q]?) = none, the bind yields none.\n  simp [machine]\n  exact (none.bind (fun _ => (m.table[a]?)?) `_none` h_none",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/uniform/.agents/gemma_scratch/TuringRecursive.TM0Code.machine_eq_none_of_length_le_5.lean:102:5: error: unknown tactic\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/uniform/.agents/gemma_scratch/TuringRecursive.TM0Code.machine_eq_none_of_length_le_5.lean:101:4: error: `simp` made no progress\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/uniform/.agents/gemma_scratch/TuringRecursive.TM0Code.machine_eq_none_of_length_le_5.lean:95:2: error: unsolved goals\nm : TM0Code\nq : \u2115\nhq : m.table.length \u2264 q\na : \u2115\nmachine : TM0.Machine \u2115 \u2115 := m.machine\nh_not_mem : q < m.table.length\n\u22a2 m.machine q a = none",
+      "error_class": "unsolved goals",
+      "latency_ms": 46721.97,
+      "lean_ms": 4367.94,
+      "tokens": 275,
+      "accepted": false
+    }
+  ]
+}

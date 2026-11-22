@@ -12,13 +12,13 @@ import argparse
 import hashlib
 import json
 import os
+import subprocess
 import sys
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-MAIN_REPO = Path("/Users/pablosuarez/Desktop/Turing-recursive")
 LEDGER_REL = Path(".agents/gemma_usage.jsonl")
 
 ERROR_CLASSES = (
@@ -45,9 +45,25 @@ def resolve_main_repo(root_override: Optional[Path] = None) -> Path:
     env_root = os.environ.get("TURING_RECURSIVE_ROOT")
     if env_root:
         return Path(env_root).resolve()
-    if MAIN_REPO.is_dir():
-        return MAIN_REPO
-    return Path(__file__).resolve().parent.parent
+    here_root = Path(__file__).resolve().parent.parent
+    try:
+        raw = subprocess.check_output(
+            ["git", "-C", str(here_root), "rev-parse", "--git-common-dir"],
+            stderr=subprocess.DEVNULL,
+            text=True,
+            timeout=2.0,
+        ).strip()
+        if raw:
+            p = Path(raw)
+            if not p.is_absolute():
+                p = (here_root / p).resolve()
+            else:
+                p = p.resolve()
+            if p.name == ".git":
+                return p.parent
+    except Exception:
+        pass
+    return here_root
 
 
 def default_ledger_path(root_override: Optional[Path] = None) -> Path:

@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "S4TuringPoissonOllamaGemmaConfig",
+  "title": "TuringRecursiveOllamaGemmaConfig",
   "description": "24GB Unified RAM guarded configuration for headless local gemma4:12B (4-bit nvfp4 MLX) via Ollama.",
   "version": "1.1.0",
   "hardware_guardrails": {

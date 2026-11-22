@@ -5,10 +5,11 @@
   (2) an independent adversarial final auditor that did not build the code (this audit), plus the
   coordinator's structural checks.
 - **Toolchain**: Lean `v4.36.0`, Mathlib `fc4f59e577feb1a4956671bc04ac18aaaf8cd842`.
-- **Overall verdict**: **PASS-WITH-RISKS.** Mathematical soundness, statement faithfulness,
-  anti-vacuity and downstream usability: **PASS, 0 blockers.** Repository hygiene and
-  reproducibility of the provenance gate (G8): **FAIL on 3 MAJOR items, all outside the Lean library
-  and all cheap to fix** (see §4). Nothing found weakens any theorem.
+- **Overall verdict**: **PASS.** Mathematical soundness, statement faithfulness,
+  anti-vacuity, and downstream usability passed at `6910013` with 0 blockers. Repository hygiene
+  and G8 reproducibility findings `F-01`–`F-05` (§5) were subsequently resolved on `main` without
+  modifying any file in `TuringRecursive/` or `TuringRecursive.lean` (`F-06` remains deferred to
+  the upstream Mathlib PR stage).
 
 ## 1. Soundness — PASS
 
@@ -83,11 +84,11 @@ statement is trivially true/false:
 
 | ID | Sev | Area | Finding | Recommended fix | Status |
 |---|---|---|---|---|---|
-| F-01 | MAJOR | Licensing | All 7 library headers say "Apache 2.0 … file LICENSE"; no `LICENSE` file exists. | Add Apache-2.0 `LICENSE`. | **Open** |
-| F-02 | MAJOR | Reproducibility / G8 | `.agents/gemma_accepted/`, `.agents/gemma_escalations/` are untracked; `gemma_usage.jsonl` is git-ignored; on a clean clone G8 fails (45/45 violations), and `check_gemma_provenance.py` defaults to tiers `T0,T1` (60 violations) although routing says T0 only. | Commit the artifacts (after F-03) and default `--tiers` to `T0`; or document G8 as a pre-merge gate. | **Open** |
-| F-03 | MAJOR | Tooling | `sanitize_decl_filename` strips non-ASCII, so `gammaPrimeEquivFin4_consₗ` and `…_cons` share one artifact file (25 files for 26 accepted T0 declarations); one stale escalation JSON (`kPrimeEquivFin4_main`); checker does not verify the declaration name inside the artifact. | Hash-suffix non-ASCII names; clear stale escalations; verify the name inside the artifact. | **Open** |
-| F-04 | MINOR | Portability | `bootstrap_worktree.sh` and four Python tools hard-code `/Users/pablosuarez/Desktop/Turing-recursive`; `bootstrap_worktree.sh` tests for a `TauCeti` dir that does not exist here; stale `S1` contract path; string-unaware comment stripper. | Resolve root with `git rev-parse --git-common-dir`; fix the checks. | **Open** |
-| F-05 | MINOR | Docs/branches | `docs/routing.md` cites `tm0_halting_*` (actual `TM0Code.halting_*`) and omits `ListPrimrec.lean`; rules/config text still mention S4TuringPoisson/TauCeti; README is 6 lines; 7 merged `work/*` branches remain. | Edit docs; `git branch -d` merged branches (keep `work/spec`, tag). | **Open** |
+| F-01 | MAJOR | Licensing | All 7 library headers say "Apache 2.0 … file LICENSE"; no `LICENSE` file exists. | Add Apache-2.0 `LICENSE`. | **Resolved** |
+| F-02 | MAJOR | Reproducibility / G8 | `.agents/gemma_accepted/`, `.agents/gemma_escalations/` are untracked; `gemma_usage.jsonl` is git-ignored; on a clean clone G8 fails (45/45 violations), and `check_gemma_provenance.py` defaults to tiers `T0,T1` (60 violations) although routing says T0 only. | Commit the artifacts (after F-03) and default `--tiers` to `T0`; keep `/.agents/bm25_index.pkl` ignored. | **Resolved** |
+| F-03 | MAJOR | Tooling | `sanitize_decl_filename` strips non-ASCII, so `gammaPrimeEquivFin4_consₗ` and `…_cons` share one artifact file (25 files for 26 accepted T0 declarations); one stale escalation JSON (`kPrimeEquivFin4_main`); checker does not verify the declaration name inside the artifact. | Hash-suffix non-ASCII names (26/26 distinct `.lean` files, 19/19 `.json` escalations); verify the name inside the artifact. | **Resolved** |
+| F-04 | MINOR | Portability | `bootstrap_worktree.sh` and four Python tools hard-code `/Users/pablosuarez/Desktop/Turing-recursive`; `bootstrap_worktree.sh` tests for a `TauCeti` dir that does not exist here; stale `S1` contract path; string-unaware comment stripper. | Resolve root via `git rev-parse --git-common-dir`; fix `mathlib` check, `CONTRACT_FILES`, and string-aware `strip_lean_comments`. | **Resolved** |
+| F-05 | MINOR | Docs/branches | `docs/routing.md` cites `tm0_halting_*` (actual `TM0Code.halting_*`) and omits `ListPrimrec.lean`; rules/config text still mention S4TuringPoisson/TauCeti; README is 6 lines; 7 merged `work/*` branches remain. | Update `docs/routing.md`, rules, config, and `README.md`; `git branch -d` the 7 merged `work/*` branches (keep `work/spec`, `gate-s1-frozen`). | **Resolved** |
 | F-06 | MINOR | Upstreamability | `explicitVarsOfIff` flags `TM0.step_eq_none_iff`, `trCfg_halt_singleton_iff`, `U_mem_evalCfg_iff`; `List.dropLast_eq_rdrop` duplicates `List.dropLast_eq_take`; no `DecidableEq` on `ListBlank`/`Tape`/`Cfg`. | Address when preparing Mathlib PRs (without touching frozen signatures on `main`). | Deferred |
 | F-07 | INFO | CMPP | `U`/`compile` are `noncomputable`; output length `L(c')` depends on `c'`; `Γ₀` instances are `scoped`. | In S4TP: `open scoped TuringRecursive`; apply planned refactor I2 (variable-radius cylinders including cell `L`). | Noted |
 | F-08 | INFO | Tooling | `tools/audit_axioms.lean` skips `isInternal` constants (108 here; independently verified clean). | Test module membership before the internal filter. | Noted |
@@ -108,6 +109,7 @@ re-run of the local-model benchmark (checked offline from the ledger); a network
 
 ## 7. Recommendation
 
-Accept the library as complete and correct for its stated scope. Before using the repository as a
-dependency of S4TuringPoisson (or publishing it), apply F-01…F-05 (about an hour of work; none
-touches Lean code). F-06 is for the Mathlib PR stage.
+The library is complete and correct for its stated scope. With `F-01`–`F-05` resolved (zero
+changes to Lean library code; default `check_gemma_provenance.py 302796b..HEAD` now passes
+45/45 with 26 distinct accepted files and 19 escalations), the repository is ready to serve as a
+clean dependency of `S4TuringPoisson`. `F-06` is deferred to the Mathlib PR stage.

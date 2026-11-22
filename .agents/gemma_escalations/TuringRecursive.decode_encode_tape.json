@@ -1,0 +1,78 @@
+{
+  "declaration": "TuringRecursive.decode_encode_tape",
+  "raw_name": "decode_encode_tape",
+  "spec_file": "TuringRecursive/Encoding.lean",
+  "milestone": "M2",
+  "tier": "T0",
+  "statement": "theorem decode_encode_tape {\u0393 : Type*} [Inhabited \u0393] [Primcodable \u0393] (T : Tape \u0393) :\n    Encodable.decode (Encodable.encode T) = some T",
+  "max_attempts": 5,
+  "escalated_at": "2026-11-21T22:58:57Z",
+  "retrieved_premises": [
+    "TuringRecursive.instPrimcodableTape",
+    "Primcodable",
+    "Encodable.decode\u2082_encode",
+    "TuringRecursive.instPrimcodableListBlank"
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "think": false,
+      "candidate_code": "theorem decode_encode_tape {\u0393 : Type*} [Inhabited \u0393] [Primcodable \u0393] (T : Tape \u0393) :\n    Encodable.decode (Encodable.encode T) = some T :=\n  by\n  -- Since `Tape \u0393` has a `Primcodable` instance, it is also `Encodable`.\n  -- The theorem follows directly from the `decode\u2082_encode` property of `Encodable`.\n  apply Encodable.decode\u2082_encode",
+      "proof_body": "by\n  -- Since `Tape \u0393` has a `Primcodable` instance, it is also `Encodable`.\n  -- The theorem follows directly from the `decode\u2082_encode` property of `Encodable`.\n  apply Encodable.decode\u2082_encode",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive.decode_encode_tape_1.lean:198:2: error: Tactic `apply` failed: could not unify the conclusion of `@Encodable.decode\u2082_encode`\n  Encodable.decode\u2082 ?\u03b1 (Encodable.encode ?a) = some ?a\nwith the goal\n  Encodable.decode (Encodable.encode T) = some T\nNote: The full type of `@Encodable.decode\u2082_encode` is\n  \u2200 {\u03b1 : Type ?u.13} [inst : Encodable \u03b1] (a : \u03b1), Encodable.decode\u2082 \u03b1 (Encodable.encode a) = some a\n\u0393 : Type u_1\ninst\u271d\u00b9 : Inhabited \u0393\ninst\u271d : Primcodable \u0393\nT : Tape \u0393\n\u22a2 Encodable.decode (Encodable.encode T) = some T",
+      "error_class": "other",
+      "latency_ms": 26713.51,
+      "lean_ms": 5981.66,
+      "tokens": 114,
+      "accepted": false
+    },
+    {
+      "attempt": 2,
+      "think": false,
+      "candidate_code": "theorem decode_encode_tape {\u0393 : Type*} [Inhabited \u0393] [Primcodable \u0393] (T : Tape \u0393) :\n    Encodable.decode (Encodable.encode T) = some T :=\n  by\n  -- The Primcodable instance implies Encodable.\n  -- The theorem follows from the Encodable.decode\u2082_encode lemma.\n  -- We need to explicitly specify the type \u03b1 = Tape \u0393 to match the lemma's signature.\n  apply Encodable.decode\u2082_encode",
+      "proof_body": "by\n  -- The Primcodable instance implies Encodable.\n  -- The theorem follows from the Encodable.decode\u2082_encode lemma.\n  -- We need to explicitly specify the type \u03b1 = Tape \u0393 to match the lemma's signature.\n  apply Encodable.decode\u2082_encode",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive.decode_encode_tape_2.lean:199:2: error: Tactic `apply` failed: could not unify the conclusion of `@Encodable.decode\u2082_encode`\n  Encodable.decode\u2082 ?\u03b1 (Encodable.encode ?a) = some ?a\nwith the goal\n  Encodable.decode (Encodable.encode T) = some T\nNote: The full type of `@Encodable.decode\u2082_encode` is\n  \u2200 {\u03b1 : Type ?u.13} [inst : Encodable \u03b1] (a : \u03b1), Encodable.decode\u2082 \u03b1 (Encodable.encode a) = some a\n\u0393 : Type u_1\ninst\u271d\u00b9 : Inhabited \u0393\ninst\u271d : Primcodable \u0393\nT : Tape \u0393\n\u22a2 Encodable.decode (Encodable.encode T) = some T",
+      "error_class": "other",
+      "latency_ms": 31256.85,
+      "lean_ms": 6136.9,
+      "tokens": 124,
+      "accepted": false
+    },
+    {
+      "attempt": 3,
+      "think": false,
+      "candidate_code": "theorem decode_encode_tape {\u0393 : Type*} [Inhabited \u0393] [Primcodable \u0393] (T : Tape \u0393) :\n    Encodable.decode (Encodable.encode T) = some T :=\n  by\n  let \u03b1 := Tape \u0393\n  let _inst : Encodable \u03b1 := TuringRecursive.instPrimcodableTape\n  apply Encodable.decode\u2082_encode",
+      "proof_body": "by\n  let \u03b1 := Tape \u0393\n  let _inst : Encodable \u03b1 := TuringRecursive.instPrimcodableTape\n  apply Encodable.decode\u2082_encode",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive.decode_encode_tape_3.lean:197:29: error: Type mismatch\n  instPrimcodableTape\nhas type\n  Primcodable (Tape ?m.13)\nbut is expected to have type\n  Encodable \u03b1\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive.decode_encode_tape_3.lean:198:2: error: Tactic `apply` failed: could not unify the conclusion of `@Encodable.decode\u2082_encode`\n  Encodable.decode\u2082 ?\u03b1 (Encodable.encode ?a) = some ?a\nwith the goal\n  Encodable.decode (Encodable.encode T) = some T\nNote: The full type of `@Encodable.decode\u2082_encode` is\n  \u2200 {\u03b1 : Type ?u.18} [inst : Encodable \u03b1] (a : \u03b1), Encodable.decode\u2082 \u03b1 (Encodable.encode a) = some a",
+      "error_class": "type mismatch",
+      "latency_ms": 28929.42,
+      "lean_ms": 5809.1,
+      "tokens": 97,
+      "accepted": false
+    },
+    {
+      "attempt": 4,
+      "think": false,
+      "candidate_code": "theorem decode_encode_tape {\u0393 : Type*} [Inhabited \u0393] [Primcodable \u0393] (T : Tape \u0393) :\n    Encodable.decode (Encodable.encode T) = some T :=\n  by\n  let _ : Encodable (Tape \u0393) := instPrimcodableTape\n  apply Encodable.decode\u2082_encode",
+      "proof_body": "by\n  let _ : Encodable (Tape \u0393) := instPrimcodableTape\n  apply Encodable.decode\u2082_encode",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive.decode_encode_tape_4.lean:196:32: error: Type mismatch\n  instPrimcodableTape\nhas type\n  Primcodable (Tape ?m.10)\nbut is expected to have type\n  Encodable (Tape \u0393)\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive.decode_encode_tape_4.lean:197:2: error: Tactic `apply` failed: could not unify the conclusion of `@Encodable.decode\u2082_encode`\n  Encodable.decode\u2082 ?\u03b1 (Encodable.encode ?a) = some ?a\nwith the goal\n  Encodable.decode (Encodable.encode T) = some T\nNote: The full type of `@Encodable.decode\u2082_encode` is\n  \u2200 {\u03b1 : Type ?u.17} [inst : Encodable \u03b1] (a : \u03b1), Encodable.decode\u2082 \u03b1 (Encodable.encode a) = some a",
+      "error_class": "type mismatch",
+      "latency_ms": 28106.74,
+      "lean_ms": 6014.89,
+      "tokens": 85,
+      "accepted": false
+    },
+    {
+      "attempt": 5,
+      "think": false,
+      "candidate_code": "theorem decode_encode_tape {\u0393 : Type*} [Inhabited \u0393] [Primcodable \u0393] (T : Tape \u0393) :\n    Encodable.decode (Encodable.encode T) = some T :=\n  by\n  let _ : Encodable (Tape \u0393) := instPrimcodableTape\n  apply Encodable.decode\u2082_encode",
+      "proof_body": "by\n  let _ : Encodable (Tape \u0393) := instPrimcodableTape\n  apply Encodable.decode\u2082_encode",
+      "compiler_error": "/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive.decode_encode_tape_5.lean:196:32: error: Type mismatch\n  instPrimcodableTape\nhas type\n  Primcodable (Tape ?m.10)\nbut is expected to have type\n  Encodable (Tape \u0393)\n/Users/pablosuarez/Desktop/Turing-recursive/.worktrees/encode/.agents/gemma_scratch/TuringRecursive.decode_encode_tape_5.lean:197:2: error: Tactic `apply` failed: could not unify the conclusion of `@Encodable.decode\u2082_encode`\n  Encodable.decode\u2082 ?\u03b1 (Encodable.encode ?a) = some ?a\nwith the goal\n  Encodable.decode (Encodable.encode T) = some T\nNote: The full type of `@Encodable.decode\u2082_encode` is\n  \u2200 {\u03b1 : Type ?u.17} [inst : Encodable \u03b1] (a : \u03b1), Encodable.decode\u2082 \u03b1 (Encodable.encode a) = some a",
+      "error_class": "type mismatch",
+      "latency_ms": 27984.91,
+      "lean_ms": 6040.15,
+      "tokens": 85,
+      "accepted": false
+    }
+  ]
+}

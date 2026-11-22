@@ -81,6 +81,51 @@ class TestCheckGemmaProvenance(unittest.TestCase):
             self.assertTrue(r1_ok["ok"])
             self.assertEqual(r1_ok["origin"], "escalated")
 
+    def test_unicode_collision_is_rejected_and_hash_suffix_passes(self):
+        import gemma_loop
+        src = (
+            "namespace TuringRecursive\n"
+            "-- tier: T0\n"
+            "theorem foo : Nat := 1\n\n"
+            "-- tier: T0\n"
+            "theorem fooₗ : Nat := 0\n"
+            "end TuringRecursive\n"
+        )
+        added = check_gemma_provenance.find_new_declarations_between_texts("", src)
+        by_name = {d.name: d for d, _ in added}
+        d_plain = by_name["TuringRecursive.foo"]
+        d_sub = by_name["TuringRecursive.fooₗ"]
+
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            acc_dir = root / ".agents" / "gemma_accepted"
+            esc_dir = root / ".agents" / "gemma_escalations"
+            acc_dir.mkdir(parents=True)
+            esc_dir.mkdir(parents=True)
+
+            # Only plain `foo` artifact exists: must pass `foo` and NOT satisfy `fooₗ`
+            (acc_dir / f"{gemma_loop.sanitize_decl_filename(d_plain.name)}.lean").write_text(
+                "-- Verified by gemma_loop.py (declaration: TuringRecursive.foo, tier: T0, attempt: 1, spec: Foo.lean)\n"
+                "theorem foo : Nat := 1\n",
+                encoding="utf-8",
+            )
+            self.assertTrue(
+                check_gemma_provenance.check_declaration_provenance(d_plain, "T0", acc_dir, esc_dir)["ok"]
+            )
+            self.assertFalse(
+                check_gemma_provenance.check_declaration_provenance(d_sub, "T0", acc_dir, esc_dir)["ok"]
+            )
+
+            # Distinct hash-suffixed artifact for `fooₗ` passes
+            (acc_dir / f"{gemma_loop.sanitize_decl_filename(d_sub.name)}.lean").write_text(
+                "-- Verified by gemma_loop.py (declaration: TuringRecursive.fooₗ, tier: T0, attempt: 1, spec: Foo.lean)\n"
+                "theorem fooₗ : Nat := 0\n",
+                encoding="utf-8",
+            )
+            res_sub = check_gemma_provenance.check_declaration_provenance(d_sub, "T0", acc_dir, esc_dir)
+            self.assertTrue(res_sub["ok"])
+            self.assertEqual(res_sub["origin"], "gemma_accepted")
+
 
 if __name__ == "__main__":
     unittest.main()

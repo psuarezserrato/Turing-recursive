@@ -161,6 +161,54 @@ class TestGemmaLoop(unittest.TestCase):
             esc_data = json.loads(esc_path.read_text(encoding="utf-8"))
             self.assertEqual(len(esc_data["attempts"]), 5)
 
+    def test_sanitize_decl_filename_disambiguates_non_ascii_and_cleans_stale_escalation(self):
+        s_ascii = gemma_loop.sanitize_decl_filename("Foo.cons")
+        s_unicode = gemma_loop.sanitize_decl_filename("Foo.consₗ")
+        self.assertEqual(s_ascii, "Foo.cons")
+        self.assertNotEqual(s_ascii, s_unicode)
+        self.assertTrue(s_unicode.startswith("Foo.cons_"))
+
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            (root / "lakefile.toml").write_text('name = "TuringRecursive"\n', encoding="utf-8")
+            esc_dir = root / ".agents" / "gemma_escalations"
+            esc_dir.mkdir(parents=True)
+            stale_esc = esc_dir / f"{s_unicode}.json"
+            stale_esc.write_text('{"declaration": "Foo.consₗ", "attempts": []}\n', encoding="utf-8")
+
+            spec_path = root / "spec.lean"
+            spec_path.write_text(
+                "-- tier: T0\n"
+                "theorem Foo.consₗ : True := by\n"
+                "  sorry\n",
+                encoding="utf-8",
+            )
+            empty_bm25 = bm25_index.InvertedBM25()
+            dummy_idx = bm25_index.RepositoryIndex(empty_bm25, empty_bm25, root)
+
+            def ok_caller(**_kwargs):
+                return {
+                    "status": "success",
+                    "model": "gemma4:12B",
+                    "elapsed_ms": 5.0,
+                    "eval_count": 4,
+                    "lean_code": "theorem Foo.consₗ : True := by\n  trivial",
+                }
+
+            res = gemma_loop.prove_spec_file(
+                spec_path=spec_path,
+                repo_root=root,
+                max_attempts=5,
+                milestone="W0",
+                idx=dummy_idx,
+                model_caller=ok_caller,
+                lean_checker=lambda *_a: (True, 0, "", 2.0, False),
+                ledger_path=root / ".agents" / "gemma_usage.jsonl",
+            )
+            self.assertEqual(res["accepted_count"], 1)
+            self.assertFalse(stale_esc.exists())
+            self.assertTrue((root / ".agents" / "gemma_accepted" / f"{s_unicode}.lean").is_file())
+
 
 if __name__ == "__main__":
     unittest.main()
