@@ -4,7 +4,7 @@ Lean 4 / Mathlib-PR-quality formalization proving the missing **TM → Partrec**
 
 - **Lean toolchain**: `v4.36.0` (`autoImplicit = false`, `relaxedAutoImplicit = false`)
 - **Mathlib pin**: `fc4f59e577feb1a4956671bc04ac18aaaf8cd842`
-- **License**: Apache 2.0 ([LICENSE](LICENSE))
+- **License**: GNU Affero General Public License v3.0 (AGPLv3) for non-commercial use ([LICENSE.md](LICENSE.md))
 
 ## Scope & Modules
 
@@ -49,3 +49,13 @@ python3 tools/check_gemma_provenance.py 302796b..HEAD
 - [docs/AUDIT.md](docs/AUDIT.md) — Independent adversarial audit (G1–G8, anti-vacuity, axiom closure)
 - [docs/TECHNICAL_REPORT.md](docs/TECHNICAL_REPORT.md) — Full mathematical & engineering technical report
 - [docs/EXECUTIVE_REPORT.md](docs/EXECUTIVE_REPORT.md) — Executive summary
+
+---
+
+## License & Citation
+
+Licensed under the **GNU Affero General Public License v3.0 (AGPLv3)** for non-commercial use — see [LICENSE.md](https://github.com/psuarezserrato/gromov-genus0-compactness/blob/main/LICENSE.md) for details:
+
+> This project is licensed under non-commercial use. If you wish to use this software in a commercial product, service, or enterprise environment, please contact the developer to purchase a commercial license or negotiate royalty terms.
+
+Authored by **Pablo Suárez-Serrato** (November 2026).
