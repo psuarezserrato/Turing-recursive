@@ -1,0 +1,1225 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dependency graph</title>
+  <meta name="generator" content="plasTeX" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles/theme-blue.css" />
+  <link rel="stylesheet" href="styles/dep_graph.css" />
+  
+  <script type="text/x-mathjax-config">
+  
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  
+  </script>
+
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">  </script>
+
+
+<link rel="stylesheet" href="styles/extra_styles.css" />
+
+</head>
+
+<body>
+<header>
+  <a class="toc" href="index.html">Home</a>
+  <h1 id="doc_title">Dependencies</h1>
+</header>
+<div class="wrapper">
+<div class="content">
+  <div id="Legend">
+    <span id="legend_title" class="title">Legend
+    <div class="btn">
+       <div class="bar"></div>
+       <div class="bar"></div>
+       <div class="bar"></div>
+    </div></span> 
+    <dl class="legend">
+      
+      <dt>Boxes</dt><dd>definitions</dd>
+      
+      <dt>Ellipses</dt><dd>theorems and lemmas</dd>
+      
+      <dt>Blue border</dt><dd>the <em>statement</em> of this result is ready to be formalized; all prerequisites are done</dd>
+      
+      <dt>Orange border</dt><dd>the <em>statement</em> of this result is not ready to be formalized; the blueprint needs more work</dd>
+      
+      <dt>Blue background</dt><dd>the <em>proof</em> of this result is ready to be formalized; all prerequisites are done</dd>
+      
+      <dt>Green border</dt><dd>the <em>statement</em> of this result is formalized</dd>
+      
+      <dt>Green background</dt><dd>the <em>proof</em> of this result is formalized</dd>
+      
+      <dt>Dark green background</dt><dd>the <em>proof</em> of this result and all its ancestors are formalized</dd>
+      
+      <dt>Dark green border</dt><dd>this is in Mathlib</dd>
+      
+    </dl>
+  </div>
+    <div id="graph">
+<svg width="947pt" height="1115pt"
+ viewBox="0.00 0.00 947.00 1115.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="width: 100%; height: 100%; max-width: 100%; max-height: 88vh; display: block; margin: 0 auto;">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 1111)">
+<polygon fill="white" stroke="none" points="-4,4 -4,-1111 943.12,-1111 943.12,4 -4,4"/>
+<!-- thm:U_evalCfg_tape -->
+<g id="node1" class="node">
+<title>thm:U_evalCfg_tape</title>
+<ellipse fill="#1cac78" stroke="green" stroke-width="1.8" cx="469.79" cy="-18" rx="95.54" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="469.79" y="-10.25" font-family="Times,serif" font-size="20.00">U_evalCfg_tape</text>
+</g>
+<!-- lem:tm0_step_primrec -->
+<g id="node2" class="node">
+<title>lem:tm0_step_primrec</title>
+<ellipse fill="#1cac78" stroke="green" stroke-width="1.8" cx="780.79" cy="-494" rx="105.58" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="780.79" y="-486.25" font-family="Times,serif" font-size="20.00">tm0_step_primrec</text>
+</g>
+<!-- thm:tm0_eval_partrec -->
+<g id="node3" class="node">
+<title>thm:tm0_eval_partrec</title>
+<ellipse fill="#1cac78" stroke="green" stroke-width="1.8" cx="780.79" cy="-375" rx="101.88" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="780.79" y="-367.25" font-family="Times,serif" font-size="20.00">tm0_eval_partrec</text>
+</g>
+<!-- lem:tm0_step_primrec&#45;&gt;thm:tm0_eval_partrec -->
+<g id="edge1" class="edge">
+<title>lem:tm0_step_primrec&#45;&gt;thm:tm0_eval_partrec</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M780.79,-475.23C780.79,-456.48 780.79,-426.65 780.79,-404.59"/>
+<polygon fill="black" stroke="black" points="780.79,-394.77 785.29,-404.77 780.79,-398.55 780.79,-404.77 780.79,-404.77 780.79,-404.77 780.79,-398.55 776.29,-404.77 780.79,-394.77"/>
+</g>
+<!-- cor:exists_code_eval -->
+<g id="node4" class="node">
+<title>cor:exists_code_eval</title>
+<ellipse fill="#1cac78" stroke="green" stroke-width="1.8" cx="780.79" cy="-256" rx="98.71" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="780.79" y="-248.25" font-family="Times,serif" font-size="20.00">exists_code_eval</text>
+</g>
+<!-- thm:tm0_eval_partrec&#45;&gt;cor:exists_code_eval -->
+<g id="edge2" class="edge">
+<title>thm:tm0_eval_partrec&#45;&gt;cor:exists_code_eval</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M780.79,-356.23C780.79,-337.48 780.79,-307.65 780.79,-285.59"/>
+<polygon fill="black" stroke="black" points="780.79,-275.77 785.29,-285.77 780.79,-279.55 780.79,-285.77 780.79,-285.77 780.79,-285.77 780.79,-279.55 776.29,-285.77 780.79,-275.77"/>
+</g>
+<!-- thm:nat_partrec_iff_tm0 -->
+<g id="node5" class="node">
+<title>thm:nat_partrec_iff_tm0</title>
+<ellipse fill="#1cac78" stroke="green" stroke-width="1.8" cx="406.79" cy="-256" rx="115.63" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="406.79" y="-248.25" font-family="Times,serif" font-size="20.00">nat_partrec_iff_tm0</text>
+</g>
+<!-- thm:tm0_eval_partrec&#45;&gt;thm:nat_partrec_iff_tm0 -->
+<g id="edge3" class="edge">
+<title>thm:tm0_eval_partrec&#45;&gt;thm:nat_partrec_iff_tm0</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M731.13,-358.46C663.33,-337.25 541.84,-299.25 468.34,-276.26"/>
+<polygon fill="black" stroke="black" points="459.02,-273.34 469.91,-272.03 462.63,-274.47 468.57,-276.33 468.57,-276.33 468.57,-276.33 462.63,-274.47 467.22,-280.62 459.02,-273.34"/>
+</g>
+<!-- def:universal_tm0 -->
+<g id="node6" class="node">
+<title>def:universal_tm0</title>
+<polygon fill="#b0eca3" stroke="green" stroke-width="1.8" points="528.92,-155 410.66,-155 410.66,-119 528.92,-119 528.92,-155"/>
+<text xml:space="preserve" text-anchor="middle" x="469.79" y="-129.25" font-family="Times,serif" font-size="20.00">universal_tm0</text>
+</g>
+<!-- thm:nat_partrec_iff_tm0&#45;&gt;def:universal_tm0 -->
+<g id="edge4" class="edge">
+<title>thm:nat_partrec_iff_tm0&#45;&gt;def:universal_tm0</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M416.36,-237.23C426.64,-218.14 443.11,-187.55 455.05,-165.38"/>
+<polygon fill="black" stroke="black" points="459.76,-156.63 458.98,-167.56 457.97,-159.96 455.02,-165.43 455.02,-165.43 455.02,-165.43 457.97,-159.96 451.06,-163.3 459.76,-156.63"/>
+</g>
+<!-- def:universal_tm0&#45;&gt;thm:U_evalCfg_tape -->
+<g id="edge11" class="edge">
+<title>def:universal_tm0&#45;&gt;thm:U_evalCfg_tape</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M469.79,-118.23C469.79,-99.48 469.79,-69.65 469.79,-47.59"/>
+<polygon fill="black" stroke="black" points="469.79,-37.77 474.29,-47.77 469.79,-41.55 469.79,-47.77 469.79,-47.77 469.79,-47.77 469.79,-41.55 465.29,-47.77 469.79,-37.77"/>
+</g>
+<!-- thm:eval_partrec -->
+<g id="node7" class="node">
+<title>thm:eval_partrec</title>
+<ellipse fill="#1cac78" stroke="green" stroke-width="1.8" cx="865.79" cy="-732" rx="73.33" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="865.79" y="-724.25" font-family="Times,serif" font-size="20.00">eval_partrec</text>
+</g>
+<!-- thm:eval_partrec&#45;&gt;thm:tm0_eval_partrec -->
+<g id="edge5" class="edge">
+<title>thm:eval_partrec&#45;&gt;thm:tm0_eval_partrec</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M874.45,-713.47C883.59,-693.92 897.41,-661.07 902.79,-631 910.73,-586.65 897.13,-490.49 889.79,-476 873.64,-444.1 842.82,-417.32 818.06,-399.53"/>
+<polygon fill="black" stroke="black" points="809.92,-393.86 820.69,-395.88 813.02,-396.02 818.12,-399.57 818.12,-399.57 818.12,-399.57 813.02,-396.02 815.55,-403.26 809.92,-393.86"/>
+</g>
+<!-- thm:eval_partrec2 -->
+<g id="node8" class="node">
+<title>thm:eval_partrec2</title>
+<ellipse fill="#1cac78" stroke="green" stroke-width="1.8" cx="820.79" cy="-613" rx="80.2" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="820.79" y="-605.25" font-family="Times,serif" font-size="20.00">eval_partrec2</text>
+</g>
+<!-- thm:eval_partrec&#45;&gt;thm:eval_partrec2 -->
+<g id="edge6" class="edge">
+<title>thm:eval_partrec&#45;&gt;thm:eval_partrec2</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M858.96,-713.23C851.68,-694.31 840.06,-664.1 831.55,-641.98"/>
+<polygon fill="black" stroke="black" points="827.98,-632.69 835.77,-640.41 829.34,-636.22 831.57,-642.02 831.57,-642.02 831.57,-642.02 829.34,-636.22 827.37,-643.64 827.98,-632.69"/>
+</g>
+<!-- thm:tm0Code_eval_partrec -->
+<g id="node9" class="node">
+<title>thm:tm0Code_eval_partrec</title>
+<ellipse fill="#1cac78" stroke="green" stroke-width="1.8" cx="537.79" cy="-494" rx="131.49" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="537.79" y="-486.25" font-family="Times,serif" font-size="20.00">tm0Code_eval_partrec</text>
+</g>
+<!-- thm:eval_partrec2&#45;&gt;thm:tm0Code_eval_partrec -->
+<g id="edge7" class="edge">
+<title>thm:eval_partrec2&#45;&gt;thm:tm0Code_eval_partrec</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M782.92,-596.34C732.87,-575.65 644.52,-539.13 588.68,-516.04"/>
+<polygon fill="black" stroke="black" points="579.77,-512.36 590.73,-512.02 583.27,-513.8 589.01,-516.18 589.01,-516.18 589.01,-516.18 583.27,-513.8 587.29,-520.34 579.77,-512.36"/>
+</g>
+<!-- thm:tm0Code_eval_partrec&#45;&gt;def:universal_tm0 -->
+<g id="edge8" class="edge">
+<title>thm:tm0Code_eval_partrec&#45;&gt;def:universal_tm0</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M537.92,-475.24C538.11,-425 537.48,-282.67 524.79,-238 517.24,-211.42 501.6,-184.13 488.92,-164.79"/>
+<polygon fill="black" stroke="black" points="483.48,-156.71 492.8,-162.49 485.59,-159.85 489.07,-165.01 489.07,-165.01 489.07,-165.01 485.59,-159.85 485.33,-167.52 483.48,-156.71"/>
+</g>
+<!-- thm:halting_undecidable -->
+<g id="node10" class="node">
+<title>thm:halting_undecidable</title>
+<ellipse fill="#1cac78" stroke="green" stroke-width="1.8" cx="396.79" cy="-375" rx="116.16" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="396.79" y="-367.25" font-family="Times,serif" font-size="20.00">halting_undecidable</text>
+</g>
+<!-- thm:tm0Code_eval_partrec&#45;&gt;thm:halting_undecidable -->
+<g id="edge9" class="edge">
+<title>thm:tm0Code_eval_partrec&#45;&gt;thm:halting_undecidable</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M516.68,-475.48C492.56,-455.47 452.93,-422.58 425.89,-400.14"/>
+<polygon fill="black" stroke="black" points="418.52,-394.03 429.09,-396.95 421.43,-396.45 426.22,-400.42 426.22,-400.42 426.22,-400.42 421.43,-396.45 423.34,-403.88 418.52,-394.03"/>
+</g>
+<!-- thm:compile -->
+<g id="node11" class="node">
+<title>thm:compile</title>
+<ellipse fill="#1cac78" stroke="green" stroke-width="1.8" cx="591.79" cy="-375" rx="49.01" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="591.79" y="-367.25" font-family="Times,serif" font-size="20.00">compile</text>
+</g>
+<!-- thm:tm0Code_eval_partrec&#45;&gt;thm:compile -->
+<g id="edge10" class="edge">
+<title>thm:tm0Code_eval_partrec&#45;&gt;thm:compile</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M545.99,-475.23C554.76,-456.22 568.79,-425.82 579.02,-403.68"/>
+<polygon fill="black" stroke="black" points="583.18,-394.66 583.07,-405.63 581.59,-398.09 578.99,-403.74 578.99,-403.74 578.99,-403.74 581.59,-398.09 574.9,-401.85 583.18,-394.66"/>
+</g>
+<!-- def:listBlank_trim -->
+<g id="node12" class="node">
+<title>def:listBlank_trim</title>
+<polygon fill="#b0eca3" stroke="green" stroke-width="1.8" points="538.3,-988 419.29,-988 419.29,-952 538.3,-952 538.3,-988"/>
+<text xml:space="preserve" text-anchor="middle" x="478.79" y="-962.25" font-family="Times,serif" font-size="20.00">listBlank_trim</text>
+</g>
+<!-- lem:listBlank_trim_inj -->
+<g id="node13" class="node">
+<title>lem:listBlank_trim_inj</title>
+<ellipse fill="#1cac78" stroke="green" stroke-width="1.8" cx="478.79" cy="-851" rx="105.05" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="478.79" y="-843.25" font-family="Times,serif" font-size="20.00">listBlank_trim_inj</text>
+</g>
+<!-- def:listBlank_trim&#45;&gt;lem:listBlank_trim_inj -->
+<g id="edge12" class="edge">
+<title>def:listBlank_trim&#45;&gt;lem:listBlank_trim_inj</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M478.79,-951.23C478.79,-932.48 478.79,-902.65 478.79,-880.59"/>
+<polygon fill="black" stroke="black" points="478.79,-870.77 483.29,-880.77 478.79,-874.55 478.79,-880.77 478.79,-880.77 478.79,-880.77 478.79,-874.55 474.29,-880.77 478.79,-870.77"/>
+</g>
+<!-- def:primcodable_tm0 -->
+<g id="node14" class="node">
+<title>def:primcodable_tm0</title>
+<polygon fill="#b0eca3" stroke="green" stroke-width="1.8" points="551.42,-750 406.16,-750 406.16,-714 551.42,-714 551.42,-750"/>
+<text xml:space="preserve" text-anchor="middle" x="478.79" y="-724.25" font-family="Times,serif" font-size="20.00">primcodable_tm0</text>
+</g>
+<!-- lem:listBlank_trim_inj&#45;&gt;def:primcodable_tm0 -->
+<g id="edge13" class="edge">
+<title>lem:listBlank_trim_inj&#45;&gt;def:primcodable_tm0</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M478.79,-832.23C478.79,-813.48 478.79,-783.65 478.79,-761.59"/>
+<polygon fill="black" stroke="black" points="478.79,-751.77 483.29,-761.77 478.79,-755.55 478.79,-761.77 478.79,-761.77 478.79,-761.77 478.79,-755.55 474.29,-761.77 478.79,-751.77"/>
+</g>
+<!-- def:gamma0_codec -->
+<g id="node15" class="node">
+<title>def:gamma0_codec</title>
+<polygon fill="#b0eca3" stroke="green" stroke-width="1.8" points="137.3,-631 6.29,-631 6.29,-595 137.3,-595 137.3,-631"/>
+<text xml:space="preserve" text-anchor="middle" x="71.79" y="-605.25" font-family="Times,serif" font-size="20.00">gamma0_codec</text>
+</g>
+<!-- def:primcodable_tm0&#45;&gt;def:gamma0_codec -->
+<g id="edge14" class="edge">
+<title>def:primcodable_tm0&#45;&gt;def:gamma0_codec</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M416.53,-713.1C343.37,-692.07 222.15,-657.22 144.67,-634.95"/>
+<polygon fill="black" stroke="black" points="135.21,-632.23 146.07,-630.67 138.85,-633.28 144.82,-634.99 144.82,-634.99 144.82,-634.99 138.85,-633.28 143.58,-639.32 135.21,-632.23"/>
+</g>
+<!-- lem:primrec_tape_ops -->
+<g id="node16" class="node">
+<title>lem:primrec_tape_ops</title>
+<ellipse fill="#1cac78" stroke="green" stroke-width="1.8" cx="630.79" cy="-613" rx="104" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="630.79" y="-605.25" font-family="Times,serif" font-size="20.00">primrec_tape_ops</text>
+</g>
+<!-- def:primcodable_tm0&#45;&gt;lem:primrec_tape_ops -->
+<g id="edge15" class="edge">
+<title>def:primcodable_tm0&#45;&gt;lem:primrec_tape_ops</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M501.88,-713.23C528.07,-693.07 570.91,-660.1 599.94,-637.74"/>
+<polygon fill="black" stroke="black" points="607.51,-631.92 602.33,-641.58 604.52,-634.22 599.59,-638.02 599.59,-638.02 599.59,-638.02 604.52,-634.22 596.85,-634.45 607.51,-631.92"/>
+</g>
+<!-- def:tm0Code -->
+<g id="node17" class="node">
+<title>def:tm0Code</title>
+<polygon fill="#b0eca3" stroke="green" stroke-width="1.8" points="521.05,-631 442.54,-631 442.54,-595 521.05,-595 521.05,-631"/>
+<text xml:space="preserve" text-anchor="middle" x="481.79" y="-605.25" font-family="Times,serif" font-size="20.00">tm0Code</text>
+</g>
+<!-- def:primcodable_tm0&#45;&gt;def:tm0Code -->
+<g id="edge16" class="edge">
+<title>def:primcodable_tm0&#45;&gt;def:tm0Code</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M479.25,-713.23C479.73,-694.48 480.49,-664.65 481.06,-642.59"/>
+<polygon fill="black" stroke="black" points="481.31,-632.77 485.55,-642.88 481.21,-636.55 481.05,-642.77 481.05,-642.77 481.05,-642.77 481.21,-636.55 476.55,-642.65 481.31,-632.77"/>
+</g>
+<!-- lem:encNat_decNat_props -->
+<g id="node18" class="node">
+<title>lem:encNat_decNat_props</title>
+<ellipse fill="#1cac78" stroke="green" stroke-width="1.8" cx="127.79" cy="-375" rx="127.79" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="127.79" y="-367.25" font-family="Times,serif" font-size="20.00">encNat_decNat_props</text>
+</g>
+<!-- def:gamma0_codec&#45;&gt;lem:encNat_decNat_props -->
+<g id="edge17" class="edge">
+<title>def:gamma0_codec&#45;&gt;lem:encNat_decNat_props</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M76,-594.26C85.63,-553.67 109.34,-453.75 121.04,-404.45"/>
+<polygon fill="black" stroke="black" points="123.33,-394.81 125.4,-405.58 122.45,-398.49 121.02,-404.54 121.02,-404.54 121.02,-404.54 122.45,-398.49 116.64,-403.5 123.33,-394.81"/>
+</g>
+<!-- lem:primrec_tape_ops&#45;&gt;lem:tm0_step_primrec -->
+<g id="edge21" class="edge">
+<title>lem:primrec_tape_ops&#45;&gt;lem:tm0_step_primrec</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M652.92,-594.74C678.62,-574.69 721.18,-541.5 750.07,-518.96"/>
+<polygon fill="black" stroke="black" points="757.61,-513.08 752.49,-522.78 754.62,-515.41 749.72,-519.23 749.72,-519.23 749.72,-519.23 754.62,-515.41 746.95,-515.69 757.61,-513.08"/>
+</g>
+<!-- lem:primrec_tape_ops&#45;&gt;thm:tm0Code_eval_partrec -->
+<g id="edge22" class="edge">
+<title>lem:primrec_tape_ops&#45;&gt;thm:tm0Code_eval_partrec</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M616.87,-594.48C601.46,-575.1 576.46,-543.65 558.69,-521.3"/>
+<polygon fill="black" stroke="black" points="552.57,-513.59 562.31,-518.62 554.92,-516.55 558.79,-521.42 558.79,-521.42 558.79,-521.42 554.92,-516.55 555.27,-524.22 552.57,-513.59"/>
+</g>
+<!-- def:tm0Code&#45;&gt;thm:tm0Code_eval_partrec -->
+<g id="edge24" class="edge">
+<title>def:tm0Code&#45;&gt;thm:tm0Code_eval_partrec</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M490.3,-594.23C499.44,-575.14 514.08,-544.55 524.69,-522.38"/>
+<polygon fill="black" stroke="black" points="528.86,-513.65 528.6,-524.62 527.23,-517.06 524.55,-522.67 524.55,-522.67 524.55,-522.67 527.23,-517.06 520.49,-520.73 528.86,-513.65"/>
+</g>
+<!-- thm:exists_relabeling -->
+<g id="node21" class="node">
+<title>thm:exists_relabeling</title>
+<ellipse fill="#1cac78" stroke="green" stroke-width="1.8" cx="302.79" cy="-494" rx="97.65" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="302.79" y="-486.25" font-family="Times,serif" font-size="20.00">exists_relabeling</text>
+</g>
+<!-- def:tm0Code&#45;&gt;thm:exists_relabeling -->
+<g id="edge25" class="edge">
+<title>def:tm0Code&#45;&gt;thm:exists_relabeling</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M454.6,-594.23C423.49,-573.9 372.44,-540.53 338.24,-518.17"/>
+<polygon fill="black" stroke="black" points="330.08,-512.84 340.92,-514.54 333.25,-514.91 338.45,-518.31 338.45,-518.31 338.45,-518.31 333.25,-514.91 335.99,-522.08 330.08,-512.84"/>
+</g>
+<!-- lem:encNat_decNat_props&#45;&gt;thm:nat_partrec_iff_tm0 -->
+<g id="edge18" class="edge">
+<title>lem:encNat_decNat_props&#45;&gt;thm:nat_partrec_iff_tm0</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M168.06,-357.11C217.96,-336.19 302.99,-300.53 356.95,-277.9"/>
+<polygon fill="black" stroke="black" points="365.86,-274.16 358.38,-282.18 362.37,-275.63 356.64,-278.03 356.64,-278.03 356.64,-278.03 362.37,-275.63 354.9,-273.88 365.86,-274.16"/>
+</g>
+<!-- lem:list_rdropWhile -->
+<g id="node19" class="node">
+<title>lem:list_rdropWhile</title>
+<ellipse fill="#1cac78" stroke="green" stroke-width="1.8" cx="478.79" cy="-1089" rx="91.31" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="478.79" y="-1081.25" font-family="Times,serif" font-size="20.00">list_rdropWhile</text>
+</g>
+<!-- lem:list_rdropWhile&#45;&gt;def:listBlank_trim -->
+<g id="edge19" class="edge">
+<title>lem:list_rdropWhile&#45;&gt;def:listBlank_trim</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M478.79,-1070.23C478.79,-1051.48 478.79,-1021.65 478.79,-999.59"/>
+<polygon fill="black" stroke="black" points="478.79,-989.77 483.29,-999.77 478.79,-993.55 478.79,-999.77 478.79,-999.77 478.79,-999.77 478.79,-993.55 474.29,-999.77 478.79,-989.77"/>
+</g>
+<!-- lem:list_dropLast -->
+<g id="node20" class="node">
+<title>lem:list_dropLast</title>
+<ellipse fill="#1cac78" stroke="green" stroke-width="1.8" cx="633.79" cy="-732" rx="76.5" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="633.79" y="-724.25" font-family="Times,serif" font-size="20.00">list_dropLast</text>
+</g>
+<!-- lem:list_dropLast&#45;&gt;lem:primrec_tape_ops -->
+<g id="edge20" class="edge">
+<title>lem:list_dropLast&#45;&gt;lem:primrec_tape_ops</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M633.33,-713.23C632.85,-694.48 632.09,-664.65 631.52,-642.59"/>
+<polygon fill="black" stroke="black" points="631.27,-632.77 636.03,-642.65 631.37,-636.55 631.53,-642.77 631.53,-642.77 631.53,-642.77 631.37,-636.55 627.03,-642.88 631.27,-632.77"/>
+</g>
+<!-- thm:exists_relabeling&#45;&gt;thm:halting_undecidable -->
+<g id="edge23" class="edge">
+<title>thm:exists_relabeling&#45;&gt;thm:halting_undecidable</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M316.86,-475.48C332.44,-456.1 357.71,-424.65 375.66,-402.3"/>
+<polygon fill="black" stroke="black" points="381.86,-394.59 379.1,-405.2 379.49,-397.53 375.6,-402.38 375.6,-402.38 375.6,-402.38 379.49,-397.53 372.09,-399.56 381.86,-394.59"/>
+</g>
+<!-- lem:reaches_iff_exists_iterate -->
+<g id="node22" class="node">
+<title>lem:reaches_iff_exists_iterate</title>
+<ellipse fill="#1cac78" stroke="green" stroke-width="1.8" cx="289.79" cy="-613" rx="146.3" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="289.79" y="-605.25" font-family="Times,serif" font-size="20.00">reaches_iff_exists_iterate</text>
+</g>
+<!-- lem:reaches_iff_exists_iterate&#45;&gt;thm:exists_relabeling -->
+<g id="edge26" class="edge">
+<title>lem:reaches_iff_exists_iterate&#45;&gt;thm:exists_relabeling</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M291.76,-594.23C293.85,-575.48 297.16,-545.65 299.61,-523.59"/>
+<polygon fill="black" stroke="black" points="300.71,-513.76 304.07,-524.2 300.29,-517.52 299.6,-523.7 299.6,-523.7 299.6,-523.7 300.29,-517.52 295.13,-523.21 300.71,-513.76"/>
+</g>
+</g>
+</svg>
+</div>
+<div id="statements">
+
+    
+    <div class="dep-modal-container" id="cor:exists_code_eval_modal">
+      <div class="dep-modal-content">
+          <button class="dep-closebtn">
+<svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        
+  <div class="thm" id="cor:exists_code_eval" style="display: none">
+    <div class="thm_thmheading">
+      <span class="corollary_thmcaption">
+      Corollary
+      </span>
+      <span class="corollary_thmlabel">3.3</span><span class="corollary_thmtitle">Kleene <span class="ttfamily">Code</span> realization of \(\mathrm{TM0}\)</span></div>
+    <div class="thm_thmcontent"><p>    For every finite-state \(\mathrm{TM0}\) machine \(M\), there exists a <span class="ttfamily">Nat.Partrec.Code</span> \(c\) whose evaluation on encoded inputs matches <span class="ttfamily">TM0.eval</span> \(M\). </p>
+</div>
+
+    <a class="latex_link" href="sect0003.html#cor:exists_code_eval">LaTeX</a>
+    
+    
+  <a class="lean_link lean_decl" href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/Turing.TM0.exists_code_eval">Lean</a>
+    
+    
+  
+    
+  </div>
+    
+      </div>
+    </div>
+
+
+    
+    <div class="dep-modal-container" id="def:gamma0_codec_modal">
+      <div class="dep-modal-content">
+          <button class="dep-closebtn">
+<svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        
+  <div class="thm" id="def:gamma0_codec" style="display: none">
+    <div class="thm_thmheading">
+      <span class="definition_thmcaption">
+      Definition
+      </span>
+      <span class="definition_thmlabel">5.1</span><span class="definition_thmtitle">Fixed \(1{,}250\)-symbol alphabet \(\Gamma _0\) and binary codec</span></div>
+    <div class="thm_thmcontent"><p>    The fixed finite alphabet \(\Gamma _0\) induced by Mathlib’s <span class="ttfamily">PartrecToTM2</span> pipeline, together with explicit computable encoding <span class="ttfamily">encNat</span> and decoding <span class="ttfamily">decNat</span> of \(\mathbb {N}\). </p>
+</div>
+
+    <a class="latex_link" href="sect0005.html#def:gamma0_codec">LaTeX</a>
+    
+    
+  <div class="tooltip">
+      <span class="lean_link">Lean</span>
+      <ul class="tooltip_list">
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.Γ₀" class="lean_decl">TuringRecursive.Γ₀</a></li>
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.encNat" class="lean_decl">TuringRecursive.encNat</a></li>
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.decNat" class="lean_decl">TuringRecursive.decNat</a></li>
+        
+      </ul>
+  </div>
+    
+    
+  
+    
+  </div>
+    
+      </div>
+    </div>
+
+
+    
+    <div class="dep-modal-container" id="def:listBlank_trim_modal">
+      <div class="dep-modal-content">
+          <button class="dep-closebtn">
+<svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        
+  <div class="thm" id="def:listBlank_trim" style="display: none">
+    <div class="thm_thmheading">
+      <span class="definition_thmcaption">
+      Definition
+      </span>
+      <span class="definition_thmlabel">2.3</span><span class="definition_thmtitle">Canonical <span class="ttfamily">ListBlank</span> trimming</span></div>
+    <div class="thm_thmcontent"><p>    Given a blank symbol \(\mathrm{default} \in \Gamma \), <span class="ttfamily">ListBlank.trim</span> maps an equivalence class of infinite-blank-padded lists to its unique finite prefix with no trailing blank. </p>
+</div>
+
+    <a class="latex_link" href="sect0002.html#def:listBlank_trim">LaTeX</a>
+    
+    
+  <a class="lean_link lean_decl" href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/Turing.ListBlank.trim">Lean</a>
+    
+    
+  
+    
+  </div>
+    
+      </div>
+    </div>
+
+
+    
+    <div class="dep-modal-container" id="def:primcodable_tm0_modal">
+      <div class="dep-modal-content">
+          <button class="dep-closebtn">
+<svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        
+  <div class="thm" id="def:primcodable_tm0" style="display: none">
+    <div class="thm_thmheading">
+      <span class="definition_thmcaption">
+      Definition
+      </span>
+      <span class="definition_thmlabel">2.5</span><span class="definition_thmtitle">Scoped <span class="ttfamily">Primcodable</span> instances for \(\mathrm{TM0}\) data</span></div>
+    <div class="thm_thmcontent"><p>    Diamond-free scoped <span class="ttfamily">Primcodable</span> instances for <span class="ttfamily">Turing.Dir</span>, <span class="ttfamily">TM0.Stmt</span>, <span class="ttfamily">ListBlank</span>, <span class="ttfamily">Tape</span>, and <span class="ttfamily">TM0.Cfg</span>. </p>
+</div>
+
+    <a class="latex_link" href="sect0002.html#def:primcodable_tm0">LaTeX</a>
+    
+    
+  <div class="tooltip">
+      <span class="lean_link">Lean</span>
+      <ul class="tooltip_list">
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.instPrimcodableDir" class="lean_decl">TuringRecursive.instPrimcodableDir</a></li>
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.instPrimcodableStmt" class="lean_decl">TuringRecursive.instPrimcodableStmt</a></li>
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.instPrimcodableListBlank" class="lean_decl">TuringRecursive.instPrimcodableListBlank</a></li>
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.instPrimcodableTape" class="lean_decl">TuringRecursive.instPrimcodableTape</a></li>
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.instPrimcodableCfg" class="lean_decl">TuringRecursive.instPrimcodableCfg</a></li>
+        
+      </ul>
+  </div>
+    
+    
+  
+    
+  </div>
+    
+      </div>
+    </div>
+
+
+    
+    <div class="dep-modal-container" id="def:tm0Code_modal">
+      <div class="dep-modal-content">
+          <button class="dep-closebtn">
+<svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        
+  <div class="thm" id="def:tm0Code" style="display: none">
+    <div class="thm_thmheading">
+      <span class="definition_thmcaption">
+      Definition
+      </span>
+      <span class="definition_thmlabel">4.1</span><span class="definition_thmtitle">Uniform finite machine code <span class="ttfamily">TM0Code</span></span></div>
+    <div class="thm_thmcontent"><p>    A <span class="ttfamily">TM0Code</span> packages a finite transition table over \(\mathbb {N}\times \mathbb {N}\) as a <span class="ttfamily">Primcodable</span> type together with its decoded machine <span class="ttfamily">TM0Code.machine</span>. </p>
+</div>
+
+    <a class="latex_link" href="sect0004.html#def:tm0Code">LaTeX</a>
+    
+    
+  <div class="tooltip">
+      <span class="lean_link">Lean</span>
+      <ul class="tooltip_list">
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.TM0Code" class="lean_decl">TuringRecursive.TM0Code</a></li>
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.TM0Code.machine" class="lean_decl">TuringRecursive.TM0Code.machine</a></li>
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.instPrimcodableTM0Code" class="lean_decl">TuringRecursive.instPrimcodableTM0Code</a></li>
+        
+      </ul>
+  </div>
+    
+    
+  
+    
+  </div>
+    
+      </div>
+    </div>
+
+
+    
+    <div class="dep-modal-container" id="def:universal_tm0_modal">
+      <div class="dep-modal-content">
+          <button class="dep-closebtn">
+<svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        
+  <div class="thm" id="def:universal_tm0" style="display: none">
+    <div class="thm_thmheading">
+      <span class="definition_thmcaption">
+      Definition
+      </span>
+      <span class="definition_thmlabel">6.3</span><span class="definition_thmtitle">Universal machine \((\mathrm{Universal}\Lambda , U)\) and universal codec</span></div>
+    <div class="thm_thmcontent"><p>    The finite state space \(\mathrm{Universal}\Lambda \), universal machine \(U\) over \(\Gamma _0\), and computable codec \((\texttt{encUniv}, \texttt{decUniv})\) encoding pairs \((m, c) : \mathrm{TM0Code}\times \mathrm{TM0}.\mathrm{Cfg}\, \mathbb {N}\, \mathbb {N}\). </p>
+</div>
+
+    <a class="latex_link" href="sect0006.html#def:universal_tm0">LaTeX</a>
+    
+    
+  <div class="tooltip">
+      <span class="lean_link">Lean</span>
+      <ul class="tooltip_list">
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.encUniv" class="lean_decl">TuringRecursive.encUniv</a></li>
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.decUniv" class="lean_decl">TuringRecursive.decUniv</a></li>
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.UniversalΛ" class="lean_decl">TuringRecursive.UniversalΛ</a></li>
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.U" class="lean_decl">TuringRecursive.U</a></li>
+        
+      </ul>
+  </div>
+    
+    
+  
+    
+  </div>
+    
+      </div>
+    </div>
+
+
+    
+    <div class="dep-modal-container" id="lem:encNat_decNat_props_modal">
+      <div class="dep-modal-content">
+          <button class="dep-closebtn">
+<svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        
+  <div class="thm" id="lem:encNat_decNat_props" style="display: none">
+    <div class="thm_thmheading">
+      <span class="lemma_thmcaption">
+      Lemma
+      </span>
+      <span class="lemma_thmlabel">5.2</span><span class="lemma_thmtitle">Properties of <span class="ttfamily">encNat</span> and <span class="ttfamily">decNat</span></span></div>
+    <div class="thm_thmcontent"><p>    Both <span class="ttfamily">encNat</span> and <span class="ttfamily">decNat</span> are primitive recursive, <span class="ttfamily">encNat</span> never emits the blank symbol \(\mathrm{default} \in \Gamma _0\), and <span class="ttfamily">decNat</span> inverts <span class="ttfamily">encNat</span> on \(\texttt{ListBlank}\, \Gamma _0\). </p>
+</div>
+
+    <a class="latex_link" href="sect0005.html#lem:encNat_decNat_props">LaTeX</a>
+    
+    
+  <div class="tooltip">
+      <span class="lean_link">Lean</span>
+      <ul class="tooltip_list">
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.default_notMem_encNat" class="lean_decl">TuringRecursive.default_notMem_encNat</a></li>
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.primrec_encNat" class="lean_decl">TuringRecursive.primrec_encNat</a></li>
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.primrec_decNat" class="lean_decl">TuringRecursive.primrec_decNat</a></li>
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.decNat_encNat" class="lean_decl">TuringRecursive.decNat_encNat</a></li>
+        
+      </ul>
+  </div>
+    
+    
+  
+    
+  </div>
+    
+      </div>
+    </div>
+
+
+    
+    <div class="dep-modal-container" id="lem:list_dropLast_modal">
+      <div class="dep-modal-content">
+          <button class="dep-closebtn">
+<svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        
+  <div class="thm" id="lem:list_dropLast" style="display: none">
+    <div class="thm_thmheading">
+      <span class="lemma_thmcaption">
+      Lemma
+      </span>
+      <span class="lemma_thmlabel">2.2</span><span class="lemma_thmtitle">Primitive recursiveness of <span class="ttfamily">List.dropLast</span></span></div>
+    <div class="thm_thmcontent"><p>   For any <span class="ttfamily">Primcodable</span> type \(\alpha \), <span class="ttfamily">List.dropLast</span> is primitive recursive. </p>
+</div>
+
+    <a class="latex_link" href="sect0002.html#lem:list_dropLast">LaTeX</a>
+    
+    
+  <a class="lean_link lean_decl" href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/Primrec.list_dropLast">Lean</a>
+    
+    
+  
+    
+  </div>
+    
+      </div>
+    </div>
+
+
+    
+    <div class="dep-modal-container" id="lem:list_rdropWhile_modal">
+      <div class="dep-modal-content">
+          <button class="dep-closebtn">
+<svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        
+  <div class="thm" id="lem:list_rdropWhile" style="display: none">
+    <div class="thm_thmheading">
+      <span class="lemma_thmcaption">
+      Lemma
+      </span>
+      <span class="lemma_thmlabel">2.1</span><span class="lemma_thmtitle">Primitive recursiveness of <span class="ttfamily">List.rdropWhile</span></span></div>
+    <div class="thm_thmcontent"><p>   For any <span class="ttfamily">Primcodable</span> type \(\alpha \) and decidable predicate \(p : \alpha \to \mathrm{Bool}\), the right-stripping operation <span class="ttfamily">List.rdropWhile</span> \(p\) is primitive recursive. </p>
+</div>
+
+    <a class="latex_link" href="sect0002.html#lem:list_rdropWhile">LaTeX</a>
+    
+    
+  <a class="lean_link lean_decl" href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/Primrec.list_rdropWhile">Lean</a>
+    
+    
+  
+    
+  </div>
+    
+      </div>
+    </div>
+
+
+    
+    <div class="dep-modal-container" id="lem:listBlank_trim_inj_modal">
+      <div class="dep-modal-content">
+          <button class="dep-closebtn">
+<svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        
+  <div class="thm" id="lem:listBlank_trim_inj" style="display: none">
+    <div class="thm_thmheading">
+      <span class="lemma_thmcaption">
+      Lemma
+      </span>
+      <span class="lemma_thmlabel">2.4</span><span class="lemma_thmtitle">Injectivity of <span class="ttfamily">ListBlank.trim</span></span></div>
+    <div class="thm_thmcontent"><p>    The canonical trimming map <span class="ttfamily">ListBlank.trim</span> is injective. </p>
+</div>
+
+    <a class="latex_link" href="sect0002.html#lem:listBlank_trim_inj">LaTeX</a>
+    
+    
+  <a class="lean_link lean_decl" href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/Turing.ListBlank.trim_injective">Lean</a>
+    
+    
+  
+    
+  </div>
+    
+      </div>
+    </div>
+
+
+    
+    <div class="dep-modal-container" id="lem:primrec_tape_ops_modal">
+      <div class="dep-modal-content">
+          <button class="dep-closebtn">
+<svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        
+  <div class="thm" id="lem:primrec_tape_ops" style="display: none">
+    <div class="thm_thmheading">
+      <span class="lemma_thmcaption">
+      Lemma
+      </span>
+      <span class="lemma_thmlabel">2.6</span><span class="lemma_thmtitle">Primitive recursiveness of tape operations</span></div>
+    <div class="thm_thmcontent"><p>    Trimming, tape movement, tape writing, and unary tape construction <span class="ttfamily">Tape.mk_1</span> are primitive recursive. </p>
+</div>
+
+    <a class="latex_link" href="sect0002.html#lem:primrec_tape_ops">LaTeX</a>
+    
+    
+  <div class="tooltip">
+      <span class="lean_link">Lean</span>
+      <ul class="tooltip_list">
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/Primrec.listBlank_trim" class="lean_decl">Primrec.listBlank_trim</a></li>
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/Primrec.tape_move" class="lean_decl">Primrec.tape_move</a></li>
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/Primrec.tape_write" class="lean_decl">Primrec.tape_write</a></li>
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/Primrec.tape_mk₁" class="lean_decl">Primrec.tape_mk₁</a></li>
+        
+      </ul>
+  </div>
+    
+    
+  
+    
+  </div>
+    
+      </div>
+    </div>
+
+
+    
+    <div class="dep-modal-container" id="lem:reaches_iff_exists_iterate_modal">
+      <div class="dep-modal-content">
+          <button class="dep-closebtn">
+<svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        
+  <div class="thm" id="lem:reaches_iff_exists_iterate" style="display: none">
+    <div class="thm_thmheading">
+      <span class="lemma_thmcaption">
+      Lemma
+      </span>
+      <span class="lemma_thmlabel">1.3</span><span class="lemma_thmtitle">Reachability as finite iteration</span></div>
+    <div class="thm_thmcontent"><p>   A configuration \(s'\) is reachable from \(s\) under \(f\) if and only if there exists \(n \in \mathbb {N}\) such that \(n\)-fold Kleisli iteration of \(f\) starting at \(s\) yields \(s'\). </p>
+</div>
+
+    <a class="latex_link" href="sect0001.html#lem:reaches_iff_exists_iterate">LaTeX</a>
+    
+    
+  <a class="lean_link lean_decl" href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/StateTransition.reaches_iff_exists_iterate">Lean</a>
+    
+    
+  
+    
+  </div>
+    
+      </div>
+    </div>
+
+
+    
+    <div class="dep-modal-container" id="lem:tm0_step_primrec_modal">
+      <div class="dep-modal-content">
+          <button class="dep-closebtn">
+<svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        
+  <div class="thm" id="lem:tm0_step_primrec" style="display: none">
+    <div class="thm_thmheading">
+      <span class="lemma_thmcaption">
+      Lemma
+      </span>
+      <span class="lemma_thmlabel">3.1</span><span class="lemma_thmtitle">Primitive recursiveness of \(\mathrm{TM0}\) initialization and step</span></div>
+    <div class="thm_thmcontent"><p>    For any finite-alphabet, finite-state \(\mathrm{TM0}\) machine \(M\), initialization <span class="ttfamily">TM0.init</span> and single-step transition <span class="ttfamily">TM0.step</span> \(M\) are primitive recursive (without choice when \(\Gamma , \Lambda \) are <span class="ttfamily">Primcodable</span>). </p>
+</div>
+
+    <a class="latex_link" href="sect0003.html#lem:tm0_step_primrec">LaTeX</a>
+    
+    
+  <div class="tooltip">
+      <span class="lean_link">Lean</span>
+      <ul class="tooltip_list">
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/Turing.TM0.init_primrec" class="lean_decl">Turing.TM0.init_primrec</a></li>
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/Turing.TM0.step_primrec_of_primrec" class="lean_decl">Turing.TM0.step_primrec_of_primrec</a></li>
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/Turing.TM0.step_primrec" class="lean_decl">Turing.TM0.step_primrec</a></li>
+        
+      </ul>
+  </div>
+    
+    
+  
+    
+  </div>
+    
+      </div>
+    </div>
+
+
+    
+    <div class="dep-modal-container" id="thm:compile_modal">
+      <div class="dep-modal-content">
+          <button class="dep-closebtn">
+<svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        
+  <div class="thm" id="thm:compile" style="display: none">
+    <div class="thm_thmheading">
+      <span class="theorem_thmcaption">
+      Theorem
+      </span>
+      <span class="theorem_thmlabel">6.2</span><span class="theorem_thmtitle">Primitive-recursive compiler to <span class="ttfamily">Nat.Partrec.Code</span></span></div>
+    <div class="thm_thmcontent"><p>    There is a primitive recursive compiler \(\mathrm{TM0Code.compile} : \mathrm{TM0Code}\to \texttt{Nat.Partrec.Code}\) whose compiled code agrees with \(\mathrm{TM0}\) evaluation on all encoded tapes and diverges on invalid encodings. </p>
+</div>
+
+    <a class="latex_link" href="sect0006.html#thm:compile">LaTeX</a>
+    
+    
+  <div class="tooltip">
+      <span class="lean_link">Lean</span>
+      <ul class="tooltip_list">
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.TM0Code.compile" class="lean_decl">TuringRecursive.TM0Code.compile</a></li>
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.TM0Code.primrec_compile" class="lean_decl">TuringRecursive.TM0Code.primrec_compile</a></li>
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.TM0Code.eval_compile_nat" class="lean_decl">TuringRecursive.TM0Code.eval_compile_nat</a></li>
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.TM0Code.eval_compile" class="lean_decl">TuringRecursive.TM0Code.eval_compile</a></li>
+        
+      </ul>
+  </div>
+    
+    
+  
+    
+  </div>
+    
+      </div>
+    </div>
+
+
+    
+    <div class="dep-modal-container" id="thm:eval_partrec_modal">
+      <div class="dep-modal-content">
+          <button class="dep-closebtn">
+<svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        
+  <div class="thm" id="thm:eval_partrec" style="display: none">
+    <div class="thm_thmheading">
+      <span class="theorem_thmcaption">
+      Theorem
+      </span>
+      <span class="theorem_thmlabel">1.1</span><span class="theorem_thmtitle">Computability of <span class="ttfamily">StateTransition.eval</span></span></div>
+    <div class="thm_thmcontent"><p>   If \(\sigma \) is a <span class="ttfamily">Primcodable</span> type and \(f : \sigma \to \mathrm{Option}\, \sigma \) is computable, then \(\mathrm{StateTransition.eval}\, f : \sigma \to \mathrm{Part}\, \sigma \) is partial recursive. </p>
+</div>
+
+    <a class="latex_link" href="sect0001.html#thm:eval_partrec">LaTeX</a>
+    
+    
+  <a class="lean_link lean_decl" href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/StateTransition.eval_partrec">Lean</a>
+    
+    
+  
+    
+  </div>
+    
+      </div>
+    </div>
+
+
+    
+    <div class="dep-modal-container" id="thm:eval_partrec2_modal">
+      <div class="dep-modal-content">
+          <button class="dep-closebtn">
+<svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        
+  <div class="thm" id="thm:eval_partrec2" style="display: none">
+    <div class="thm_thmheading">
+      <span class="theorem_thmcaption">
+      Theorem
+      </span>
+      <span class="theorem_thmlabel">1.2</span><span class="theorem_thmtitle">Parametrized computability of <span class="ttfamily">StateTransition.eval</span></span></div>
+    <div class="thm_thmcontent"><p>    For <span class="ttfamily">Primcodable</span> types \(\alpha , \sigma \) and a computable binary transition function \(f : \alpha \to \sigma \to \mathrm{Option}\, \sigma \), the map \((a, s) \mapsto \mathrm{StateTransition.eval}\, (f\, a)\, s\) is partial recursive. </p>
+</div>
+
+    <a class="latex_link" href="sect0001.html#thm:eval_partrec2">LaTeX</a>
+    
+    
+  <a class="lean_link lean_decl" href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/StateTransition.eval_partrec₂">Lean</a>
+    
+    
+  
+    
+  </div>
+    
+      </div>
+    </div>
+
+
+    
+    <div class="dep-modal-container" id="thm:exists_relabeling_modal">
+      <div class="dep-modal-content">
+          <button class="dep-closebtn">
+<svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        
+  <div class="thm" id="thm:exists_relabeling" style="display: none">
+    <div class="thm_thmheading">
+      <span class="theorem_thmcaption">
+      Theorem
+      </span>
+      <span class="theorem_thmlabel">4.3</span><span class="theorem_thmtitle">Injective pointed relabeling</span></div>
+    <div class="thm_thmcontent"><p>    Every finite-alphabet, finite-state \(\mathrm{TM0}\) machine \(M\) admits injective pointed maps \(f : \Gamma \to \mathbb {N}\), \(g : \Lambda \to \mathbb {N}\) and a uniform code \(m : \mathrm{TM0Code}\) commuting with configuration and tape evaluation. </p>
+</div>
+
+    <a class="latex_link" href="sect0004.html#thm:exists_relabeling">LaTeX</a>
+    
+    
+  <a class="lean_link lean_decl" href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.TM0Code.exists_relabeling">Lean</a>
+    
+    
+  
+    
+  </div>
+    
+      </div>
+    </div>
+
+
+    
+    <div class="dep-modal-container" id="thm:halting_undecidable_modal">
+      <div class="dep-modal-content">
+          <button class="dep-closebtn">
+<svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        
+  <div class="thm" id="thm:halting_undecidable" style="display: none">
+    <div class="thm_thmheading">
+      <span class="theorem_thmcaption">
+      Theorem
+      </span>
+      <span class="theorem_thmlabel">6.1</span><span class="theorem_thmtitle">Halting problem is r.e. and undecidable</span></div>
+    <div class="thm_thmcontent"><p>    The halting predicate \(\lambda \, (m, l) \mapsto (\mathrm{TM0}.\mathrm{eval}\, (m.\mathrm{machine})\, l).\mathrm{Dom}\) is recursively enumerable (<span class="ttfamily">REPred</span>) and not computable. </p>
+</div>
+
+    <a class="latex_link" href="sect0006.html#thm:halting_undecidable">LaTeX</a>
+    
+    
+  <div class="tooltip">
+      <span class="lean_link">Lean</span>
+      <ul class="tooltip_list">
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.TM0Code.halting_re" class="lean_decl">TuringRecursive.TM0Code.halting_re</a></li>
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.TM0Code.halting_not_computable" class="lean_decl">TuringRecursive.TM0Code.halting_not_computable</a></li>
+        
+      </ul>
+  </div>
+    
+    
+  
+    
+  </div>
+    
+      </div>
+    </div>
+
+
+    
+    <div class="dep-modal-container" id="thm:nat_partrec_iff_tm0_modal">
+      <div class="dep-modal-content">
+          <button class="dep-closebtn">
+<svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        
+  <div class="thm" id="thm:nat_partrec_iff_tm0" style="display: none">
+    <div class="thm_thmheading">
+      <span class="theorem_thmcaption">
+      Theorem
+      </span>
+      <span class="theorem_thmlabel">5.3</span><span class="theorem_thmtitle">Church–Turing equivalence for \(\mathrm{TM0}\) over \(\Gamma _0\)</span></div>
+    <div class="thm_thmcontent"><p>    A partial function \(f : \mathbb {N}\to \mathrm{Part}\, \mathbb {N}\) is partial recursive if and only if there exists a finite-state \(\mathrm{TM0}\) machine over \(\Gamma _0\) computing \(f\) under <span class="ttfamily">encNat</span>/<span class="ttfamily">decNat</span>. </p>
+</div>
+
+    <a class="latex_link" href="sect0005.html#thm:nat_partrec_iff_tm0">LaTeX</a>
+    
+    
+  <div class="tooltip">
+      <span class="lean_link">Lean</span>
+      <ul class="tooltip_list">
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.codeTM0" class="lean_decl">TuringRecursive.codeTM0</a></li>
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.nat_partrec_iff_exists_tm0" class="lean_decl">TuringRecursive.nat_partrec_iff_exists_tm0</a></li>
+        
+      </ul>
+  </div>
+    
+    
+  
+    
+  </div>
+    
+      </div>
+    </div>
+
+
+    
+    <div class="dep-modal-container" id="thm:tm0_eval_partrec_modal">
+      <div class="dep-modal-content">
+          <button class="dep-closebtn">
+<svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        
+  <div class="thm" id="thm:tm0_eval_partrec" style="display: none">
+    <div class="thm_thmheading">
+      <span class="theorem_thmcaption">
+      Theorem
+      </span>
+      <span class="theorem_thmlabel">3.2</span><span class="theorem_thmtitle">Fixed-machine \(\mathrm{TM0}\) evaluation is partial recursive</span></div>
+    <div class="thm_thmcontent"><p>    For every finite-state \(\mathrm{TM0}\) machine \(M\), both configuration evaluation and tape evaluation <span class="ttfamily">TM0.eval</span> \(M\) are partial recursive. </p>
+</div>
+
+    <a class="latex_link" href="sect0003.html#thm:tm0_eval_partrec">LaTeX</a>
+    
+    
+  <div class="tooltip">
+      <span class="lean_link">Lean</span>
+      <ul class="tooltip_list">
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/Turing.TM0.evalCfg_partrec" class="lean_decl">Turing.TM0.evalCfg_partrec</a></li>
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/Turing.TM0.eval_partrec" class="lean_decl">Turing.TM0.eval_partrec</a></li>
+        
+      </ul>
+  </div>
+    
+    
+  
+    
+  </div>
+    
+      </div>
+    </div>
+
+
+    
+    <div class="dep-modal-container" id="thm:tm0Code_eval_partrec_modal">
+      <div class="dep-modal-content">
+          <button class="dep-closebtn">
+<svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        
+  <div class="thm" id="thm:tm0Code_eval_partrec" style="display: none">
+    <div class="thm_thmheading">
+      <span class="theorem_thmcaption">
+      Theorem
+      </span>
+      <span class="theorem_thmlabel">4.2</span><span class="theorem_thmtitle">Uniform \(\mathrm{TM0}\) evaluation is partial recursive</span></div>
+    <div class="thm_thmcontent"><p>    The uniform step function is primitive recursive, and the two-argument evaluation \((m, l) \mapsto \mathrm{TM0}.\mathrm{eval}\, (m.\mathrm{machine})\, l\) is partial recursive. </p>
+</div>
+
+    <a class="latex_link" href="sect0004.html#thm:tm0Code_eval_partrec">LaTeX</a>
+    
+    
+  <div class="tooltip">
+      <span class="lean_link">Lean</span>
+      <ul class="tooltip_list">
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.TM0Code.step_primrec" class="lean_decl">TuringRecursive.TM0Code.step_primrec</a></li>
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.TM0Code.eval_partrec" class="lean_decl">TuringRecursive.TM0Code.eval_partrec</a></li>
+        
+      </ul>
+  </div>
+    
+    
+  
+    
+  </div>
+    
+      </div>
+    </div>
+
+
+    
+    <div class="dep-modal-container" id="thm:U_evalCfg_tape_modal">
+      <div class="dep-modal-content">
+          <button class="dep-closebtn">
+<svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        
+  <div class="thm" id="thm:U_evalCfg_tape" style="display: none">
+    <div class="thm_thmheading">
+      <span class="theorem_thmcaption">
+      Theorem
+      </span>
+      <span class="theorem_thmlabel">6.4</span><span class="theorem_thmtitle">Exact-output universal \(\mathrm{TM0}\) theorem</span></div>
+    <div class="thm_thmcontent"><p>    For every uniform machine \(m : \mathrm{TM0Code}\) and configuration \(c : \mathrm{TM0}.\mathrm{Cfg}\, \mathbb {N}\, \mathbb {N}\), evaluating \(U\) from \(\mathrm{TM0}.\mathrm{init}\, (\texttt{encUniv}\, (m, c))\) has the same halting domain as \(m\) on \(c\) and, upon halting at \(c'\), leaves the exact tape \(\texttt{Tape.mk\_ 1}\, (\texttt{encNat}\, (\mathrm{encode}\, c'))\). </p>
+</div>
+
+    <a class="latex_link" href="sect0006.html#thm:U_evalCfg_tape">LaTeX</a>
+    
+    
+  <div class="tooltip">
+      <span class="lean_link">Lean</span>
+      <ul class="tooltip_list">
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.U_evalCfg_tape" class="lean_decl">TuringRecursive.U_evalCfg_tape</a></li>
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.U_eval" class="lean_decl">TuringRecursive.U_eval</a></li>
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.U_mem_evalCfg_iff" class="lean_decl">TuringRecursive.U_mem_evalCfg_iff</a></li>
+        
+           <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/TuringRecursive.exists_universal_tm0" class="lean_decl">TuringRecursive.exists_universal_tm0</a></li>
+        
+      </ul>
+  </div>
+    
+    
+  
+    
+  </div>
+    
+      </div>
+    </div>
+</div>
+</div> <!-- content -->
+</div> <!-- wrapper -->
+<script src="js/jquery.min.js" type="text/javascript"></script>
+
+<script src="js/d3.min.js"></script>
+<script src="js/hpcc.min.js"></script>
+<script src="js/d3-graphviz.js"></script>
+
+<script type="text/javascript">
+const graphContainer = d3.select("#graph");
+const width = graphContainer.node().clientWidth;
+const height = graphContainer.node().clientHeight;
+
+
+if (window.location.protocol !== "file:") graphContainer.graphviz({useWorker: false})
+    .width(width)
+    .height(height)
+    .fit(true)
+    .renderDot(`strict digraph "" {	graph [bgcolor=transparent];	node [label="\N",		penwidth=1.8	];	edge [arrowhead=vee];	"thm:U_evalCfg_tape"	[color=green,		fillcolor="#1CAC78",		label=U_evalCfg_tape,		shape=ellipse,		style=filled];	"lem:tm0_step_primrec"	[color=green,		fillcolor="#1CAC78",		label=tm0_step_primrec,		shape=ellipse,		style=filled];	"thm:tm0_eval_partrec"	[color=green,		fillcolor="#1CAC78",		label=tm0_eval_partrec,		shape=ellipse,		style=filled];	"lem:tm0_step_primrec" -> "thm:tm0_eval_partrec"	[style=dashed];	"cor:exists_code_eval"	[color=green,		fillcolor="#1CAC78",		label=exists_code_eval,		shape=ellipse,		style=filled];	"thm:tm0_eval_partrec" -> "cor:exists_code_eval"	[style=dashed];	"thm:nat_partrec_iff_tm0"	[color=green,		fillcolor="#1CAC78",		label=nat_partrec_iff_tm0,		shape=ellipse,		style=filled];	"thm:tm0_eval_partrec" -> "thm:nat_partrec_iff_tm0"	[style=dashed];	"def:universal_tm0"	[color=green,		fillcolor="#B0ECA3",		label=universal_tm0,		shape=box,		style=filled];	"thm:nat_partrec_iff_tm0" -> "def:universal_tm0"	[style=dashed];	"thm:eval_partrec"	[color=green,		fillcolor="#1CAC78",		label=eval_partrec,		shape=ellipse,		style=filled];	"thm:eval_partrec" -> "thm:tm0_eval_partrec"	[style=dashed];	"thm:eval_partrec2"	[color=green,		fillcolor="#1CAC78",		label=eval_partrec2,		shape=ellipse,		style=filled];	"thm:eval_partrec" -> "thm:eval_partrec2"	[style=dashed];	"thm:tm0Code_eval_partrec"	[color=green,		fillcolor="#1CAC78",		label=tm0Code_eval_partrec,		shape=ellipse,		style=filled];	"thm:eval_partrec2" -> "thm:tm0Code_eval_partrec"	[style=dashed];	"thm:tm0Code_eval_partrec" -> "def:universal_tm0"	[style=dashed];	"thm:halting_undecidable"	[color=green,		fillcolor="#1CAC78",		label=halting_undecidable,		shape=ellipse,		style=filled];	"thm:tm0Code_eval_partrec" -> "thm:halting_undecidable"	[style=dashed];	"thm:compile"	[color=green,		fillcolor="#1CAC78",		label=compile,		shape=ellipse,		style=filled];	"thm:tm0Code_eval_partrec" -> "thm:compile"	[style=dashed];	"def:universal_tm0" -> "thm:U_evalCfg_tape"	[style=dashed];	"def:listBlank_trim"	[color=green,		fillcolor="#B0ECA3",		label=listBlank_trim,		shape=box,		style=filled];	"lem:listBlank_trim_inj"	[color=green,		fillcolor="#1CAC78",		label=listBlank_trim_inj,		shape=ellipse,		style=filled];	"def:listBlank_trim" -> "lem:listBlank_trim_inj"	[style=dashed];	"def:primcodable_tm0"	[color=green,		fillcolor="#B0ECA3",		label=primcodable_tm0,		shape=box,		style=filled];	"lem:listBlank_trim_inj" -> "def:primcodable_tm0"	[style=dashed];	"def:gamma0_codec"	[color=green,		fillcolor="#B0ECA3",		label=gamma0_codec,		shape=box,		style=filled];	"def:primcodable_tm0" -> "def:gamma0_codec"	[style=dashed];	"lem:primrec_tape_ops"	[color=green,		fillcolor="#1CAC78",		label=primrec_tape_ops,		shape=ellipse,		style=filled];	"def:primcodable_tm0" -> "lem:primrec_tape_ops"	[style=dashed];	"def:tm0Code"	[color=green,		fillcolor="#B0ECA3",		label=tm0Code,		shape=box,		style=filled];	"def:primcodable_tm0" -> "def:tm0Code"	[style=dashed];	"lem:encNat_decNat_props"	[color=green,		fillcolor="#1CAC78",		label=encNat_decNat_props,		shape=ellipse,		style=filled];	"def:gamma0_codec" -> "lem:encNat_decNat_props"	[style=dashed];	"lem:encNat_decNat_props" -> "thm:nat_partrec_iff_tm0"	[style=dashed];	"lem:list_rdropWhile"	[color=green,		fillcolor="#1CAC78",		label=list_rdropWhile,		shape=ellipse,		style=filled];	"lem:list_rdropWhile" -> "def:listBlank_trim"	[style=dashed];	"lem:list_dropLast"	[color=green,		fillcolor="#1CAC78",		label=list_dropLast,		shape=ellipse,		style=filled];	"lem:list_dropLast" -> "lem:primrec_tape_ops"	[style=dashed];	"lem:primrec_tape_ops" -> "lem:tm0_step_primrec"	[style=dashed];	"lem:primrec_tape_ops" -> "thm:tm0Code_eval_partrec"	[style=dashed];	"thm:exists_relabeling"	[color=green,		fillcolor="#1CAC78",		label=exists_relabeling,		shape=ellipse,		style=filled];	"thm:exists_relabeling" -> "thm:halting_undecidable"	[style=dashed];	"def:tm0Code" -> "thm:tm0Code_eval_partrec"	[style=dashed];	"def:tm0Code" -> "thm:exists_relabeling"	[style=dashed];	"lem:reaches_iff_exists_iterate"	[color=green,		fillcolor="#1CAC78",		label=reaches_iff_exists_iterate,		shape=ellipse,		style=filled];	"lem:reaches_iff_exists_iterate" -> "thm:exists_relabeling"	[style=dashed];}`)
+    .on("end", interactive);
+
+latexLabelEscaper = function(label) {
+  return label.replace(/\./g, '\\.').replace(/:/g, '\\:')
+}
+
+clickNode = function() {
+  $("#statements div").hide()
+  var node_id = $('text', this).text();
+  $('.thm').hide();
+  $('#'+latexLabelEscaper(node_id)).show().children().show();
+}
+document.addEventListener("DOMContentLoaded", function() { try { interactive(); } catch (e) {} });
+function interactive() {
+    $("span#legend_title").on("click", function () {
+           $(this).siblings('dl').toggle();
+        })
+
+    d3.selectAll('.node')
+        .attr('pointer-events', 'fill')
+        .on('click', function () {
+           var title = d3.select(this).selectAll('title').text().trim();
+           $('#statements > div').hide()
+           $('.thm').hide();
+           $('#'+latexLabelEscaper(title)+'_modal').show().children().show().children().show();
+           $('#statements').show()
+        });
+
+    d3.selectAll('.dep-closebtn').on('click', function() {
+        var modal =
+            d3.select(this).node().parentNode.parentNode.parentNode ;
+        d3.select(modal).style('display', 'none');
+    });
+}
+
+</script>
+
+</body>
+</html>

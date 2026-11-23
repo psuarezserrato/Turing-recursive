@@ -1,0 +1,32 @@
+% Copyright (c) 2026 Pablo Suárez-Serrato. All rights reserved.
+% Released under the GNU Affero General Public License v3.0 (AGPLv3) for non-commercial use;
+% see LICENSE.md for details.
+% This project is licensed under non-commercial use. If you wish to use this software in a
+% commercial product, service, or enterprise environment, please contact the developer to purchase
+% a commercial license or negotiate royalty terms.
+% Authors: Pablo Suárez-Serrato (November 2026)
+% This file compiles the printable PDF version of the blueprint via pdflatex.
+\documentclass[a4paper,11pt]{report}
+
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{expl3}
+\usepackage{xparse}
+\usepackage{amssymb, amsthm, amsmath, mathtools}
+\usepackage{graphicx}
+
+\usepackage[unicode,colorlinks=true,linkcolor=blue,urlcolor=magenta,citecolor=blue]{hyperref}
+\usepackage[nameinlink, capitalize]{cleveref}
+
+\input{macros/common}
+\input{macros/print}
+
+\title{Turing-recursive: $\TM \to \Partrec$, Church--Turing Equivalence, and Universal $\TM$\\
+\large A Formalization Blueprint in Lean 4}
+\author{Pablo Su\'arez-Serrato}
+\date{November 2026}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\input{content}
+\end{document}

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  MathJax = { 
+    tex: {
+		    inlineMath: [['$','$'], ['\\(','\\)']]
+	} }
+</script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<meta name="generator" content="plasTeX" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Fixed-Machine \(\mathrm{TM0}\) Computability</title>
+<link rel="next" href="sect0004.html" title="Uniform TM0 Codes and Pointed Relabeling" />
+<link rel="prev" href="sect0002.html" title="List and Tape Encodings" />
+<link rel="up" href="index.html" title="Turing-recursive: TM0 to Partrec, Church–Turing Equivalence, and Universal TM0" />
+<link rel="stylesheet" href="styles/theme-blue.css" />
+<link rel="stylesheet" href="styles/amsthm.css" />
+<link rel="stylesheet" href="styles/showmore.css" />
+<link rel="stylesheet" href="styles/blueprint.css" />
+<link rel="stylesheet" href="styles/extra_styles.css" />
+</head>
+
+<body>
+<header>
+<svg  id="toc-toggle" class="icon icon-list-numbered "><use xlink:href="symbol-defs.svg#icon-list-numbered"></use></svg>
+<h1 id="doc_title"><a href="index.html">Turing-recursive: TM0 to Partrec, Church–Turing Equivalence, and Universal TM0</a></h1>
+</header>
+
+<div class="wrapper">
+<nav class="toc">
+<ul class="sub-toc-0">
+<li class="">
+  <a href="sect0001.html"><span class="toc_ref">1</span> <span class="toc_entry">Generic State Transitions</span></a>
+ </li>
+<li class="">
+  <a href="sect0002.html"><span class="toc_ref">2</span> <span class="toc_entry">List and Tape Encodings</span></a>
+ </li>
+<li class=" active current">
+  <a href="sect0003.html"><span class="toc_ref">3</span> <span class="toc_entry">Fixed-Machine \(\mathrm{TM0}\) Computability</span></a>
+ </li>
+<li class="">
+  <a href="sect0004.html"><span class="toc_ref">4</span> <span class="toc_entry">Uniform \(\mathrm{TM0}\) Codes and Pointed Relabeling</span></a>
+ </li>
+<li class="">
+  <a href="sect0005.html"><span class="toc_ref">5</span> <span class="toc_entry">Fixed Alphabet \(\Gamma _0\) and Church–Turing Equivalence</span></a>
+ </li>
+<li class="">
+  <a href="sect0006.html"><span class="toc_ref">6</span> <span class="toc_entry">Halting Undecidability, Compiler, and Universal \(\mathrm{TM0}\)</span></a>
+ </li>
+<li ><a href="dep_graph_document.html">Dependency graph</a></li>
+</ul>
+</nav>
+
+<div class="content">
+<div class="content-wrapper">
+
+
+<div class="main-text">
+<h1 id="a0000000004">3 Fixed-Machine \(\mathrm{TM0}\) Computability</h1>
+<div class="lemma_thmwrapper theorem-style-plain" id="lem:tm0_step_primrec">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">3.1</span>
+    <span class="lemma_thmtitle">Primitive recursiveness of \(\mathrm{TM0}\) initialization and step</span>
+    <div class="thm_header_extras">
+
+    
+    ✓
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0003.html#lem:tm0_step_primrec">#</a>
+    
+    <a class="icon proof" href="sect0003.html#a0000000015"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="sect0002.html#lem:primrec_tape_ops">Lemma 2.6</a></li>
+          
+          <li><a href="sect0002.html#lem:primrec_tape_ops">Lemma 2.6</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/Turing.TM0.init_primrec" class="lean_decl">Turing.TM0.init_primrec</a></li>
+          
+          <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/Turing.TM0.step_primrec_of_primrec" class="lean_decl">Turing.TM0.step_primrec_of_primrec</a></li>
+          
+          <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/Turing.TM0.step_primrec" class="lean_decl">Turing.TM0.step_primrec</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  <p>    For any finite-alphabet, finite-state \(\mathrm{TM0}\) machine \(M\), initialization <span class="ttfamily">TM0.init</span> and single-step transition <span class="ttfamily">TM0.step</span> \(M\) are primitive recursive (without choice when \(\Gamma , \Lambda \) are <span class="ttfamily">Primcodable</span>). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000015">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▶</span>
+  </div>
+  <div class="proof_content">
+  <p> Combine <a href="sect0002.html#lem:primrec_tape_ops">2.6</a> with finite-domain lookup for \(M\) via <span class="ttfamily">Primrec.of_equiv</span>. </p>
+
+  </div>
+</div>
+<div class="theorem_thmwrapper theorem-style-plain" id="thm:tm0_eval_partrec">
+  <div class="theorem_thmheading">
+    <span class="theorem_thmcaption">
+    Theorem
+    </span>
+    <span class="theorem_thmlabel">3.2</span>
+    <span class="theorem_thmtitle">Fixed-machine \(\mathrm{TM0}\) evaluation is partial recursive</span>
+    <div class="thm_header_extras">
+
+    
+    ✓
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0003.html#thm:tm0_eval_partrec">#</a>
+    
+    <a class="icon proof" href="sect0003.html#a0000000016"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="sect0001.html#thm:eval_partrec">Theorem 1.1</a></li>
+          
+          <li><a href="sect0003.html#lem:tm0_step_primrec">Lemma 3.1</a></li>
+          
+          <li><a href="sect0001.html#thm:eval_partrec">Theorem 1.1</a></li>
+          
+          <li><a href="sect0003.html#lem:tm0_step_primrec">Lemma 3.1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/Turing.TM0.evalCfg_partrec" class="lean_decl">Turing.TM0.evalCfg_partrec</a></li>
+          
+          <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/Turing.TM0.eval_partrec" class="lean_decl">Turing.TM0.eval_partrec</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="theorem_thmcontent">
+  <p>    For every finite-state \(\mathrm{TM0}\) machine \(M\), both configuration evaluation and tape evaluation <span class="ttfamily">TM0.eval</span> \(M\) are partial recursive. </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000016">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▶</span>
+  </div>
+  <div class="proof_content">
+  <p> Compose <a href="sect0001.html#thm:eval_partrec">1.1</a> with <a href="sect0003.html#lem:tm0_step_primrec">3.1</a> and <span class="ttfamily">TM0.init_primrec</span>. </p>
+
+  </div>
+</div>
+<div class="corollary_thmwrapper theorem-style-plain" id="cor:exists_code_eval">
+  <div class="corollary_thmheading">
+    <span class="corollary_thmcaption">
+    Corollary
+    </span>
+    <span class="corollary_thmlabel">3.3</span>
+    <span class="corollary_thmtitle">Kleene <span class="ttfamily">Code</span> realization of \(\mathrm{TM0}\)</span>
+    <div class="thm_header_extras">
+
+    
+    ✓
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0003.html#cor:exists_code_eval">#</a>
+    
+    <a class="icon proof" href="sect0003.html#a0000000017"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="sect0003.html#thm:tm0_eval_partrec">Theorem 3.2</a></li>
+          
+          <li><a href="sect0003.html#thm:tm0_eval_partrec">Theorem 3.2</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://psuarezserrato.github.io/Turing-recursive/docs/find/#doc/Turing.TM0.exists_code_eval" class="lean_decl">Turing.TM0.exists_code_eval</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="corollary_thmcontent">
+  <p>    For every finite-state \(\mathrm{TM0}\) machine \(M\), there exists a <span class="ttfamily">Nat.Partrec.Code</span> \(c\) whose evaluation on encoded inputs matches <span class="ttfamily">TM0.eval</span> \(M\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000017">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▶</span>
+  </div>
+  <div class="proof_content">
+  <p> Apply Mathlib’s <span class="ttfamily">Nat.Partrec.Code.exists_code</span> to <a href="sect0003.html#thm:tm0_eval_partrec">3.2</a>. </p>
+
+  </div>
+</div>
+
+</div> <!--main-text -->
+</div> <!-- content-wrapper -->
+</div> <!-- content -->
+</div> <!-- wrapper -->
+
+<nav class="prev_up_next">
+  <svg  id="showmore-minus" class="icon icon-eye-minus showmore"><use xlink:href="symbol-defs.svg#icon-eye-minus"></use></svg>
+
+  <svg  id="showmore-plus" class="icon icon-eye-plus showmore"><use xlink:href="symbol-defs.svg#icon-eye-plus"></use></svg>
+
+  <a href="sect0002.html" title="List and Tape Encodings"><svg  class="icon icon-arrow-left "><use xlink:href="symbol-defs.svg#icon-arrow-left"></use></svg>
+</a>
+  <a href="index.html" title="Turing-recursive: TM0 to Partrec, Church–Turing Equivalence, and Universal TM0"><svg  class="icon icon-arrow-up "><use xlink:href="symbol-defs.svg#icon-arrow-up"></use></svg>
+</a>
+  <a href="sect0004.html" title="Uniform \(\mathrm{TM0}\) Codes and Pointed Relabeling"><svg  class="icon icon-arrow-right "><use xlink:href="symbol-defs.svg#icon-arrow-right"></use></svg>
+</a>
+</nav>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/plastex.js"></script>
+<script type="text/javascript" src="js/svgxuse.js"></script>
+<script type="text/javascript" src="js/js.cookie.min.js"></script>
+<script type="text/javascript" src="js/showmore.js"></script>
+</body>
+</html>

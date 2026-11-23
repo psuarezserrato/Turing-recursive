@@ -1,0 +1,272 @@
+% Copyright (c) 2026 Pablo Suárez-Serrato. All rights reserved.
+% Released under the GNU Affero General Public License v3.0 (AGPLv3) for non-commercial use;
+% see LICENSE.md for details.
+% This project is licensed under non-commercial use. If you wish to use this software in a
+% commercial product, service, or enterprise environment, please contact the developer to purchase
+% a commercial license or negotiate royalty terms.
+% Authors: Pablo Suárez-Serrato (November 2026)
+
+\chapter{Generic State Transitions}
+
+\begin{theorem}[Computability of \texttt{StateTransition.eval}]
+  \label{thm:eval_partrec}
+  \lean{StateTransition.eval_partrec}
+  \leanok
+  If $\sigma$ is a \texttt{Primcodable} type and $f : \sigma \to \mathrm{Option}\,\sigma$ is computable, then $\mathrm{StateTransition.eval}\,f : \sigma \to \Part\,\sigma$ is partial recursive.
+\end{theorem}
+\begin{proof}
+  \leanok
+  By unfolding \texttt{StateTransition.eval} as \texttt{PFun.fix} and applying \texttt{Partrec.fix} to the computable step wrapper.
+\end{proof}
+
+\begin{theorem}[Parametrized computability of \texttt{StateTransition.eval}]
+  \label{thm:eval_partrec2}
+  \lean{StateTransition.eval_partrec₂}
+  \leanok
+  \uses{thm:eval_partrec}
+  For \texttt{Primcodable} types $\alpha, \sigma$ and a computable binary transition function $f : \alpha \to \sigma \to \mathrm{Option}\,\sigma$, the map $(a, s) \mapsto \mathrm{StateTransition.eval}\,(f\,a)\,s$ is partial recursive.
+\end{theorem}
+\begin{proof}
+  \leanok
+  \uses{thm:eval_partrec}
+  Apply \ref{thm:eval_partrec} to the product transition on $\alpha \times \sigma$ carrying the parameter $a$ unchanged.
+\end{proof}
+
+\begin{lemma}[Reachability as finite iteration]
+  \label{lem:reaches_iff_exists_iterate}
+  \lean{StateTransition.reaches_iff_exists_iterate}
+  \leanok
+  A configuration $s'$ is reachable from $s$ under $f$ if and only if there exists $n \in \N$ such that $n$-fold Kleisli iteration of $f$ starting at $s$ yields $s'$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  By induction on \texttt{Relation.ReflTransGen} in the forward direction and induction on $n$ in the reverse direction.
+\end{proof}
+
+\chapter{List and Tape Encodings}
+
+\begin{lemma}[Primitive recursiveness of \texttt{List.rdropWhile}]
+  \label{lem:list_rdropWhile}
+  \lean{Primrec.list_rdropWhile}
+  \leanok
+  For any \texttt{Primcodable} type $\alpha$ and decidable predicate $p : \alpha \to \mathrm{Bool}$, the right-stripping operation \texttt{List.rdropWhile} $p$ is primitive recursive.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Rewrite \texttt{List.rdropWhile} via \texttt{List.reverse}, \texttt{List.dropWhile}, and \texttt{Primrec.list\_reverse}.
+\end{proof}
+
+\begin{lemma}[Primitive recursiveness of \texttt{List.dropLast}]
+  \label{lem:list_dropLast}
+  \lean{Primrec.list_dropLast}
+  \leanok
+  For any \texttt{Primcodable} type $\alpha$, \texttt{List.dropLast} is primitive recursive.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Express \texttt{List.dropLast} via \texttt{List.reverse}, \texttt{List.tail}, and \texttt{List.reverse}.
+\end{proof}
+
+\begin{definition}[Canonical \texttt{ListBlank} trimming]
+  \label{def:listBlank_trim}
+  \lean{Turing.ListBlank.trim}
+  \leanok
+  \uses{lem:list_rdropWhile}
+  Given a blank symbol $\mathrm{default} \in \Gamma$, \texttt{ListBlank.trim} maps an equivalence class of infinite-blank-padded lists to its unique finite prefix with no trailing blank.
+\end{definition}
+
+\begin{lemma}[Injectivity of \texttt{ListBlank.trim}]
+  \label{lem:listBlank_trim_inj}
+  \lean{Turing.ListBlank.trim_injective}
+  \leanok
+  \uses{def:listBlank_trim}
+  The canonical trimming map \texttt{ListBlank.trim} is injective.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{def:listBlank_trim}
+  Follows from \texttt{Turing.ListBlank.mk\_trim} as a left inverse on \texttt{ListBlank}.
+\end{proof}
+
+\begin{definition}[Scoped \texttt{Primcodable} instances for $\TM$ data]
+  \label{def:primcodable_tm0}
+  \lean{TuringRecursive.instPrimcodableDir, TuringRecursive.instPrimcodableStmt, TuringRecursive.instPrimcodableListBlank, TuringRecursive.instPrimcodableTape, TuringRecursive.instPrimcodableCfg}
+  \leanok
+  \uses{lem:listBlank_trim_inj}
+  Diamond-free scoped \texttt{Primcodable} instances for \texttt{Turing.Dir}, \texttt{TM0.Stmt}, \texttt{ListBlank}, \texttt{Tape}, and \texttt{TM0.Cfg}.
+\end{definition}
+
+\begin{lemma}[Primitive recursiveness of tape operations]
+  \label{lem:primrec_tape_ops}
+  \lean{Primrec.listBlank_trim, Primrec.tape_move, Primrec.tape_write, Primrec.tape_mk₁}
+  \leanok
+  \uses{def:primcodable_tm0, lem:list_dropLast}
+  Trimming, tape movement, tape writing, and unary tape construction \texttt{Tape.mk\_1} are primitive recursive.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{def:primcodable_tm0, lem:list_dropLast}
+  Each operation reduces to primitive recursive list and pair combinators under the scoped \texttt{Primcodable} equivalences.
+\end{proof}
+
+\chapter{Fixed-Machine $\TM$ Computability}
+
+\begin{lemma}[Primitive recursiveness of $\TM$ initialization and step]
+  \label{lem:tm0_step_primrec}
+  \lean{Turing.TM0.init_primrec, Turing.TM0.step_primrec_of_primrec, Turing.TM0.step_primrec}
+  \leanok
+  \uses{lem:primrec_tape_ops}
+  For any finite-alphabet, finite-state $\TM$ machine $M$, initialization \texttt{TM0.init} and single-step transition \texttt{TM0.step} $M$ are primitive recursive (without choice when $\Gamma, \Lambda$ are \texttt{Primcodable}).
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:primrec_tape_ops}
+  Combine \ref{lem:primrec_tape_ops} with finite-domain lookup for $M$ via \texttt{Primrec.of\_equiv}.
+\end{proof}
+
+\begin{theorem}[Fixed-machine $\TM$ evaluation is partial recursive]
+  \label{thm:tm0_eval_partrec}
+  \lean{Turing.TM0.evalCfg_partrec, Turing.TM0.eval_partrec}
+  \leanok
+  \uses{thm:eval_partrec, lem:tm0_step_primrec}
+  For every finite-state $\TM$ machine $M$, both configuration evaluation and tape evaluation \texttt{TM0.eval} $M$ are partial recursive.
+\end{theorem}
+\begin{proof}
+  \leanok
+  \uses{thm:eval_partrec, lem:tm0_step_primrec}
+  Compose \ref{thm:eval_partrec} with \ref{lem:tm0_step_primrec} and \texttt{TM0.init\_primrec}.
+\end{proof}
+
+\begin{corollary}[Kleene \texttt{Code} realization of $\TM$]
+  \label{cor:exists_code_eval}
+  \lean{Turing.TM0.exists_code_eval}
+  \leanok
+  \uses{thm:tm0_eval_partrec}
+  For every finite-state $\TM$ machine $M$, there exists a \texttt{Nat.Partrec.Code} $c$ whose evaluation on encoded inputs matches \texttt{TM0.eval} $M$.
+\end{corollary}
+\begin{proof}
+  \leanok
+  \uses{thm:tm0_eval_partrec}
+  Apply Mathlib's \texttt{Nat.Partrec.Code.exists\_code} to \ref{thm:tm0_eval_partrec}.
+\end{proof}
+
+\chapter{Uniform $\TM$ Codes and Pointed Relabeling}
+
+\begin{definition}[Uniform finite machine code \texttt{TM0Code}]
+  \label{def:tm0Code}
+  \lean{TuringRecursive.TM0Code, TuringRecursive.TM0Code.machine, TuringRecursive.instPrimcodableTM0Code}
+  \leanok
+  \uses{def:primcodable_tm0}
+  A \texttt{TM0Code} packages a finite transition table over $\N \times \N$ as a \texttt{Primcodable} type together with its decoded machine \texttt{TM0Code.machine}.
+\end{definition}
+
+\begin{theorem}[Uniform $\TM$ evaluation is partial recursive]
+  \label{thm:tm0Code_eval_partrec}
+  \lean{TuringRecursive.TM0Code.step_primrec, TuringRecursive.TM0Code.eval_partrec}
+  \leanok
+  \uses{def:tm0Code, thm:eval_partrec2, lem:primrec_tape_ops}
+  The uniform step function is primitive recursive, and the two-argument evaluation $(m, l) \mapsto \TM.\mathrm{eval}\,(m.\mathrm{machine})\,l$ is partial recursive.
+\end{theorem}
+\begin{proof}
+  \leanok
+  \uses{def:tm0Code, thm:eval_partrec2, lem:primrec_tape_ops}
+  Prove \texttt{TM0Code.machine\_primrec} via \texttt{List.get?}, then apply \ref{thm:eval_partrec2} and \ref{lem:primrec_tape_ops}.
+\end{proof}
+
+\begin{theorem}[Injective pointed relabeling]
+  \label{thm:exists_relabeling}
+  \lean{TuringRecursive.TM0Code.exists_relabeling}
+  \leanok
+  \uses{def:tm0Code, lem:reaches_iff_exists_iterate}
+  Every finite-alphabet, finite-state $\TM$ machine $M$ admits injective pointed maps $f : \Gamma \to \N$, $g : \Lambda \to \N$ and a uniform code $m : \TMCode$ commuting with configuration and tape evaluation.
+\end{theorem}
+\begin{proof}
+  \leanok
+  \uses{def:tm0Code, lem:reaches_iff_exists_iterate}
+  Construct pointed equivalences into $\mathrm{Fin}\,n$ preserving \texttt{default} $\mapsto 0$, tabulate the transition function into \texttt{TM0Code.ofFin}, and transport evaluation via \ref{lem:reaches_iff_exists_iterate}.
+\end{proof}
+
+\chapter{Fixed Alphabet $\GammaZero$ and Church--Turing Equivalence}
+
+\begin{definition}[Fixed $1{,}250$-symbol alphabet $\GammaZero$ and binary codec]
+  \label{def:gamma0_codec}
+  \lean{TuringRecursive.Γ₀, TuringRecursive.encNat, TuringRecursive.decNat}
+  \leanok
+  \uses{def:primcodable_tm0}
+  The fixed finite alphabet $\GammaZero$ induced by Mathlib's \texttt{PartrecToTM2} pipeline, together with explicit computable encoding \texttt{encNat} and decoding \texttt{decNat} of $\N$.
+\end{definition}
+
+\begin{lemma}[Properties of \texttt{encNat} and \texttt{decNat}]
+  \label{lem:encNat_decNat_props}
+  \lean{TuringRecursive.default_notMem_encNat, TuringRecursive.primrec_encNat, TuringRecursive.primrec_decNat, TuringRecursive.decNat_encNat}
+  \leanok
+  \uses{def:gamma0_codec}
+  Both \texttt{encNat} and \texttt{decNat} are primitive recursive, \texttt{encNat} never emits the blank symbol $\mathrm{default} \in \GammaZero$, and \texttt{decNat} inverts \texttt{encNat} on $\texttt{ListBlank}\,\GammaZero$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{def:gamma0_codec}
+  By structural induction on the binary representation in \texttt{PartrecToTM2} and composition of \texttt{Primrec} list combinators.
+\end{proof}
+
+\begin{theorem}[Church--Turing equivalence for $\TM$ over $\GammaZero$]
+  \label{thm:nat_partrec_iff_tm0}
+  \lean{TuringRecursive.codeTM0, TuringRecursive.nat_partrec_iff_exists_tm0}
+  \leanok
+  \uses{thm:tm0_eval_partrec, lem:encNat_decNat_props}
+  A partial function $f : \N \to \Part\,\N$ is partial recursive if and only if there exists a finite-state $\TM$ machine over $\GammaZero$ computing $f$ under \texttt{encNat}/\texttt{decNat}.
+\end{theorem}
+\begin{proof}
+  \leanok
+  \uses{thm:tm0_eval_partrec, lem:encNat_decNat_props}
+  The forward direction compiles \texttt{Nat.Partrec.Code} through Mathlib's \texttt{PartrecToTM2}/\texttt{TM2to1}/\texttt{TM1to0} stack; the converse applies \ref{thm:tm0_eval_partrec} and \ref{lem:encNat_decNat_props}.
+\end{proof}
+
+\chapter{Halting Undecidability, Compiler, and Universal $\TM$}
+
+\begin{theorem}[Halting problem is r.e.\ and undecidable]
+  \label{thm:halting_undecidable}
+  \lean{TuringRecursive.TM0Code.halting_re, TuringRecursive.TM0Code.halting_not_computable}
+  \leanok
+  \uses{thm:tm0Code_eval_partrec, thm:exists_relabeling}
+  The halting predicate $\lambda\,(m, l) \mapsto (\TM.\mathrm{eval}\,(m.\mathrm{machine})\,l).\mathrm{Dom}$ is recursively enumerable (\texttt{REPred}) and not computable.
+\end{theorem}
+\begin{proof}
+  \leanok
+  \uses{thm:tm0Code_eval_partrec, thm:exists_relabeling}
+  Recursively enumerability follows from \ref{thm:tm0Code_eval_partrec}; uncomputability reduces from \texttt{Nat.Partrec.Code.halting\_not\_computable} via \ref{thm:exists_relabeling}.
+\end{proof}
+
+\begin{theorem}[Primitive-recursive compiler to \texttt{Nat.Partrec.Code}]
+  \label{thm:compile}
+  \lean{TuringRecursive.TM0Code.compile, TuringRecursive.TM0Code.primrec_compile, TuringRecursive.TM0Code.eval_compile_nat, TuringRecursive.TM0Code.eval_compile}
+  \leanok
+  \uses{thm:tm0Code_eval_partrec}
+  There is a primitive recursive compiler $\mathrm{TM0Code.compile} : \TMCode \to \texttt{Nat.Partrec.Code}$ whose compiled code agrees with $\TM$ evaluation on all encoded tapes and diverges on invalid encodings.
+\end{theorem}
+\begin{proof}
+  \leanok
+  \uses{thm:tm0Code_eval_partrec}
+  Apply the $S$-$m$-$n$ theorem (\texttt{Nat.Partrec.Code.curry}) to a \texttt{Code} realizing \ref{thm:tm0Code_eval_partrec}.
+\end{proof}
+
+\begin{definition}[Universal machine $(\UnivLambda, U)$ and universal codec]
+  \label{def:universal_tm0}
+  \lean{TuringRecursive.encUniv, TuringRecursive.decUniv, TuringRecursive.UniversalΛ, TuringRecursive.U}
+  \leanok
+  \uses{thm:nat_partrec_iff_tm0, thm:tm0Code_eval_partrec}
+  The finite state space $\UnivLambda$, universal machine $U$ over $\GammaZero$, and computable codec $(\texttt{encUniv}, \texttt{decUniv})$ encoding pairs $(m, c) : \TMCode \times \TM.\mathrm{Cfg}\,\N\,\N$.
+\end{definition}
+
+\begin{theorem}[Exact-output universal $\TM$ theorem]
+  \label{thm:U_evalCfg_tape}
+  \lean{TuringRecursive.U_evalCfg_tape, TuringRecursive.U_eval, TuringRecursive.U_mem_evalCfg_iff, TuringRecursive.exists_universal_tm0}
+  \leanok
+  \uses{def:universal_tm0, lem:encNat_decNat_props}
+  For every uniform machine $m : \TMCode$ and configuration $c : \TM.\mathrm{Cfg}\,\N\,\N$, evaluating $U$ from $\TM.\mathrm{init}\,(\texttt{encUniv}\,(m, c))$ has the same halting domain as $m$ on $c$ and, upon halting at $c'$, leaves the exact tape $\texttt{Tape.mk\_1}\,(\texttt{encNat}\,(\mathrm{encode}\,c'))$.
+\end{theorem}
+\begin{proof}
+  \leanok
+  \uses{def:universal_tm0, lem:encNat_decNat_props}
+  Instantiate \ref{thm:nat_partrec_iff_tm0} on the partial recursive universal evaluator \texttt{univEvalNat}, then rewrite the output tape via \ref{lem:encNat_decNat_props}.
+\end{proof}

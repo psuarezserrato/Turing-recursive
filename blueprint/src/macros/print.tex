@@ -1,0 +1,34 @@
+% Copyright (c) 2026 Pablo Suárez-Serrato. All rights reserved.
+% Released under the GNU Affero General Public License v3.0 (AGPLv3) for non-commercial use;
+% see LICENSE.md for details.
+% This project is licensed under non-commercial use. If you wish to use this software in a
+% commercial product, service, or enterprise environment, please contact the developer to purchase
+% a commercial license or negotiate royalty terms.
+% Authors: Pablo Suárez-Serrato (November 2026)
+% Print-specific macro definitions.
+
+\newcommand{\lean}[1]{}
+\newcommand{\discussion}[1]{}
+\newcommand{\leanok}{}
+\newcommand{\mathlibok}{}
+\newcommand{\notready}{}
+\newcommand{\home}[1]{}
+\newcommand{\github}[1]{}
+\newcommand{\dochome}[1]{}
+\newcommand{\graphcolor}[3]{}
+
+\providecommand{\uses}[1]{}
+\providecommand{\proves}[1]{}
+
+\ExplSyntaxOn
+\DeclareDocumentCommand{\uses}{m}
+ {
+  \clist_map_inline:nn{#1}{\vphantom{\ref{##1}}}%
+  \ignorespaces
+ }
+\DeclareDocumentCommand{\proves}{m}
+ {
+  \clist_map_inline:nn{#1}{\vphantom{\ref{##1}}}%
+  \ignorespaces
+ }
+\ExplSyntaxOff
